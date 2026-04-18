@@ -24,7 +24,6 @@
 
         .container { max-width: 1400px; margin: auto; padding: 20px; }
         
-        /* Header Modernizado */
         header { 
             display: flex; 
             justify-content: space-between; 
@@ -52,164 +51,82 @@
         }
         
         select {
-            background: #111;
-            color: #fff;
-            border: 1px solid #333;
-            padding: 12px;
-            border-radius: 5px 0 0 5px;
-            cursor: pointer;
+            background: #111; color: #fff; border: 1px solid #333; padding: 12px; border-radius: 5px 0 0 5px;
         }
 
         input { 
-            flex-grow: 1; 
-            padding: 12px 20px; 
-            border: 1px solid #333; 
-            border-left: none;
-            background: #111; 
-            color: #fff; 
-            font-size: 1rem;
-            outline: none;
+            flex-grow: 1; padding: 12px 20px; border: 1px solid #333; border-left: none; background: #111; color: #fff; font-size: 1rem; outline: none;
         }
 
         .btn-search { 
-            background: var(--primary); 
-            color: white; 
-            border: none; 
-            padding: 12px 25px; 
-            border-radius: 0 5px 5px 0; 
-            cursor: pointer; 
-            font-weight: bold; 
-            transition: 0.3s;
+            background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 0 5px 5px 0; cursor: pointer; font-weight: bold;
         }
-        .btn-search:hover { background: var(--accent); }
 
-        /* Títulos de Seção */
         h2 { margin: 30px 0 20px; font-weight: 500; font-size: 1.5rem; color: #aaa; }
 
-        /* Grid de Resultados */
         #results { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            gap: 25px; 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; 
         }
 
         .movie-card { 
-            background: var(--card-bg); 
-            border-radius: 6px; 
-            overflow: hidden; 
-            cursor: pointer; 
-            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            position: relative;
+            background: var(--card-bg); border-radius: 6px; overflow: hidden; cursor: pointer; transition: transform 0.4s; position: relative;
         }
-        
-        .movie-card:hover { 
-            transform: scale(1.1); 
-            z-index: 10;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-
+        .movie-card:hover { transform: scale(1.1); z-index: 10; }
         .movie-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
         
         .movie-info {
-            padding: 10px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            box-sizing: border-box;
-            opacity: 0;
-            transition: 0.3s;
+            padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); position: absolute; bottom: 0; width: 100%; box-sizing: border-box; opacity: 0; transition: 0.3s;
         }
         .movie-card:hover .movie-info { opacity: 1; }
+        .movie-card p { font-size: 0.9rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; }
 
-        .movie-card p { 
-            font-size: 0.9rem; 
-            margin: 0; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            text-align: center;
-        }
-
-        /* Seção do Player */
-        #player-section { 
-            display: none; 
-            margin-top: 20px; 
-            animation: fadeIn 0.5s ease;
-        }
-
+        #player-section { display: none; margin-top: 20px; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .player-header {
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
         .player-wrapper { 
-            position: relative; 
-            width: 100%; 
-            aspect-ratio: 16/9; 
-            background: #000; 
-            overflow: hidden; 
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            border-bottom: 5px solid var(--primary);
+            position: relative; width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden; box-shadow: 0 0 50px rgba(0,0,0,0.8); border-bottom: 5px solid var(--primary);
         }
-        
         iframe { width: 100%; height: 100%; border: none; }
         
-        .server-selector { display: flex; gap: 10px; }
+        .player-controls {
+            background: #1a1a1a; padding: 20px; border-radius: 0 0 12px 12px; display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .server-selector { display: flex; gap: 10px; justify-content: center; }
         
         .btn-server { 
-            background: #333; 
-            color: #fff; 
-            border: none; 
-            padding: 8px 18px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 0.8rem;
-            transition: 0.2s;
+            background: #333; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;
         }
         .btn-server.active { background: var(--primary); }
-        .btn-server:hover:not(.active) { background: #444; }
 
-        .tv-controls { display: flex; align-items: center; gap: 15px; color: #ccc; }
-        .tv-controls input { 
-            width: 60px; 
-            padding: 5px; 
-            background: #333; 
-            border: 1px solid #444; 
-            border-radius: 4px; 
-            text-align: center;
+        /* Estilos de Séries Modernos */
+        .series-nav-btn {
+            background: #222; color: #fff; border: 1px solid #444; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; text-align: center; margin-top: 10px; transition: 0.3s;
         }
+        .series-nav-btn:hover { background: #333; border-color: var(--primary); }
+
+        #series-panel { 
+            background: #111; border: 1px solid #222; border-radius: 12px; padding: 20px; margin-top: 20px; display: none; 
+        }
+
+        .season-list { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 20px; scrollbar-width: thin; }
+        .btn-season { 
+            background: #222; color: #fff; border: 1px solid #333; padding: 8px 20px; border-radius: 20px; cursor: pointer; white-space: nowrap;
+        }
+        .btn-season.active { background: var(--primary); border-color: var(--primary); }
+
+        .episode-grid { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; max-height: 400px; overflow-y: auto; padding-right: 10px;
+        }
+        .btn-episode { 
+            background: #1a1a1a; color: #ccc; border: 1px solid #222; padding: 15px 10px; border-radius: 6px; cursor: pointer; text-align: center; font-size: 0.85rem; transition: 0.2s;
+        }
+        .btn-episode:hover { border-color: var(--primary); color: #fff; background: #222; }
+        .btn-episode.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
         .hidden { display: none; }
-        
-        #local-warning { 
-            background: #e5091422; 
-            color: #ff4d4d; 
-            padding: 15px; 
-            border-radius: 8px; 
-            margin-bottom: 20px; 
-            text-align: center;
-            border: 1px solid var(--primary);
-        }
-
-        .back-btn {
-            background: transparent;
-            color: #aaa;
-            border: 1px solid #333;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .back-btn:hover { color: #fff; border-color: #fff; }
+        #local-warning { background: #e5091422; color: #ff4d4d; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; border: 1px solid var(--primary); }
+        .back-btn { background: transparent; color: #aaa; border: 1px solid #333; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-top: 20px; }
 
     </style>
 </head>
@@ -217,9 +134,7 @@
 
 <div class="container">
     <div id="local-warning" style="display:none;">
-        <strong>⚠️ AVISO DE COMPATIBILIDADE:</strong> Você está rodando via arquivo local. 
-        Se o vídeo não carregar ou der erro de "Acesso Proibido", tente a <strong>Opção 2 ou 3</strong>. 
-        Para melhor experiência, hospede este arquivo no GitHub/Vercel.
+        <strong>⚠️ AVISO:</strong> Rodando localmente. Se falhar, use a <strong>Opção 2 ou 3</strong>.
     </div>
 
     <header>
@@ -229,63 +144,63 @@
                 <option value="movie">Filmes</option>
                 <option value="tv">Séries</option>
             </select>
-            <input type="text" id="searchInput" placeholder="O que você quer assistir hoje?">
+            <input type="text" id="searchInput" placeholder="O que vamos assistir?">
             <button class="btn-search" onclick="searchContent()">BUSCAR</button>
         </div>
     </header>
 
     <h2 id="section-title">Populares no Momento</h2>
-    
-    <!-- Grid de Resultados -->
     <div id="results"></div>
 
-    <!-- Seção do Player -->
     <div id="player-section">
-        <div class="player-header">
-            <div class="tv-controls hidden" id="tvFields">
-                <span>Temporada: <input type="number" id="season" value="1" min="1" onchange="updateIframe()"></span>
-                <span>Episódio: <input type="number" id="episode" value="1" min="1" onchange="updateIframe()"></span>
-            </div>
-            
-            <div class="server-selector">
-                <button class="btn-server active" onclick="changeServer('vidsrc', this)">Opção 1 (Principal)</button>
-                <button class="btn-server" onclick="changeServer('2embed', this)">Opção 2 (Alternativa)</button>
-                <button class="btn-server" onclick="changeServer('embedmovies', this)">Opção 3 (Legacy)</button>
-            </div>
+        <div class="player-wrapper">
+            <iframe id="mainPlayer" allowfullscreen scrolling="no" referrerpolicy="origin" allow="autoplay; encrypted-media"></iframe>
         </div>
 
-        <div class="player-wrapper">
-            <iframe id="mainPlayer" 
-                    allowfullscreen 
-                    scrolling="no" 
-                    referrerpolicy="origin" 
-                    allow="autoplay; encrypted-media">
-            </iframe>
-        </div>
-        
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <button class="back-btn" onclick="closePlayer()">← VOLTAR PARA A VITRINE</button>
-            <p id="debug-url" style="font-size: 0.7rem; color: #444; margin: 0;"></p>
+        <div class="player-controls">
+            <div class="server-selector">
+                <button class="btn-server active" onclick="changeServer('vidsrc', this)">Opção 1</button>
+                <button class="btn-server" onclick="changeServer('2embed', this)">Opção 2</button>
+                <button class="btn-server" onclick="changeServer('myembed', this)">Opção 3</button>
+            </div>
+
+            <!-- Navegação de Séries -->
+            <div id="series-nav-container" class="hidden">
+                <button class="series-nav-btn" onclick="toggleSeriesPanel()">
+                    📅 TEMPORADAS / EPISÓDIOS
+                </button>
+                
+                <div id="series-panel">
+                    <div class="season-list" id="season-list">
+                        <!-- Temporadas aqui -->
+                    </div>
+                    <div class="episode-grid" id="episode-list">
+                        <!-- Episódios aqui -->
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <button class="back-btn" onclick="closePlayer()">← VOLTAR PARA A VITRINE</button>
+                <p id="debug-info" style="font-size: 0.7rem; color: #444; margin: 0;"></p>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
     const API_KEY = '832a40f6d7edf386b7ad6810de3570c9';
-    let currentImdbId = '';
     let currentTmdbId = '';
     let currentType = 'movie';
     let currentServer = 'vidsrc';
+    let currentS = 1;
+    let currentE = 1;
 
-    // Inicialização
     window.onload = () => {
-        if (window.location.protocol === 'file:') {
-            document.getElementById('local-warning').style.display = 'block';
-        }
+        if (window.location.protocol === 'file:') document.getElementById('local-warning').style.display = 'block';
         loadTrending();
     };
 
-    // Carregar Populares
     async function loadTrending() {
         document.getElementById('section-title').innerText = "Populares no Momento";
         const url = `https://api.themoviedb.org/3/trending/all/week?api_key=${API_KEY}&language=pt-BR`;
@@ -298,8 +213,6 @@
         const query = document.getElementById('searchInput').value;
         const type = document.getElementById('searchType').value;
         if (!query) return;
-
-        document.getElementById('section-title').innerText = `Resultados para: ${query}`;
         const url = `https://api.themoviedb.org/3/search/${type}?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=pt-BR`;
         const res = await fetch(url);
         const data = await res.json();
@@ -315,15 +228,9 @@
         results.forEach(item => {
             if (!item.poster_path) return;
             const type = forcedType || item.media_type || (item.title ? 'movie' : 'tv');
-            
             const card = document.createElement('div');
             card.className = 'movie-card';
-            card.innerHTML = `
-                <img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${item.title || item.name}">
-                <div class="movie-info">
-                    <p>${item.title || item.name}</p>
-                </div>
-            `;
+            card.innerHTML = `<img src="https://image.tmdb.org/t/p/w500${item.poster_path}"><div class="movie-info"><p>${item.title || item.name}</p></div>`;
             card.onclick = () => preparePlayer(item.id, type);
             container.appendChild(card);
         });
@@ -332,20 +239,68 @@
     async function preparePlayer(tmdbId, type) {
         currentTmdbId = tmdbId;
         currentType = type;
-        
-        // Buscar ID IMDB para compatibilidade
-        const url = `https://api.themoviedb.org/3/${type}/${tmdbId}/external_ids?api_key=${API_KEY}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        currentImdbId = data.imdb_id;
+        currentS = 1;
+        currentE = 1;
 
-        document.getElementById('tvFields').classList.toggle('hidden', type !== 'tv');
         document.getElementById('results').classList.add('hidden');
-        document.getElementById('section-title').innerText = "Assistindo agora...";
         document.getElementById('player-section').style.display = 'block';
         
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (type === 'tv') {
+            document.getElementById('series-nav-container').classList.remove('hidden');
+            await loadSeasons(tmdbId);
+        } else {
+            document.getElementById('series-nav-container').classList.add('hidden');
+        }
+
         updateIframe();
+    }
+
+    async function loadSeasons(id) {
+        const res = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=pt-BR`);
+        const data = await res.json();
+        const seasonContainer = document.getElementById('season-list');
+        seasonContainer.innerHTML = '';
+
+        data.seasons.forEach(s => {
+            if (s.season_number === 0) return; // Ignorar especiais
+            const btn = document.createElement('button');
+            btn.className = `btn-season ${s.season_number === 1 ? 'active' : ''}`;
+            btn.innerText = `Temp. ${s.season_number}`;
+            btn.onclick = () => {
+                document.querySelectorAll('.btn-season').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                loadEpisodes(id, s.season_number);
+            };
+            seasonContainer.appendChild(btn);
+        });
+        loadEpisodes(id, 1);
+    }
+
+    async function loadEpisodes(id, seasonNum) {
+        currentS = seasonNum;
+        const res = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${seasonNum}?api_key=${API_KEY}&language=pt-BR`);
+        const data = await res.json();
+        const epContainer = document.getElementById('episode-list');
+        epContainer.innerHTML = '';
+
+        data.episodes.forEach(e => {
+            const btn = document.createElement('button');
+            btn.className = `btn-episode ${e.episode_number === currentE ? 'active' : ''}`;
+            btn.innerHTML = `<strong>EP ${e.episode_number}</strong><br><small>${e.name}</small>`;
+            btn.onclick = () => {
+                currentE = e.episode_number;
+                document.querySelectorAll('.btn-episode').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                updateIframe();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+            epContainer.appendChild(btn);
+        });
+    }
+
+    function toggleSeriesPanel() {
+        const panel = document.getElementById('series-panel');
+        panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
     }
 
     function changeServer(server, btn) {
@@ -356,40 +311,34 @@
     }
 
     function updateIframe() {
-        const s = document.getElementById('season').value;
-        const e = document.getElementById('episode').value;
         const player = document.getElementById('mainPlayer');
         let url = '';
 
-        // Novas URLs mais estáveis em 2026
         if (currentServer === 'vidsrc') {
-            // VidSrc.to / me (aceitam TMDB ou IMDB)
             url = currentType === 'movie' 
                 ? `https://vidsrc.to/embed/movie/${currentTmdbId}` 
-                : `https://vidsrc.to/embed/tv/${currentTmdbId}/${s}/${e}`;
+                : `https://vidsrc.to/embed/tv/${currentTmdbId}/${currentS}/${currentE}`;
         } else if (currentServer === '2embed') {
             url = currentType === 'movie'
                 ? `https://www.2embed.cc/embed/${currentTmdbId}`
-                : `https://www.2embed.cc/embedtv/${currentTmdbId}&s=${s}&e=${e}`;
+                : `https://www.2embed.cc/embedtv/${currentTmdbId}&s=${currentS}&e=${currentE}`;
         } else {
-            // Novo Endpoint direto EmbedMovies (Opção 3)
             url = currentType === 'movie' 
                 ? `https://myembed.biz/filme/${currentTmdbId}` 
-                : `https://myembed.biz/serie/${currentTmdbId}/${s}/${e}`;
+                : `https://myembed.biz/serie/${currentTmdbId}/${currentS}/${currentE}`;
         }
 
         player.src = url;
-        document.getElementById('debug-url').innerText = "Endpoint: " + url;
+        document.getElementById('debug-info').innerText = `S${currentS}:E${currentE} | ${currentServer}`;
     }
 
     function closePlayer() {
         document.getElementById('player-section').style.display = 'none';
         document.getElementById('results').classList.remove('hidden');
         document.getElementById('mainPlayer').src = '';
-        loadTrending();
+        document.getElementById('series-panel').style.display = 'none';
     }
 
-    // Atalho: Enter no input de busca
     document.getElementById('searchInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') searchContent();
     });
