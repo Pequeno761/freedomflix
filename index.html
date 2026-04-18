@@ -372,9 +372,10 @@
                 ? `https://www.2embed.cc/embed/${currentTmdbId}`
                 : `https://www.2embed.cc/embedtv/${currentTmdbId}&s=${s}&e=${e}`;
         } else {
-            // Fallback para EmbedMovies (necessita IMDB)
-            url = `https://embedmovies.org/embed/${currentType}/${currentImdbId || currentTmdbId}`;
-            if (currentType === 'tv') url += `/${s}/${e}`;
+            // Novo Endpoint direto EmbedMovies (Opção 3)
+            url = currentType === 'movie' 
+                ? `https://myembed.biz/filme/${currentTmdbId}` 
+                : `https://myembed.biz/serie/${currentTmdbId}/${s}/${e}`;
         }
 
         player.src = url;
