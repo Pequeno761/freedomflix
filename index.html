@@ -181,26 +181,49 @@
         /* Títulos de Seção */
         h2 { margin: 30px 0 20px; font-weight: 500; font-size: 1.5rem; color: #aaa; }
 
-        /* Grid de Resultados */
-        #results { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            gap: 25px; 
+        /* Fileiras Horizontais (Carrossel) */
+        .content-section {
+            margin-bottom: 40px;
         }
 
+        .section-header {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 5px solid var(--primary);
+            color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .row-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 15px 10px;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+        }
+
+        .row-container::-webkit-scrollbar { display: none; }
+
         .movie-card { 
+            flex: 0 0 200px; /* Largura fixa para o carrossel */
             background: var(--card-bg); 
-            border-radius: 6px; 
+            border-radius: 8px; 
             overflow: hidden; 
             cursor: pointer; 
             transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
         .movie-card:hover { 
-            transform: scale(1.1); 
+            transform: scale(1.15); 
             z-index: 10;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
         }
 
         .movie-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
@@ -364,12 +387,11 @@
     </header>
 
     <!-- Barra de Gêneros -->
-    <div class="genres-container" id="genresList">
-        <!-- Preenchido via JS -->
-    </div>
+    <div class="genres-container" id="genresList"></div>
 
-    <h2 id="section-title">Populares no Momento</h2>
-    <div id="results"></div>
+    <div id="sections-container">
+        <!-- As seções serão geradas dinamicamente aqui -->
+    </div>
 
     <!-- Modal Player -->
     <div id="player-section" onclick="if(event.target === this) closePlayer()">
@@ -416,48 +438,101 @@
             btn.classList.add('active');
         }
 
-        let url = '';
-        let title = 'Populares';
+        // Home agora também tem gêneros (usamos movie como base para Home)
+        loadGenres(mode === 'movie' || mode === 'trending' ? 'movie' : 'tv');
+
+        const container = document.getElementById('sections-container');
+        container.innerHTML = '<p style="text-align:center; padding:50px;">Carregando vitrine...</p>';
+
+        const sections = [
+            { title: 'Recém Adicionados', params: '&sort_by=primary_release_date.desc&vote_count.gte=50' },
+            { title: 'Lançamentos 2026', params: '&primary_release_year=2026&sort_by=popularity.desc' },
+            { title: 'Recomendados para Você', params: '&sort_by=vote_average.desc&vote_count.gte=1000' },
+            { title: 'Populares e Outros', params: '&sort_by=popularity.desc' }
+        ];
+
+        let html = '';
+        const type = (mode === 'movie' || mode === 'trending') ? 'movie' : 'tv';
+        currentType = type;
+
+        for (const section of sections) {
+            const url = `https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&language=pt-BR${section.params}&page=1`;
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            if (data.results && data.results.length > 0) {
+                html += `
+                    <div class="content-section">
+                        <div class="section-header">
+                            <span>${section.title}</span>
+                            <small style="font-size: 0.8rem; color: #666;">Ver tudo</small>
+                        </div>
+                        <div class="row-container">
+                            ${data.results.map(item => `
+                                <div class="movie-card" onclick="openPlayer(${item.id}, '${type}')">
+                                    <img src="https://image.tmdb.org/t/p/w500${item.poster_path}">
+                                    <div class="movie-info"><p>${item.title || item.name}</p></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        container.innerHTML = html;
+    }
+
+    async function filterByGenre(genreId, type, pill) {
+        document.querySelectorAll('.genre-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
         
-        // Carregar gêneros se for Filme ou Série
-        if (mode === 'movie' || mode === 'tv') {
-            loadGenres(mode);
-        } else {
-            document.getElementById('genresList').innerHTML = ''; // Limpa se for Home ou outros
-        }
+        const container = document.getElementById('sections-container');
+        container.innerHTML = '<p style="text-align:center; padding:50px;">Filtrando...</p>';
 
-        switch(mode) {
-            case 'trending': 
-                url = `https://api.themoviedb.org/3/trending/all/week?api_key=${API_KEY}&language=pt-BR`;
-                title = "Populares no Momento";
-                break;
-            case 'movie':
-                url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&sort_by=popularity.desc`;
-                title = "Filmes em Destaque";
-                currentType = 'movie';
-                break;
-            case 'tv':
-                url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=pt-BR&sort_by=popularity.desc`;
-                title = "Séries em Destaque";
-                currentType = 'tv';
-                break;
-            case 'anime':
-                url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=pt-BR&with_genres=16&with_original_language=ja`;
-                title = "Animes";
-                currentType = 'tv';
-                break;
-            case 'dorama':
-                url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=pt-BR&with_original_language=ko`;
-                title = "Doramas Coreanos";
-                currentType = 'tv';
-                break;
-            default: return;
-        }
-
-        document.getElementById('section-title').innerText = title;
+        const url = `https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&language=pt-BR&with_genres=${genreId}&sort_by=popularity.desc`;
         const res = await fetch(url);
         const data = await res.json();
-        displayResults(data.results);
+        
+        container.innerHTML = `
+            <div class="content-section">
+                <div class="section-header"><span>Resultados Filtrados</span></div>
+                <div class="row-container" style="flex-wrap: wrap; justify-content: center;">
+                    ${data.results.map(item => `
+                        <div class="movie-card" onclick="openPlayer(${item.id}, '${type}')" style="flex: 0 0 180px; margin-bottom: 20px;">
+                            <img src="https://image.tmdb.org/t/p/w500${item.poster_path}">
+                            <div class="movie-info"><p>${item.title || item.name}</p></div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    async function searchContent() {
+        const query = document.getElementById('searchInput').value;
+        const type = document.getElementById('searchType').value === 'multi' ? 'movie' : document.getElementById('searchType').value;
+        if (!query) return;
+
+        const container = document.getElementById('sections-container');
+        container.innerHTML = '<p style="text-align:center; padding:50px;">Buscando...</p>';
+
+        const url = `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=pt-BR`;
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        container.innerHTML = `
+            <div class="content-section">
+                <div class="section-header"><span>Resultados para: ${query}</span></div>
+                <div class="row-container" style="flex-wrap: wrap; justify-content: center;">
+                    ${data.results.filter(i => i.poster_path && i.media_type !== 'person').map(item => `
+                        <div class="movie-card" onclick="openPlayer(${item.id}, '${item.media_type}')" style="flex: 0 0 180px; margin-bottom: 20px;">
+                            <img src="https://image.tmdb.org/t/p/w500${item.poster_path}">
+                            <div class="movie-info"><p>${item.title || item.name}</p></div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
     }
 
     async function loadGenres(type) {
