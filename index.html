@@ -245,16 +245,7 @@ text-align: center;
 border: 1px solid var(--primary);
 }
 
-.back-btn {
-background: transparent;
-color: #aaa;
-border: 1px solid #333;
-padding: 10px 20px;
-border-radius: 4px;
-cursor: pointer;
-margin-top: 20px;
-}
-.back-btn:hover { color: #fff; border-color: #fff; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 </style>
 </head>
@@ -388,7 +379,7 @@ async function preparePlayer(tmdbId, type) {
     // Abrir o Modal
     const playerSection = document.getElementById('player-section');
     playerSection.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Trava o scroll do site ao fundo
+    document.body.style.overflow = 'hidden';
 
     updateIframe();
 }
@@ -397,8 +388,8 @@ function closePlayer() {
     const playerSection = document.getElementById('player-section');
     const player = document.getElementById('mainPlayer');
     playerSection.style.display = 'none';
-    player.src = ''; // Limpa o iframe para parar o áudio/vídeo
-    document.body.style.overflow = 'auto'; // Libera o scroll novamente
+    player.src = ''; 
+    document.body.style.overflow = 'auto';
 }
 
 function changeServer(server, btn) {
@@ -414,9 +405,7 @@ const e = document.getElementById('episode').value;
 const player = document.getElementById('mainPlayer');
 let url = '';
 
-// Novas URLs mais estáveis em 2026
 if (currentServer === 'vidsrc') {
-// VidSrc.to / me (aceitam TMDB ou IMDB)
 url = currentType === 'movie' 
 ? `https://vidsrc.to/embed/movie/${currentTmdbId}` 
 : `https://vidsrc.to/embed/tv/${currentTmdbId}/${s}/${e}`;
@@ -425,7 +414,6 @@ url = currentType === 'movie'
 ? `https://www.2embed.cc/embed/${currentTmdbId}`
 : `https://www.2embed.cc/embedtv/${currentTmdbId}&s=${s}&e=${e}`;
 } else {
-            // Fallback para EmbedMovies (necessita IMDB)
             url = currentType === 'movie' 
                 ? `https://myembed.biz/filme/${currentTmdbId}` 
                 : `https://myembed.biz/serie/${currentTmdbId}/${s}/${e}`;
