@@ -381,9 +381,10 @@
                         <i class="fas fa-list"></i> Temporadas e Episódios
                     </button>
                 </div>
-                <div class="server-selector">
-                    <!-- Simplificado para o exemplo -->
-                    <span style="font-size: 0.8rem; color: #888;">Player de Vídeo Inteligente</span>
+                <div class="server-selector" style="display: flex; gap: 8px;">
+                    <button class="genre-pill active" style="padding: 5px 15px;" onclick="changeServer('vidsrc', this)">Opção 1</button>
+                    <button class="genre-pill" style="padding: 5px 15px;" onclick="changeServer('superembed', this)">Opção 2</button>
+                    <button class="genre-pill" style="padding: 5px 15px;" onclick="changeServer('embedmovies', this)">Opção 3</button>
                 </div>
             </div>
 
@@ -529,11 +530,34 @@
         updateIframe();
     }
 
+    let currentServer = 'vidsrc';
+
+    function changeServer(server, btn) {
+        document.querySelectorAll('.server-selector .genre-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentServer = server;
+        updateIframe();
+    }
+
     function updateIframe() {
         const player = document.getElementById('mainPlayer');
-        player.src = currentType === 'movie' 
-            ? `https://vidsrc.to/embed/movie/${currentTmdbId}` 
-            : `https://vidsrc.to/embed/tv/${currentTmdbId}/${s_val}/${e_val}`;
+        let url = '';
+
+        if (currentServer === 'vidsrc') {
+            url = currentType === 'movie' 
+                ? `https://vidsrc.to/embed/movie/${currentTmdbId}` 
+                : `https://vidsrc.to/embed/tv/${currentTmdbId}/${s_val}/${e_val}`;
+        } else if (currentServer === 'superembed') {
+            url = currentType === 'movie'
+                ? `https://multiembed.mov/directstream.php?video_id=${currentTmdbId}&tmdb=1`
+                : `https://multiembed.mov/directstream.php?video_id=${currentTmdbId}&tmdb=1&s=${s_val}&e=${e_val}`;
+        } else {
+            url = currentType === 'movie' 
+                ? `https://myembed.biz/filme/${currentTmdbId}` 
+                : `https://myembed.biz/serie/${currentTmdbId}/${s_val}/${e_val}`;
+        }
+
+        player.src = url;
     }
 
     async function loadSeasons(id) {
