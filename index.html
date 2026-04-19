@@ -224,15 +224,76 @@ iframe { width: 100%; height: 100%; border: none; }
 .btn-server:hover:not(.active) { background: #333; border-color: #666; }
 
 .tv-controls { display: flex; align-items: center; gap: 10px; color: #eee; font-size: 0.85rem; }
-.tv-controls input { 
-    width: 45px; 
-    padding: 4px; 
-    background: #222; 
-    border: 1px solid #444; 
-    border-radius: 4px; 
-    text-align: center;
+
+.btn-episodes {
+    background: #333;
     color: white;
+    border: 1px solid #444;
+    padding: 6px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
+.btn-episodes:hover { background: #444; border-color: #666; }
+
+/* Lista de Episódios Overlay */
+#episodes-browser {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px);
+    background: #141414;
+    z-index: 10002;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.ep-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.season-select {
+    background: #222;
+    color: white;
+    border: 1px solid #444;
+    padding: 8px;
+    border-radius: 4px;
+    outline: none;
+}
+
+.ep-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.ep-item {
+    background: #222;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid transparent;
+}
+.ep-item:hover { border-color: var(--primary); background: #2a2a2a; }
+.ep-item.active { border-color: var(--primary); }
+
+.ep-item img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+.ep-item .ep-info { padding: 8px; font-size: 0.75rem; }
+.ep-item .ep-name { font-weight: bold; display: block; margin-bottom: 4px; }
+.ep-item .ep-number { color: #888; }
 
 .hidden { display: none; }
 
@@ -283,14 +344,30 @@ Para melhor experiência, hospede este arquivo no GitHub/Vercel.
         
         <div class="player-header">
             <div class="tv-controls hidden" id="tvFields">
-                <span>Temp: <input type="number" id="season" value="1" min="1" onchange="updateIframe()"></span>
-                <span>Ep: <input type="number" id="episode" value="1" min="1" onchange="updateIframe()"></span>
+                <button class="btn-episodes" onclick="toggleEpisodesBrowser()">
+                    <span>📺 Temporadas e Episódios</span>
+                </button>
+                <input type="hidden" id="season" value="1">
+                <input type="hidden" id="episode" value="1">
             </div>
 
             <div class="server-selector">
                 <button class="btn-server active" onclick="changeServer('vidsrc', this)">Opção 1</button>
                 <button class="btn-server" onclick="changeServer('2embed', this)">Opção 2</button>
                 <button class="btn-server" onclick="changeServer('embedmovies', this)">Opção 3</button>
+            </div>
+        </div>
+
+        <!-- Navegador de Episódios -->
+        <div id="episodes-browser">
+            <div class="ep-header">
+                <select id="seasonSelect" class="season-select" onchange="loadEpisodes(this.value)">
+                    <!-- Preenchido via JS -->
+                </select>
+                <button class="btn-episodes" onclick="toggleEpisodesBrowser()">Fechar Lista</button>
+            </div>
+            <div id="episodesGrid" class="ep-grid">
+                <!-- Preenchido via JS -->
             </div>
         </div>
 
@@ -368,6 +445,8 @@ container.appendChild(card);
 async function preparePlayer(tmdbId, type) {
     currentTmdbId = tmdbId;
     currentType = type;
+    document.getElementById('season').value = 1;
+    document.getElementById('episode').value = 1;
 
     // Buscar ID IMDB para compatibilidade
     const url = `https://api.themoviedb.org/3/${type}/${tmdbId}/external_ids?api_key=${API_KEY}`;
@@ -375,14 +454,80 @@ async function preparePlayer(tmdbId, type) {
     const data = await res.json();
     currentImdbId = data.imdb_id;
 
-    document.getElementById('tvFields').classList.toggle('hidden', type !== 'tv');
+    if (type === 'tv') {
+        document.getElementById('tvFields').classList.remove('hidden');
+        loadSeasons(tmdbId);
+    } else {
+        document.getElementById('tvFields').classList.add('hidden');
+    }
     
     // Abrir o Modal
+    document.getElementById('episodes-browser').style.display = 'none';
     const playerSection = document.getElementById('player-section');
     playerSection.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
     updateIframe();
+}
+
+function toggleEpisodesBrowser() {
+    const browser = document.getElementById('episodes-browser');
+    browser.style.display = browser.style.display === 'block' ? 'none' : 'block';
+}
+
+async function loadSeasons(tmdbId) {
+    const url = `https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${API_KEY}&language=pt-BR`;
+    const res = await fetch(url);
+    const data = await res.json();
+    
+    const select = document.getElementById('seasonSelect');
+    select.innerHTML = '';
+    
+    data.seasons.forEach(season => {
+        if (season.season_number === 0) return; // Ignorar especiais
+        const opt = document.createElement('option');
+        opt.value = season.season_number;
+        opt.innerText = `Temporada ${season.season_number}`;
+        select.appendChild(opt);
+    });
+    
+    loadEpisodes(1);
+}
+
+async function loadEpisodes(seasonNumber) {
+    const url = `https://api.themoviedb.org/3/tv/${currentTmdbId}/season/${seasonNumber}?api_key=${API_KEY}&language=pt-BR`;
+    const res = await fetch(url);
+    const data = await res.json();
+    
+    const grid = document.getElementById('episodesGrid');
+    grid.innerHTML = '';
+    
+    data.episodes.forEach(ep => {
+        const item = document.createElement('div');
+        item.className = 'ep-item';
+        if (document.getElementById('season').value == seasonNumber && document.getElementById('episode').value == ep.episode_number) {
+            item.classList.add('active');
+        }
+        
+        const img = ep.still_path ? `https://image.tmdb.org/t/p/w300${ep.still_path}` : 'https://via.placeholder.com/300x169/111/fff?text=Sem+Imagem';
+        
+        item.innerHTML = `
+            <img src="${img}" alt="${ep.name}">
+            <div class="ep-info">
+                <span class="ep-name">${ep.episode_number}. ${ep.name}</span>
+                <span class="ep-number">${ep.air_date || 'Data não disponível'}</span>
+            </div>
+        `;
+        
+        item.onclick = () => {
+            document.getElementById('season').value = seasonNumber;
+            document.getElementById('episode').value = ep.episode_number;
+            updateIframe();
+            toggleEpisodesBrowser();
+        };
+        
+        grid.appendChild(item);
+    });
 }
 
 function closePlayer() {
