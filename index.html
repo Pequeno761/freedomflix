@@ -4,427 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LaFlix - Streaming Inteligente</title>
-    <!-- Font Awesome para os ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { 
-            --primary: #e50914; 
-            --bg: #0a0a0a; 
-            --card-bg: #141414; 
-            --text: #ffffff;
-            --accent: #b20710;
-        }
-
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
-            margin: 0; 
-            padding: 0;
-            overflow-x: hidden;
-            zoom: 0.75; 
-        }
-
+        :root { --primary: #e50914; --bg: #0a0a0a; --card-bg: #141414; --text: #ffffff; --accent: #b20710; }
+        body { background: var(--bg); color: var(--text); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; overflow-x: hidden; zoom: 0.75; }
         .container { max-width: 1400px; margin: auto; padding: 20px; }
-
-        /* Header e Nav */
-        header { 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            padding: 20px 0;
-            margin-bottom: 30px; 
-            border-bottom: 1px solid #222;
-            gap: 20px;
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .logo { 
-            font-size: 2.5rem; 
-            font-weight: 900; 
-            color: var(--primary); 
-            text-decoration: none;
-            letter-spacing: -1px;
-        }
+        header { display: flex; flex-direction: column; align-items: center; padding: 20px 0; margin-bottom: 30px; border-bottom: 1px solid #222; gap: 20px; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo { font-size: 2.5rem; font-weight: 900; color: var(--primary); text-decoration: none; letter-spacing: -1px; }
         .logo span { color: #fff; }
-
-        .search-box { 
-            display: flex; 
-            gap: 0; 
-            flex-grow: 1; 
-            max-width: 600px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-
-        select {
-            background: #111;
-            color: #fff;
-            border: 1px solid #333;
-            padding: 12px;
-            border-radius: 5px 0 0 5px;
-            cursor: pointer;
-        }
-
-        input[type="text"] { 
-            flex-grow: 1; 
-            padding: 12px 20px; 
-            border: 1px solid #333; 
-            border-left: none;
-            background: #111; 
-            color: #fff; 
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .btn-search { 
-            background: var(--primary); 
-            color: white; 
-            border: none; 
-            padding: 12px 25px; 
-            border-radius: 0 5px 5px 0; 
-            cursor: pointer; 
-            font-weight: bold; 
-            transition: 0.3s;
-        }
+        .search-box { display: flex; gap: 0; flex-grow: 1; max-width: 600px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        select { background: #111; color: #fff; border: 1px solid #333; padding: 12px; border-radius: 5px 0 0 5px; cursor: pointer; }
+        input[type="text"] { flex-grow: 1; padding: 12px 20px; border: 1px solid #333; border-left: none; background: #111; color: #fff; font-size: 1rem; outline: none; }
+        .btn-search { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 0 5px 5px 0; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .btn-search:hover { background: var(--accent); }
-
-        /* Barra de Navegação Estilo Pill */
-        .nav-pill-container {
-            background: rgba(20, 20, 20, 0.8);
-            border-radius: 50px;
-            padding: 5px;
-            display: flex;
-            gap: 5px;
-            border: 1px solid #333;
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #ccc;
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            position: relative;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
+        .nav-pill-container { background: rgba(20, 20, 20, 0.8); border-radius: 50px; padding: 5px; display: flex; gap: 5px; border: 1px solid #333; backdrop-filter: blur(10px); }
+        .nav-link { text-decoration: none; color: #ccc; display: flex; align-items: center; padding: 10px 15px; border-radius: 50px; font-weight: bold; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; overflow: hidden; white-space: nowrap; }
         .nav-link i { font-size: 1.2rem; }
-        
-        .nav-link span {
-            max-width: 0;
-            opacity: 0;
-            margin-left: 0;
-            transition: all 0.4s ease;
-            display: inline-block;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-
-        .nav-link:hover span, .nav-link.active span {
-            max-width: 120px;
-            opacity: 1;
-            margin-left: 10px;
-        }
-
-        /* Barra de Gêneros */
-        .genres-container {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 10px 0 20px;
-            margin-bottom: 20px;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* IE/Edge */
-        }
-
-        .genres-container::-webkit-scrollbar { display: none; } /* Chrome/Safari */
-
-        .genre-pill {
-            padding: 8px 20px;
-            background: #1a1a1a;
-            color: #aaa;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            cursor: pointer;
-            border: 1px solid #333;
-            white-space: nowrap;
-            transition: 0.3s;
-        }
-
-        .genre-pill:hover {
-            color: #fff;
-            border-color: #666;
-        }
-
-        .genre-pill.active {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
-        }
-
-        /* Títulos de Seção */
-        h2 { margin: 30px 0 20px; font-weight: 500; font-size: 1.5rem; color: #aaa; }
-
-        /* Fileiras Horizontais (Carrossel) */
-        .content-section {
-            margin-bottom: 40px;
-            position: relative;
-        }
-
-        .section-header {
-            font-size: 1.6rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            padding-left: 10px;
-            border-left: 5px solid var(--primary);
-            color: #eee;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .btn-see-all {
-            font-size: 0.85rem;
-            color: var(--primary);
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-            background: rgba(229, 9, 20, 0.1);
-            padding: 5px 12px;
-            border-radius: 4px;
-            border: 1px solid transparent;
-        }
-        .btn-see-all:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .row-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .row-container {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding: 20px 10px;
-            scrollbar-width: none;
-            scroll-behavior: smooth;
-            width: 100%;
-        }
-
+        .nav-link span { max-width: 0; opacity: 0; margin-left: 0; transition: all 0.4s ease; display: inline-block; }
+        .nav-link:hover, .nav-link.active { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .nav-link:hover span, .nav-link.active span { max-width: 120px; opacity: 1; margin-left: 10px; }
+        .genres-container { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0 20px; margin-bottom: 20px; scrollbar-width: none; }
+        .genres-container::-webkit-scrollbar { display: none; }
+        .genre-pill { padding: 8px 20px; background: #1a1a1a; color: #aaa; border-radius: 50px; font-size: 0.85rem; font-weight: bold; cursor: pointer; border: 1px solid #333; white-space: nowrap; transition: 0.3s; }
+        .genre-pill:hover { color: #fff; border-color: #666; }
+        .genre-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 0 15px rgba(229, 9, 20, 0.4); }
+        .content-section { margin-bottom: 40px; position: relative; }
+        .section-header { font-size: 1.6rem; font-weight: bold; margin-bottom: 15px; padding-left: 10px; border-left: 5px solid var(--primary); color: #eee; display: flex; align-items: center; justify-content: space-between; }
+        .btn-see-all { font-size: 0.85rem; color: var(--primary); cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; background: rgba(229, 9, 20, 0.1); padding: 5px 12px; border-radius: 4px; border: 1px solid transparent; }
+        .btn-see-all:hover { background: var(--primary); color: white; }
+        .row-wrapper { position: relative; display: flex; align-items: center; }
+        .row-container { display: flex; gap: 20px; overflow-x: auto; padding: 20px 10px; scrollbar-width: none; scroll-behavior: smooth; width: 100%; }
         .row-container::-webkit-scrollbar { display: none; }
-
-        /* Setas de Navegação */
-        .nav-arrow {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 50px;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            cursor: pointer;
-            z-index: 5;
-            opacity: 0;
-            transition: 0.3s;
-            border: none;
-            backdrop-filter: blur(5px);
-        }
-
+        .nav-arrow { position: absolute; top: 0; bottom: 0; width: 50px; background: rgba(0,0,0,0.5); color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; z-index: 5; opacity: 0; transition: 0.3s; border: none; backdrop-filter: blur(5px); }
         .nav-arrow.left { left: 0; border-radius: 0 8px 8px 0; }
         .nav-arrow.right { right: 0; border-radius: 8px 0 0 8px; }
-
-        .content-section:hover .nav-arrow {
-            opacity: 1;
-        }
-
-        .nav-arrow:hover {
-            background: rgba(229, 9, 20, 0.8);
-            font-size: 2.5rem;
-        }
-
-        .movie-card { 
-            flex: 0 0 200px; /* Largura fixa para o carrossel */
-            background: var(--card-bg); 
-            border-radius: 8px; 
-            overflow: hidden; 
-            cursor: pointer; 
-            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            position: relative;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-
-        .movie-card:hover { 
-            transform: scale(1.15); 
-            z-index: 10;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
-        }
-
+        .content-section:hover .nav-arrow { opacity: 1; }
+        .nav-arrow:hover { background: rgba(229, 9, 20, 0.8); font-size: 2.5rem; }
+        .movie-card { flex: 0 0 200px; background: var(--card-bg); border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .movie-card:hover { transform: scale(1.15); z-index: 10; box-shadow: 0 15px 40px rgba(0,0,0,0.9); }
         .movie-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
-        
         .channel-card img { aspect-ratio: 1/1 !important; padding: 15px; background: #1a1a1a; object-fit: contain; }
-
-        .live-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #ff0000;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.65rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        .movie-info {
-            padding: 10px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            box-sizing: border-box;
-            opacity: 0;
-            transition: 0.3s;
-        }
+        .live-badge { position: absolute; top: 10px; left: 10px; background: #ff0000; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; text-transform: uppercase; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .movie-info { padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); position: absolute; bottom: 0; width: 100%; box-sizing: border-box; opacity: 0; transition: 0.3s; }
         .movie-card:hover .movie-info { opacity: 1; }
-
-        /* Modal Netflix */
-        #player-section { 
-            display: none; 
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(8px);
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes modalShow { 
-            from { opacity: 0; transform: scale(0.7) translateY(50px); } 
-            to { opacity: 1; transform: scale(1) translateY(0); } 
-        }
-
-        .modal-content {
-            background: #141414;
-            width: 90%;
-            max-width: 1000px;
-            border-radius: 12px;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,1);
-            animation: modalShow 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            overflow: hidden;
-            border: 1px solid #333;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 40px;
-            height: 40px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            z-index: 10001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-        }
-
+        #player-section { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(8px); animation: fadeIn 0.3s ease; }
+        .modal-content { background: #141414; width: 90%; max-width: 1000px; border-radius: 12px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,1); animation: modalShow 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); overflow: hidden; border: 1px solid #333; }
+        .close-modal { position: absolute; top: 15px; right: 15px; width: 40px; height: 40px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 10001; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .close-modal:hover { background: var(--primary); transform: rotate(90deg); }
-
-        .player-header {
-            background: #141414;
-            padding: 15px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #222;
-        }
-
+        .player-header { background: #141414; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; }
         .player-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; }
         iframe { width: 100%; height: 100%; border: none; }
-
-        .btn-episodes {
-            background: #333;
-            color: white;
-            border: 1px solid #444;
-            padding: 8px 18px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        #episodes-browser {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 60px);
-            background: #141414;
-            z-index: 10002;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
+        .btn-episodes { background: #333; color: white; border: 1px solid #444; padding: 8px 18px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; }
+        #episodes-browser { display: none; position: absolute; top: 60px; left: 0; width: 100%; height: calc(100% - 60px); background: #141414; z-index: 10002; padding: 20px; overflow-y: auto; }
         .ep-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
         .ep-item { background: #222; border-radius: 4px; overflow: hidden; cursor: pointer; border: 1px solid transparent; }
         .ep-item:hover { border-color: var(--primary); }
         .ep-item img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
         .ep-item .ep-info { padding: 10px; font-size: 0.8rem; }
-        .active-ep { border-color: var(--primary) !important; }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modalShow { from { opacity: 0; transform: scale(0.7) translateY(50px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .hidden { display: none; }
-
     </style>
 </head>
 <body>
-
 <div class="container">
     <header>
         <div class="header-top">
@@ -439,56 +83,28 @@
                 <button class="btn-search" onclick="searchContent()"><i class="fas fa-search"></i></button>
             </div>
         </div>
-
         <nav class="nav-pill-container">
-            <a href="#" class="nav-link active" onclick="loadContent('trending', this)">
-                <i class="fas fa-home"></i><span>Home</span>
-            </a>
-            <a href="#" class="nav-link" onclick="loadContent('movie', this)">
-                <i class="fas fa-film"></i><span>Filmes</span>
-            </a>
-            <a href="#" class="nav-link" onclick="loadContent('tv', this)">
-                <i class="fas fa-tv"></i><span>Séries</span>
-            </a>
-            <a href="#" class="nav-link" onclick="loadContent('anime', this)">
-                <i class="fas fa-dragon"></i><span>Animes</span>
-            </a>
-            <a href="#" class="nav-link" onclick="loadContent('dorama', this)">
-                <i class="fas fa-masks-theater"></i><span>Doramas</span>
-            </a>
-            <a href="#" class="nav-link" onclick="loadContent('canais', this)">
-                <i class="fas fa-tower-broadcast"></i><span>Canais</span>
-            </a>
-            <a href="#" class="nav-link" onclick="loadContent('calendario', this)">
-                <i class="fas fa-calendar-days"></i><span>Calendário</span>
-            </a>
+            <a href="#" class="nav-link active" onclick="loadContent('trending', this)"><i class="fas fa-home"></i><span>Home</span></a>
+            <a href="#" class="nav-link" onclick="loadContent('movie', this)"><i class="fas fa-film"></i><span>Filmes</span></a>
+            <a href="#" class="nav-link" onclick="loadContent('tv', this)"><i class="fas fa-tv"></i><span>Séries</span></a>
+            <a href="#" class="nav-link" onclick="loadContent('anime', this)"><i class="fas fa-dragon"></i><span>Animes</span></a>
+            <a href="#" class="nav-link" onclick="loadContent('dorama', this)"><i class="fas fa-masks-theater"></i><span>Doramas</span></a>
+            <a href="#" class="nav-link" onclick="loadContent('canais', this)"><i class="fas fa-tower-broadcast"></i><span>Canais</span></a>
         </nav>
     </header>
-
-    <!-- Barra de Gêneros -->
     <div class="genres-container" id="genresList"></div>
-
-    <div id="sections-container">
-        <!-- As seções serão geradas dinamicamente aqui -->
-    </div>
-
-    <!-- Modal Player -->
+    <div id="sections-container"></div>
     <div id="player-section" onclick="if(event.target === this) closePlayer()">
         <div class="modal-content">
             <button class="close-modal" onclick="closePlayer()">×</button>
             <div class="player-header">
-                <div id="tvFields" class="hidden">
-                    <button class="btn-episodes" onclick="toggleEpisodesBrowser()">
-                        <i class="fas fa-list"></i> Temporadas e Episódios
-                    </button>
-                </div>
+                <div id="tvFields" class="hidden"><button class="btn-episodes" onclick="toggleEpisodesBrowser()"><i class="fas fa-list"></i> Temporadas e Episódios</button></div>
                 <div class="server-selector" style="display: flex; gap: 8px;">
                     <button class="genre-pill active" style="padding: 5px 15px;" onclick="changeServer('vidsrc', this)">Opção 1</button>
                     <button class="genre-pill" style="padding: 5px 15px;" onclick="changeServer('superembed', this)">Opção 2</button>
                     <button class="genre-pill" style="padding: 5px 15px;" onclick="changeServer('embedmovies', this)">Opção 3</button>
                 </div>
             </div>
-
             <div id="episodes-browser">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                     <select id="seasonSelect" onchange="loadEpisodes(this.value)" style="border-radius: 4px; padding: 5px;"></select>
@@ -496,266 +112,124 @@
                 </div>
                 <div id="episodesGrid" class="ep-grid"></div>
             </div>
-
-            <div class="player-wrapper">
-                <iframe id="mainPlayer" allowfullscreen referrerpolicy="origin" allow="autoplay; encrypted-media"></iframe>
-            </div>
+            <div class="player-wrapper"><iframe id="mainPlayer" allowfullscreen referrerpolicy="origin" allow="autoplay; encrypted-media"></iframe></div>
         </div>
     </div>
 </div>
-
 <script>
     const API_KEY = '832a40f6d7edf386b7ad6810de3570c9';
-    let currentTmdbId, currentType;
-    let s_val = 1, e_val = 1;
+    let currentTmdbId, currentType, currentServer = 'vidsrc', s_val = 1, e_val = 1;
 
     window.onload = () => loadContent('trending');
 
     async function loadContent(mode, btn = null) {
-        if(btn) {
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        if (mode === 'canais') {
-            loadChannels();
-            return;
-        }
-
-        // Home agora também tem gêneros (usamos movie como base para Home)
+        if(btn) { document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active')); btn.classList.add('active'); }
+        if (mode === 'canais') { loadChannels(); return; }
         loadGenres(mode === 'movie' || mode === 'trending' ? 'movie' : 'tv');
-
         const container = document.getElementById('sections-container');
         container.innerHTML = '<p style="text-align:center; padding:50px;">Carregando vitrine...</p>';
-
         const sections = [
             { title: 'Recém Adicionados', params: '&sort_by=primary_release_date.desc&vote_count.gte=50' },
             { title: 'Lançamentos 2026', params: '&primary_release_year=2026&sort_by=popularity.desc' },
             { title: 'Recomendados para Você', params: '&sort_by=vote_average.desc&vote_count.gte=1000' },
             { title: 'Populares e Outros', params: '&sort_by=popularity.desc' }
         ];
-
         let html = '';
         const type = (mode === 'movie' || mode === 'trending') ? 'movie' : 'tv';
         currentType = type;
-
         for (const section of sections) {
-            const url = `https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&language=pt-BR${section.params}&page=1`;
-            const res = await fetch(url);
+            const res = await fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&language=pt-BR${section.params}&page=1`);
             const data = await res.json();
-            
             if (data.results && data.results.length > 0) {
                 html += `
                     <div class="content-section">
-                        <div class="section-header">
-                            <span>${section.title}</span>
-                            <div class="btn-see-all" onclick="showAllFromSection('${section.title}', '${type}', '${section.params}')">Ver tudo</div>
-                        </div>
+                        <div class="section-header"><span>${section.title}</span><div class="btn-see-all" onclick="showAllFromSection('${section.title}', '${type}', '${section.params}')">Ver tudo</div></div>
                         <div class="row-wrapper">
                             <button class="nav-arrow left" onclick="scrollRow(this, -1)"><i class="fas fa-chevron-left"></i></button>
                             <div class="row-container">
-                                ${data.results.map(item => `
-                                    <div class="movie-card" onclick="openPlayer(${item.id}, '${type}')">
-                                        <img src="https://image.tmdb.org/t/p/w500${item.poster_path}">
-                                        <div class="movie-info"><p>${item.title || item.name}</p></div>
-                                    </div>
-                                `).join('')}
+                                ${data.results.map(item => `<div class="movie-card" onclick="openPlayer(${item.id}, '${type}')"><img src="https://image.tmdb.org/t/p/w500${item.poster_path}"><div class="movie-info"><p>${item.title || item.name}</p></div></div>`).join('')}
                             </div>
                             <button class="nav-arrow right" onclick="scrollRow(this, 1)"><i class="fas fa-chevron-right"></i></button>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             }
         }
         container.innerHTML = html;
     }
 
-    function scrollRow(btn, direction) {
-        const row = btn.parentElement.querySelector('.row-container');
-        const scrollAmount = row.clientWidth * 0.8;
-        row.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
-    }
-
-    async function showAllFromSection(title, type, params) {
-        const container = document.getElementById('sections-container');
-        container.innerHTML = '<p style="text-align:center; padding:50px;">Carregando tudo...</p>';
-        document.getElementById('genresList').innerHTML = `<div class="genre-pill active" onclick="loadContent('${type}')">← Voltar para Home</div>`;
-
-        // Busca as 2 primeiras páginas para ter mais conteúdo (40 itens)
-        let allResults = [];
-        for(let p=1; p<=2; p++) {
-            const res = await fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&language=pt-BR${params}&page=${p}`);
-            const data = await res.json();
-            allResults = allResults.concat(data.results);
-        }
-        
-        container.innerHTML = `
-            <div class="content-section">
-                <div class="section-header"><span>${title}</span></div>
-                <div class="row-container" style="flex-wrap: wrap; justify-content: center; overflow: visible;">
-                    ${allResults.map(item => `
-                        <div class="movie-card" onclick="openPlayer(${item.id}, '${type}')" style="flex: 0 0 180px; margin-bottom: 20px;">
-                            <img src="https://image.tmdb.org/t/p/w500${item.poster_path}">
-                            <div class="movie-info"><p>${item.title || item.name}</p></div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    async function filterByGenre(genreId, type, pill) {
-        document.querySelectorAll('.genre-pill').forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        
-        const container = document.getElementById('sections-container');
-        container.innerHTML = '<p style="text-align:center; padding:50px;">Filtrando...</p>';
-
-        const url = `https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&language=pt-BR&with_genres=${genreId}&sort_by=popularity.desc`;
-        const res = await fetch(url);
-        const data = await res.json();
-        
-        container.innerHTML = `
-            <div class="content-section">
-                <div class="section-header"><span>Resultados Filtrados</span></div>
-                <div class="row-container" style="flex-wrap: wrap; justify-content: center;">
-                    ${data.results.map(item => `
-                        <div class="movie-card" onclick="openPlayer(${item.id}, '${type}')" style="flex: 0 0 180px; margin-bottom: 20px;">
-                            <img src="https://image.tmdb.org/t/p/w500${item.poster_path}">
-                            <div class="movie-info"><p>${item.title || item.name}</p></div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-
-    async function searchContent() {
-        const query = document.getElementById('searchInput').value;
-        const type = document.getElementById('searchType').value === 'multi' ? 'movie' : document.getElementById('searchType').value;
-        if (!query) return;
-
-        const container = document.getElementById('sections-container');
-        container.innerHTML = '<p style="text-align:center; padding:50px;">Buscando...</p>';
-
-        const url = `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=pt-BR`;
-        const res = await fetch(url);
-        const data = await res.json();
-        
-        container.innerHTML = `
-            <div class="content-section">
-                <div class="section-header"><span>Resultados para: ${query}</span></div>
-                <div class="row-container" style="flex-wrap: wrap; justify-content: center;">
-                    ${data.results.filter(i => i.poster_path && i.media_type !== 'person').map(item => `
-                        <div class="movie-card" onclick="openPlayer(${item.id}, '${item.media_type}')" style="flex: 0 0 180px; margin-bottom: 20px;">
-                            <img src="https://image.tmdb.org/t/p/w500${item.poster_path}">
-                            <div class="movie-info"><p>${item.title || item.name}</p></div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-
     async function loadGenres(type) {
-        const url = `https://api.themoviedb.org/3/genre/${type}/list?api_key=${API_KEY}&language=pt-BR`;
-        const res = await fetch(url);
+        const res = await fetch(`https://api.themoviedb.org/3/genre/${type}/list?api_key=${API_KEY}&language=pt-BR`);
         const data = await res.json();
-        
         const container = document.getElementById('genresList');
         container.innerHTML = `<div class="genre-pill active" onclick="loadContent('${type}')">Todos</div>`;
-        
         data.genres.forEach(genre => {
             const pill = document.createElement('div');
-            pill.className = 'genre-pill';
-            pill.innerText = genre.name;
+            pill.className = 'genre-pill'; pill.innerText = genre.name;
             pill.onclick = () => filterByGenre(genre.id, type, pill);
             container.appendChild(pill);
         });
     }
 
     async function filterByGenre(genreId, type, pill) {
-        document.querySelectorAll('.genre-pill').forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        
-        const url = `https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&language=pt-BR&with_genres=${genreId}&sort_by=popularity.desc`;
-        const res = await fetch(url);
+        document.querySelectorAll('.genre-pill').forEach(p => p.classList.remove('active')); pill.classList.add('active');
+        const container = document.getElementById('sections-container');
+        container.innerHTML = '<p style="text-align:center; padding:50px;">Filtrando...</p>';
+        const res = await fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&language=pt-BR&with_genres=${genreId}&sort_by=popularity.desc`);
         const data = await res.json();
-        displayResults(data.results, type);
+        container.innerHTML = `
+            <div class="content-section">
+                <div class="section-header"><span>Resultados Filtrados</span></div>
+                <div class="row-container" style="flex-wrap: wrap; justify-content: center; overflow: visible;">
+                    ${data.results.map(item => `<div class="movie-card" onclick="openPlayer(${item.id}, '${type}')" style="flex: 0 0 180px; margin-bottom: 20px;"><img src="https://image.tmdb.org/t/p/w500${item.poster_path}"><div class="movie-info"><p>${item.title || item.name}</p></div></div>`).join('')}
+                </div>
+            </div>`;
     }
 
     async function searchContent() {
         const query = document.getElementById('searchInput').value;
-        const type = document.getElementById('searchType').value;
+        const typeSelect = document.getElementById('searchType').value;
         if (!query) return;
-
-        document.getElementById('section-title').innerText = `Resultados para: ${query}`;
-        const url = `https://api.themoviedb.org/3/search/${type}?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=pt-BR`;
-        const res = await fetch(url);
+        const container = document.getElementById('sections-container');
+        container.innerHTML = '<p style="text-align:center; padding:50px;">Buscando...</p>';
+        const res = await fetch(`https://api.themoviedb.org/3/search/${typeSelect === 'multi' ? 'multi' : typeSelect}?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=pt-BR`);
         const data = await res.json();
-        displayResults(data.results);
-    }
-
-    function displayResults(results) {
-        const container = document.getElementById('results');
-        container.innerHTML = '';
-        results.forEach(item => {
-            if (!item.poster_path || item.media_type === 'person') return;
-            const type = item.media_type || (item.title ? 'movie' : 'tv');
-            const card = document.createElement('div');
-            card.className = 'movie-card';
-            card.innerHTML = `<img src="https://image.tmdb.org/t/p/w500${item.poster_path}"><div class="movie-info"><p>${item.title || item.name}</p></div>`;
-            card.onclick = () => openPlayer(item.id, type);
-            container.appendChild(card);
-        });
+        container.innerHTML = `
+            <div class="content-section">
+                <div class="section-header"><span>Resultados para: ${query}</span></div>
+                <div class="row-container" style="flex-wrap: wrap; justify-content: center; overflow: visible;">
+                    ${data.results.filter(i => i.poster_path && i.media_type !== 'person').map(item => `<div class="movie-card" onclick="openPlayer(${item.id}, '${item.media_type || (item.title ? 'movie' : 'tv')}')" style="flex: 0 0 180px; margin-bottom: 20px;"><img src="https://image.tmdb.org/t/p/w500${item.poster_path}"><div class="movie-info"><p>${item.title || item.name}</p></div></div>`).join('')}
+                </div>
+            </div>`;
     }
 
     function openPlayer(id, type) {
-        currentTmdbId = id;
-        currentType = type;
-        s_val = 1; e_val = 1;
-
-        if (type === 'tv') {
-            document.getElementById('tvFields').classList.remove('hidden');
-            loadSeasons(id);
-        } else {
-            document.getElementById('tvFields').classList.add('hidden');
-        }
-
+        currentTmdbId = id; currentType = type; s_val = 1; e_val = 1;
+        if (type === 'tv') { document.getElementById('tvFields').classList.remove('hidden'); loadSeasons(id); }
+        else { document.getElementById('tvFields').classList.add('hidden'); }
         document.getElementById('player-section').style.display = 'flex';
         document.body.style.overflow = 'hidden';
-        updateIframe();
-    }
-
-    let currentServer = 'vidsrc';
-
-    function changeServer(server, btn) {
-        document.querySelectorAll('.server-selector .genre-pill').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentServer = server;
         updateIframe();
     }
 
     function updateIframe() {
         const player = document.getElementById('mainPlayer');
         let url = '';
-
-        if (currentServer === 'vidsrc') {
-            url = currentType === 'movie' 
-                ? `https://vidsrc.to/embed/movie/${currentTmdbId}` 
-                : `https://vidsrc.to/embed/tv/${currentTmdbId}/${s_val}/${e_val}`;
-        } else if (currentServer === 'superembed') {
-            url = currentType === 'movie'
-                ? `https://multiembed.mov/directstream.php?video_id=${currentTmdbId}&tmdb=1`
-                : `https://multiembed.mov/directstream.php?video_id=${currentTmdbId}&tmdb=1&s=${s_val}&e=${e_val}`;
-        } else {
-            url = currentType === 'movie' 
-                ? `https://myembed.biz/filme/${currentTmdbId}` 
-                : `https://myembed.biz/serie/${currentTmdbId}/${s_val}/${e_val}`;
-        }
-
+        if (currentServer === 'vidsrc') url = currentType === 'movie' ? `https://vidsrc.to/embed/movie/${currentTmdbId}` : `https://vidsrc.to/embed/tv/${currentTmdbId}/${s_val}/${e_val}`;
+        else if (currentServer === 'superembed') url = currentType === 'movie' ? `https://multiembed.mov/directstream.php?video_id=${currentTmdbId}&tmdb=1` : `https://multiembed.mov/directstream.php?video_id=${currentTmdbId}&tmdb=1&s=${s_val}&e=${e_val}`;
+        else url = currentType === 'movie' ? `https://myembed.biz/filme/${currentTmdbId}` : `https://myembed.biz/serie/${currentTmdbId}/${s_val}/${e_val}`;
         player.src = url;
+    }
+
+    function changeServer(server, btn) {
+        document.querySelectorAll('.server-selector .genre-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active'); currentServer = server; updateIframe();
+    }
+
+    function closePlayer() {
+        document.getElementById('player-section').style.display = 'none';
+        document.getElementById('mainPlayer').src = '';
+        document.body.style.overflow = 'auto';
+        document.getElementById('episodes-browser').style.display = 'none';
     }
 
     async function loadSeasons(id) {
@@ -763,13 +237,7 @@
         const data = await res.json();
         const select = document.getElementById('seasonSelect');
         select.innerHTML = '';
-        data.seasons.forEach(s => {
-            if(s.season_number === 0) return;
-            const opt = document.createElement('option');
-            opt.value = s.season_number;
-            opt.innerText = `Temporada ${s.season_number}`;
-            select.appendChild(opt);
-        });
+        data.seasons.forEach(s => { if(s.season_number === 0) return; const opt = document.createElement('option'); opt.value = s.season_number; opt.innerText = `Temporada ${s.season_number}`; select.appendChild(opt); });
         loadEpisodes(1);
     }
 
@@ -779,52 +247,55 @@
         const grid = document.getElementById('episodesGrid');
         grid.innerHTML = '';
         data.episodes.forEach(ep => {
-            const item = document.createElement('div');
-            item.className = 'ep-item';
+            const item = document.createElement('div'); item.className = 'ep-item';
             const img = ep.still_path ? `https://image.tmdb.org/t/p/w300${ep.still_path}` : 'https://via.placeholder.com/300x169/111/fff';
             item.innerHTML = `<img src="${img}"><div class="ep-info"><b>${ep.episode_number}. ${ep.name}</b></div>`;
-            item.onclick = () => { 
-                s_val = seasonNum; e_val = ep.episode_number; 
-                updateIframe(); toggleEpisodesBrowser(); 
-            };
+            item.onclick = () => { s_val = seasonNum; e_val = ep.episode_number; updateIframe(); toggleEpisodesBrowser(); };
             grid.appendChild(item);
         });
     }
 
-    function toggleEpisodesBrowser() {
-        const b = document.getElementById('episodes-browser');
-        b.style.display = b.style.display === 'block' ? 'none' : 'block';
+    function toggleEpisodesBrowser() { const b = document.getElementById('episodes-browser'); b.style.display = b.style.display === 'block' ? 'none' : 'block'; }
+    function scrollRow(btn, direction) { const row = btn.parentElement.querySelector('.row-container'); const scrollAmount = row.clientWidth * 0.8; row.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' }); }
+
+    async function showAllFromSection(title, type, params) {
+        const container = document.getElementById('sections-container');
+        container.innerHTML = '<p style="text-align:center; padding:50px;">Carregando tudo...</p>';
+        document.getElementById('genresList').innerHTML = `<div class="genre-pill active" onclick="loadContent('${type}')">← Voltar para Home</div>`;
+        let allResults = [];
+        for(let p=1; p<=2; p++) {
+            const res = await fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&language=pt-BR${params}&page=${p}`);
+            const data = await res.json();
+            allResults = allResults.concat(data.results);
+        }
+        container.innerHTML = `
+            <div class="content-section">
+                <div class="section-header"><span>${title}</span></div>
+                <div class="row-container" style="flex-wrap: wrap; justify-content: center; overflow: visible;">
+                    ${allResults.map(item => `<div class="movie-card" onclick="openPlayer(${item.id}, '${type}')" style="flex: 0 0 180px; margin-bottom: 20px;"><img src="https://image.tmdb.org/t/p/w500${item.poster_path}"><div class="movie-info"><p>${item.title || item.name}</p></div></div>`).join('')}
+                </div>
+            </div>`;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     async function loadChannels() {
         const container = document.getElementById('sections-container');
         container.innerHTML = '<p style="text-align:center; padding:50px;">Carregando Canais...</p>';
-        
-        // Carregar categorias de canais
         const resCat = await fetch('https://reidosembeds.com/api/channels/categories');
         const dataCat = await resCat.json();
-        
         const genresList = document.getElementById('genresList');
         genresList.innerHTML = `<div class="genre-pill active" onclick="loadChannels()">Todos</div>`;
         dataCat.data.forEach(cat => {
-            const pill = document.createElement('div');
-            pill.className = 'genre-pill';
-            pill.innerText = cat.name;
-            pill.onclick = () => loadChannelsByCategory(cat.id, pill);
-            genresList.appendChild(pill);
+            const pill = document.createElement('div'); pill.className = 'genre-pill'; pill.innerText = cat.name;
+            pill.onclick = () => loadChannelsByCategory(cat.id, pill); genresList.appendChild(pill);
         });
-
-        // Carregar todos os canais iniciais
         const resChan = await fetch('https://reidosembeds.com/api/channels');
         const dataChan = await resChan.json();
-        
         renderChannels(dataChan.data, "Todos os Canais");
     }
 
     async function loadChannelsByCategory(catId, pill) {
-        document.querySelectorAll('.genre-pill').forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        
+        document.querySelectorAll('.genre-pill').forEach(p => p.classList.remove('active')); pill.classList.add('active');
         const res = await fetch(`https://reidosembeds.com/api/channels?category=${catId}`);
         const data = await res.json();
         renderChannels(data.data, pill.innerText);
@@ -836,16 +307,9 @@
             <div class="content-section">
                 <div class="section-header"><span>${title}</span></div>
                 <div class="row-container" style="flex-wrap: wrap; justify-content: center; overflow: visible;">
-                    ${channels.map(chan => `
-                        <div class="movie-card channel-card" onclick="openChannel('${chan.embed_url}')" style="flex: 0 0 150px; margin-bottom: 20px;">
-                            <div class="live-badge">ON</div>
-                            <img src="${chan.logo_url}" alt="${chan.name}">
-                            <div class="movie-info"><p>${chan.name}</p></div>
-                        </div>
-                    `).join('')}
+                    ${channels.map(chan => `<div class="movie-card channel-card" onclick="openChannel('${chan.embed_url}')" style="flex: 0 0 150px; margin-bottom: 20px;"><div class="live-badge">ON</div><img src="${chan.logo_url}" alt="${chan.name}"><div class="movie-info"><p>${chan.name}</p></div></div>`).join('')}
                 </div>
-            </div>
-        `;
+            </div>`;
     }
 
     function openChannel(url) {
