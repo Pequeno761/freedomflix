@@ -324,6 +324,7 @@ Para melhor experiência, hospede este arquivo no GitHub/Vercel.
 <a href="#" class="logo" onclick="loadTrending()">MY<span>FLIX</span></a>
 <div class="search-box">
 <select id="searchType">
+<option value="multi" selected>Todos</option>
 <option value="movie">Filmes</option>
 <option value="tv">Séries</option>
 </select>
@@ -416,7 +417,9 @@ document.getElementById('section-title').innerText = `Resultados para: ${query}`
 const url = `https://api.themoviedb.org/3/search/${type}?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=pt-BR`;
 const res = await fetch(url);
 const data = await res.json();
-displayResults(data.results, type);
+
+// Se for busca 'multi', não forçamos o tipo para que cada card use seu próprio media_type
+displayResults(data.results, type === 'multi' ? null : type);
 }
 
 function displayResults(results, forcedType = null) {
@@ -426,7 +429,10 @@ document.getElementById('player-section').style.display = 'none';
 container.classList.remove('hidden');
 
 results.forEach(item => {
-if (!item.poster_path) return;
+// Filtrar itens sem poster ou que sejam pessoas (atores)
+if (!item.poster_path || item.media_type === 'person') return;
+
+// Identificar se é filme ou série
 const type = forcedType || item.media_type || (item.title ? 'movie' : 'tv');
 
 const card = document.createElement('div');
