@@ -284,6 +284,28 @@
         }
 
         .movie-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
+        
+        .channel-card img { aspect-ratio: 1/1 !important; padding: 15px; background: #1a1a1a; object-fit: contain; }
+
+        .live-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ff0000;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
 
         .movie-info {
             padding: 10px;
@@ -493,6 +515,11 @@
         if(btn) {
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             btn.classList.add('active');
+        }
+
+        if (mode === 'canais') {
+            loadChannels();
+            return;
         }
 
         // Home agora também tem gêneros (usamos movie como base para Home)
@@ -769,10 +796,64 @@
         b.style.display = b.style.display === 'block' ? 'none' : 'block';
     }
 
-    function closePlayer() {
-        document.getElementById('player-section').style.display = 'none';
-        document.getElementById('mainPlayer').src = '';
-        document.body.style.overflow = 'auto';
+    async function loadChannels() {
+        const container = document.getElementById('sections-container');
+        container.innerHTML = '<p style="text-align:center; padding:50px;">Carregando Canais...</p>';
+        
+        // Carregar categorias de canais
+        const resCat = await fetch('https://reidosembeds.com/api/channels/categories');
+        const dataCat = await resCat.json();
+        
+        const genresList = document.getElementById('genresList');
+        genresList.innerHTML = `<div class="genre-pill active" onclick="loadChannels()">Todos</div>`;
+        dataCat.data.forEach(cat => {
+            const pill = document.createElement('div');
+            pill.className = 'genre-pill';
+            pill.innerText = cat.name;
+            pill.onclick = () => loadChannelsByCategory(cat.id, pill);
+            genresList.appendChild(pill);
+        });
+
+        // Carregar todos os canais iniciais
+        const resChan = await fetch('https://reidosembeds.com/api/channels');
+        const dataChan = await resChan.json();
+        
+        renderChannels(dataChan.data, "Todos os Canais");
+    }
+
+    async function loadChannelsByCategory(catId, pill) {
+        document.querySelectorAll('.genre-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        
+        const res = await fetch(`https://reidosembeds.com/api/channels?category=${catId}`);
+        const data = await res.json();
+        renderChannels(data.data, pill.innerText);
+    }
+
+    function renderChannels(channels, title) {
+        const container = document.getElementById('sections-container');
+        container.innerHTML = `
+            <div class="content-section">
+                <div class="section-header"><span>${title}</span></div>
+                <div class="row-container" style="flex-wrap: wrap; justify-content: center; overflow: visible;">
+                    ${channels.map(chan => `
+                        <div class="movie-card channel-card" onclick="openChannel('${chan.embed_url}')" style="flex: 0 0 150px; margin-bottom: 20px;">
+                            <div class="live-badge">ON</div>
+                            <img src="${chan.logo_url}" alt="${chan.name}">
+                            <div class="movie-info"><p>${chan.name}</p></div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function openChannel(url) {
+        currentType = 'channel';
+        document.getElementById('tvFields').classList.add('hidden');
+        document.getElementById('player-section').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        document.getElementById('mainPlayer').src = url;
     }
 </script>
 </body>
