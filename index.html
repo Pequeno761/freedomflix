@@ -184,6 +184,7 @@
         /* Fileiras Horizontais (Carrossel) */
         .content-section {
             margin-bottom: 40px;
+            position: relative;
         }
 
         .section-header {
@@ -198,16 +199,72 @@
             justify-content: space-between;
         }
 
+        .btn-see-all {
+            font-size: 0.85rem;
+            color: var(--primary);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            background: rgba(229, 9, 20, 0.1);
+            padding: 5px 12px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+        .btn-see-all:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .row-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
         .row-container {
             display: flex;
             gap: 20px;
             overflow-x: auto;
-            padding: 15px 10px;
+            padding: 20px 10px;
             scrollbar-width: none;
             scroll-behavior: smooth;
+            width: 100%;
         }
 
         .row-container::-webkit-scrollbar { display: none; }
+
+        /* Setas de Navegação */
+        .nav-arrow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 5;
+            opacity: 0;
+            transition: 0.3s;
+            border: none;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-arrow.left { left: 0; border-radius: 0 8px 8px 0; }
+        .nav-arrow.right { right: 0; border-radius: 8px 0 0 8px; }
+
+        .content-section:hover .nav-arrow {
+            opacity: 1;
+        }
+
+        .nav-arrow:hover {
+            background: rgba(229, 9, 20, 0.8);
+            font-size: 2.5rem;
+        }
 
         .movie-card { 
             flex: 0 0 200px; /* Largura fixa para o carrossel */
@@ -465,21 +522,60 @@
                     <div class="content-section">
                         <div class="section-header">
                             <span>${section.title}</span>
-                            <small style="font-size: 0.8rem; color: #666;">Ver tudo</small>
+                            <div class="btn-see-all" onclick="showAllFromSection('${section.title}', '${type}', '${section.params}')">Ver tudo</div>
                         </div>
-                        <div class="row-container">
-                            ${data.results.map(item => `
-                                <div class="movie-card" onclick="openPlayer(${item.id}, '${type}')">
-                                    <img src="https://image.tmdb.org/t/p/w500${item.poster_path}">
-                                    <div class="movie-info"><p>${item.title || item.name}</p></div>
-                                </div>
-                            `).join('')}
+                        <div class="row-wrapper">
+                            <button class="nav-arrow left" onclick="scrollRow(this, -1)"><i class="fas fa-chevron-left"></i></button>
+                            <div class="row-container">
+                                ${data.results.map(item => `
+                                    <div class="movie-card" onclick="openPlayer(${item.id}, '${type}')">
+                                        <img src="https://image.tmdb.org/t/p/w500${item.poster_path}">
+                                        <div class="movie-info"><p>${item.title || item.name}</p></div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button class="nav-arrow right" onclick="scrollRow(this, 1)"><i class="fas fa-chevron-right"></i></button>
                         </div>
                     </div>
                 `;
             }
         }
         container.innerHTML = html;
+    }
+
+    function scrollRow(btn, direction) {
+        const row = btn.parentElement.querySelector('.row-container');
+        const scrollAmount = row.clientWidth * 0.8;
+        row.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+    }
+
+    async function showAllFromSection(title, type, params) {
+        const container = document.getElementById('sections-container');
+        container.innerHTML = '<p style="text-align:center; padding:50px;">Carregando tudo...</p>';
+        document.getElementById('genresList').innerHTML = `<div class="genre-pill active" onclick="loadContent('${type}')">← Voltar para Home</div>`;
+
+        // Busca as 2 primeiras páginas para ter mais conteúdo (40 itens)
+        let allResults = [];
+        for(let p=1; p<=2; p++) {
+            const res = await fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&language=pt-BR${params}&page=${p}`);
+            const data = await res.json();
+            allResults = allResults.concat(data.results);
+        }
+        
+        container.innerHTML = `
+            <div class="content-section">
+                <div class="section-header"><span>${title}</span></div>
+                <div class="row-container" style="flex-wrap: wrap; justify-content: center; overflow: visible;">
+                    ${allResults.map(item => `
+                        <div class="movie-card" onclick="openPlayer(${item.id}, '${type}')" style="flex: 0 0 180px; margin-bottom: 20px;">
+                            <img src="https://image.tmdb.org/t/p/w500${item.poster_path}">
+                            <div class="movie-info"><p>${item.title || item.name}</p></div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     async function filterByGenre(genreId, type, pill) {
