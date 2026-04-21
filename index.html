@@ -193,7 +193,90 @@
         @keyframes modalShow { from { opacity: 0; transform: scale(0.7) translateY(50px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .hidden { display: none; }
 
-        /* Modal de Boas-Vindas */
+        /* Estilos Maratonar */
+        .collection-hub { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 40px 0; }
+        .collection-card { 
+            background: #1a1a1a; border-radius: 12px; overflow: hidden; cursor: pointer; 
+            transition: 0.4s; border: 1px solid #333; position: relative; aspect-ratio: 16/9;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .collection-card:hover { transform: scale(1.05); border-color: var(--primary); box-shadow: 0 0 20px rgba(229, 9, 20, 0.4); }
+        .collection-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.5s; }
+        .collection-card:hover img { opacity: 1; transform: scale(1.1); }
+        .collection-card .brand-logo { position: absolute; width: 70%; z-index: 2; pointer-events: none; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.8)); top: 50%; transform: translateY(-50%); transition: 0.5s; }
+        .collection-card:hover .brand-logo { transform: translateY(-60%) scale(1.1); }
+        .collection-name { 
+            position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.8); 
+            color: #fff; font-family: 'Bebas Neue', sans-serif; text-align: center; 
+            padding: 8px 0; font-size: 1.2rem; letter-spacing: 1px; z-index: 3;
+        }
+        
+        #maratonar-carousel { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #000; z-index: 21000; align-items: center; justify-content: center; 
+            overflow: hidden; 
+        }
+        .carousel-bg { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background-size: cover; background-position: center; 
+            filter: blur(50px) brightness(0.3); opacity: 0.8; transition: 1s; 
+        }
+        .carousel-container { 
+            position: relative; z-index: 2; display: flex; align-items: center; 
+            gap: 60px; width: 90%; max-width: 1200px; animation: modalShow 0.8s ease; 
+        }
+        .carousel-poster-area { flex: 0 0 400px; position: relative; }
+        .carousel-poster { 
+            width: 100%; border-radius: 15px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); 
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.5s; 
+        }
+        .carousel-info { flex: 1; color: #fff; }
+        .carousel-info h1 { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; margin: 0 0 10px; color: var(--primary); }
+        .carousel-info .meta { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; color: #aaa; display: flex; gap: 20px; }
+        .carousel-info p { font-size: 1.1rem; line-height: 1.6; color: #eee; margin-bottom: 30px; max-width: 600px; }
+        .carousel-controls { display: flex; gap: 20px; align-items: center; }
+        .btn-carousel { 
+            background: var(--primary); color: white; border: none; padding: 15px 40px; 
+            border-radius: 5px; font-weight: bold; font-size: 1.1rem; cursor: pointer; 
+            transition: 0.3s; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px;
+        }
+        .btn-carousel:hover { background: var(--accent); transform: translateY(-3px); }
+        .btn-carousel.secondary { background: rgba(255,255,255,0.1); }
+        .btn-carousel.secondary:hover { background: rgba(255,255,255,0.2); }
+        
+        .carousel-nav-btn { 
+            background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); 
+            width: 60px; height: 60px; border-radius: 50%; cursor: pointer; display: flex; 
+            align-items: center; justify-content: center; font-size: 1.5rem; transition: 0.3s;
+        }
+        .carousel-nav-btn:hover { background: var(--primary); border-color: var(--primary); }
+        .carousel-counter { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: #fff; opacity: 0.5; margin-bottom: 10px; }
+        .close-carousel { 
+            position: absolute; top: 40px; right: 40px; font-size: 2.5rem; color: white; 
+            cursor: pointer; opacity: 0.5; transition: 0.3s; z-index: 10;
+        }
+        /* Estilos Futebol Custom */
+        .match-card {
+            background: #141414; border-radius: 12px; border: 1px solid #333; padding: 20px;
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+            transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .match-card:hover { border-color: #00ff00; box-shadow: 0 0 20px rgba(0, 255, 0, 0.2); transform: translateY(-5px); }
+        .match-teams { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 10px; }
+        .match-team { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+        .match-team img { width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+        .match-team span { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: #fff; }
+        .match-score { flex: 0 0 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .score-box { background: #222; padding: 5px 15px; border-radius: 5px; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: #00ff00; letter-spacing: 2px; }
+        .match-status { font-size: 0.7rem; color: #888; text-transform: uppercase; margin-top: 5px; font-weight: bold; }
+        .live-dot { width: 8px; height: 8px; background: #00ff00; border-radius: 50%; display: inline-block; margin-right: 5px; animation: pulse 1s infinite; }
+        .btn-watch-match { 
+            width: 100%; background: var(--primary); color: white; border: none; padding: 10px; 
+            border-radius: 5px; font-family: 'Bebas Neue', sans-serif; cursor: pointer; transition: 0.3s;
+            font-size: 1rem; letter-spacing: 1px;
+        }
+        .btn-watch-match:hover { background: var(--accent); }
+        .league-tag { position: absolute; top: 0; right: 0; background: #333; color: #aaa; padding: 3px 10px; font-size: 0.6rem; border-radius: 0 0 0 10px; text-transform: uppercase; }
         #welcome-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.7);
@@ -295,6 +378,8 @@
             <a href="#" class="nav-link active" onclick="loadContent('trending', this)"><i class="fas fa-home"></i><span>Home</span></a>
             <a href="#" class="nav-link" onclick="loadContent('movie', this)"><i class="fas fa-film"></i><span>Filmes</span></a>
             <a href="#" class="nav-link" onclick="loadContent('tv', this)"><i class="fas fa-tv"></i><span>Séries</span></a>
+            <a href="#" class="nav-link" onclick="loadContent('maratonar', this)"><i class="fas fa-layer-group"></i><span>Maratonar</span></a>
+            <a href="#" class="nav-link" onclick="loadContent('futebol', this)"><i class="fas fa-soccer-ball"></i><span>Futebol</span></a>
             <a href="#" class="nav-link" onclick="loadContent('canais', this)"><i class="fas fa-tower-broadcast"></i><span>Canais</span></a>
         </nav>
     </header>
@@ -309,7 +394,84 @@
         <button class="nav-genre right" onclick="scrollGenres(1)"><i class="fas fa-chevron-right"></i></button>
     </div>
     <div id="sections-container"></div>
+    <div id="futebol-container" class="hidden" style="margin-top: 20px;">
+        <h2 style="font-family:'Bebas Neue'; font-size:3rem; margin-bottom:10px; color:var(--primary); text-align:center;">Painel de Futebol (beta)</h2>
+        <p style="text-align: center; color: #888; margin-bottom: 30px;">Acompanhe os placares e assista ao vivo nos canais correspondentes.</p>
+        
+        <div class="futebol-layout" style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+            <!-- Área de Jogos -->
+            <div id="jogos-hoje">
+                <div class="section-header" style="border-left: 5px solid #00ff00;"><span>Partidas em Destaque</span></div>
+                <div id="match-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
+                    <!-- Cards de Jogos Injetados aqui -->
+                    <p style="text-align: center; padding: 20px;">Carregando partidas...</p>
+                </div>
+            </div>
+
+            <!-- Lateral: Classificação ou Canais Rápidos -->
+            <div id="futebol-sidebar">
+                <div class="section-header"><span>Canais de Esporte</span></div>
+                <div id="quick-sports-channels" style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 30px;">
+                    <!-- Botões de Canais -->
+                </div>
+                
+                <div class="section-header"><span>Tabela (Exemplo)</span></div>
+                <div style="background: #111; border-radius: 10px; border: 1px solid #333; padding: 15px;">
+                    <table style="width: 100%; border-collapse: collapse; font-family: 'Arial', sans-serif; font-size: 0.9rem;">
+                        <tr style="border-bottom: 1px solid #333; color: #888;">
+                            <th style="text-align: left; padding: 10px;">#</th>
+                            <th style="text-align: left;">Clube</th>
+                            <th>P</th>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #222;">
+                            <td style="padding: 10px; color: var(--primary); font-weight: bold;">1</td>
+                            <td>Flamengo</td>
+                            <td style="text-align: center;">45</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #222;">
+                            <td style="padding: 10px; color: var(--primary); font-weight: bold;">2</td>
+                            <td>Palmeiras</td>
+                            <td style="text-align: center;">42</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #222;">
+                            <td style="padding: 10px; color: var(--primary); font-weight: bold;">3</td>
+                            <td>Botafogo</td>
+                            <td style="text-align: center;">40</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="catalog-container"></div>
+    
+    <!-- Carrossel Maratonar -->
+    <div id="maratonar-carousel">
+        <div class="carousel-bg" id="carouselBg"></div>
+        <div class="close-carousel" onclick="closeMaratona()">×</div>
+        <div class="carousel-container">
+            <div class="carousel-poster-area">
+                <img src="" class="carousel-poster" id="carouselPoster">
+            </div>
+            <div class="carousel-info">
+                <div class="carousel-counter" id="carouselCounter"></div>
+                <h1 id="carouselTitle"></h1>
+                <div class="meta">
+                    <span id="carouselYear"></span>
+                    <span id="carouselRating"></span>
+                </div>
+                <p id="carouselOverview"></p>
+                <div class="carousel-controls">
+                    <button class="btn-carousel" id="watchBtn">Assistir Agora</button>
+                    <div style="display: flex; gap: 10px; margin-left: auto;">
+                        <button class="carousel-nav-btn" onclick="navMaratona(-1)"><i class="fas fa-arrow-left"></i></button>
+                        <button class="carousel-nav-btn" onclick="navMaratona(1)"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="player-section" onclick="if(event.target === this) closePlayer()">
         <div class="modal-content">
             <button class="close-modal" onclick="closePlayer()">×</button>
@@ -336,6 +498,30 @@
     const API_KEY = '832a40f6d7edf386b7ad6810de3570c9';
     let currentTmdbId, currentType, currentServer = 'vidsrc', s_val = 1, e_val = 1;
     let currentPage = 1, currentMode = 'trending', currentGenreId = null, currentYear = null;
+    let maratonaItems = [], currentMaratonaIdx = 0, currentMaratonaPage = 1;
+
+    const COLLECTIONS = {
+        marvel: { title: "Marvel: Saga do Infinito", ids: [1726, 1724, 10138, 10195, 1771, 24428, 68721, 70160, 76338, 118340, 99861, 102899, 271110, 284052, 284053, 315635, 283995, 284054, 299536, 363088, 299537], logo: "https://upload.wikimedia.org/wikipedia/commons/b/b9/Marvel_Logo.svg" },
+        harrypotter: { title: "Harry Potter", ids: [671, 672, 673, 674, 675, 767, 12444, 12445], logo: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Harry_Potter_wordmark.svg" },
+        starwars: { title: "Star Wars", ids: [1893, 1894, 1895, 11, 1891, 1892, 140607, 181808, 181812], logo: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Star_Wars_Logo.svg" },
+        fast: { title: "Velozes e Furiosos", ids: [9799, 584, 9615, 13804, 82992, 168259, 281566, 337339, 385128, 385687], logo: "https://upload.wikimedia.org/wikipedia/commons/0/03/Fast_and-furious-logo.svg" },
+        shrek: { title: "Saga Shrek", ids: [808, 809, 810, 10192, 8696, 315162], logo: "https://upload.wikimedia.org/wikipedia/en/3/39/Shrek_logo.svg" },
+        panda: { title: "Kung Fu Panda", ids: [9502, 49444, 140300, 1011985], logo: "https://upload.wikimedia.org/wikipedia/en/e/e4/Kung_Fu_Panda_logo.svg" },
+        wick: { title: "John Wick", ids: [245891, 324552, 458156, 603692], logo: "https://upload.wikimedia.org/wikipedia/en/9/9f/John_Wick_Keanu_Reeves.png" },
+        batman_nolan: { title: "Batman: Trilogia Nolan", ids: [272, 155, 49026], logo: "https://upload.wikimedia.org/wikipedia/commons/a/af/Batman_logo.svg" },
+        hungergames: { title: "Jogos Vorazes", ids: [70160, 101299, 131631, 131634, 605172], logo: "https://upload.wikimedia.org/wikipedia/en/d/dc/The_Hunger_Games_logo.png" },
+        lotr: { title: "O Senhor dos Anéis", ids: [120, 121, 122], logo: "https://upload.wikimedia.org/wikipedia/commons/b/b3/Lord_of_the_Rings_logo.svg" },
+        toystory: { title: "Toy Story", ids: [862, 863, 10193, 301528], logo: "https://upload.wikimedia.org/wikipedia/commons/0/0a/Toy_Story_logo.svg" },
+        jurassic: { title: "Jurassic Park", ids: [329, 330, 331, 135397, 351286, 507086], logo: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Jurassic_Park_logo.svg" },
+        mission: { title: "Missão Impossível", ids: [954, 955, 956, 38356, 353494, 353081, 575264], logo: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Mission_Impossible_Logo.png" },
+        spiderman: { title: "Homem-Aranha", ids: [557, 558, 559, 1930, 102382, 315635, 429617, 634649], logo: "https://upload.wikimedia.org/wikipedia/commons/1/1b/Spider-Man_2002_logo.svg" },
+        matrix: { title: "Matrix", ids: [603, 604, 605, 624860], logo: "https://upload.wikimedia.org/wikipedia/commons/c/c1/The_Matrix_Logo.svg" },
+        pirates: { title: "Piratas do Caribe", ids: [22, 58, 59, 1865, 166426], logo: "https://upload.wikimedia.org/wikipedia/commons/b/b3/Pirates_of_the_Caribbean_logo.svg" },
+        transformers: { title: "Transformers", ids: [1858, 21208, 38356, 185333, 91314, 335988, 667538], logo: "https://upload.wikimedia.org/wikipedia/commons/2/25/Transformers_logo.svg" },
+        iceage: { title: "A Era do Gelo", ids: [425, 953, 5994, 57800, 277834], logo: "https://upload.wikimedia.org/wikipedia/commons/9/91/Ice_Age_Logo.svg" },
+        indiana: { title: "Indiana Jones", ids: [85, 87, 89, 217, 335977], logo: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Indiana_Jones_logo.svg" },
+        madagascar: { title: "Madagascar", ids: [953, 10527, 80321], logo: "https://upload.wikimedia.org/wikipedia/en/3/36/Madagascar_Theatrical_Poster.jpg" }
+    };
 
     window.onload = () => loadContent('trending');
 
@@ -384,10 +570,30 @@
             loadChannels(); 
             document.getElementById('catalog-container').innerHTML = ''; 
             document.getElementById('yearSelect').parentElement.style.display = 'none';
-            document.getElementById('genresWrapper').style.display = 'flex'; // Reativado para exibir categorias de canais
+            document.getElementById('genresWrapper').style.display = 'flex';
             return; 
         }
+
+        if (mode === 'maratonar') {
+            loadMaratonaHub(1);
+            document.getElementById('yearSelect').parentElement.style.display = 'none';
+            document.getElementById('genresWrapper').style.display = 'none';
+            document.getElementById('catalog-container').innerHTML = '';
+            document.getElementById('futebol-container').classList.add('hidden');
+            return;
+        }
+
+        if (mode === 'futebol') {
+            document.getElementById('yearSelect').parentElement.style.display = 'none';
+            document.getElementById('genresWrapper').style.display = 'none';
+            document.getElementById('catalog-container').innerHTML = '';
+            document.getElementById('sections-container').innerHTML = '';
+            document.getElementById('futebol-container').classList.remove('hidden');
+            loadFootballData();
+            return;
+        }
         
+        document.getElementById('futebol-container').classList.add('hidden');
         document.getElementById('yearSelect').parentElement.style.display = 'block';
         document.getElementById('genresWrapper').style.display = 'flex';
         currentMode = mode;
@@ -430,6 +636,91 @@
         loadFullCatalog(type, 1);
     }
 
+    async function loadMaratonaHub(page = 1) {
+        currentMaratonaPage = page;
+        const container = document.getElementById('sections-container');
+        container.innerHTML = `<h2 style="font-family:'Bebas Neue'; font-size:3rem; margin-top:20px; color:var(--primary); text-align:center;">Escolha uma Franquia para Maratonar (beta)</h2><div class="collection-hub"></div><div id="maratona-pagination" class="pagination"></div>`;
+        const hub = container.querySelector('.collection-hub');
+        
+        const keys = Object.keys(COLLECTIONS);
+        const perPage = 8;
+        const totalPages = Math.ceil(keys.length / perPage);
+        const start = (page - 1) * perPage;
+        const paginatedKeys = keys.slice(start, start + perPage);
+
+        for (const key of paginatedKeys) {
+            const c = COLLECTIONS[key];
+            try {
+                const firstMovieRes = await fetch(`https://api.themoviedb.org/3/movie/${c.ids[0]}?api_key=${API_KEY}`);
+                const firstMovie = await firstMovieRes.json();
+                
+                const card = document.createElement('div');
+                card.className = 'collection-card';
+                card.onclick = () => openMaratona(key);
+                card.innerHTML = `
+                    <img src="https://image.tmdb.org/t/p/w1280${firstMovie.backdrop_path}">
+                    <img src="${c.logo}" class="brand-logo" alt="${c.title}">
+                    <div class="collection-name">${c.title}</div>
+                `;
+                hub.appendChild(card);
+            } catch(e) { console.error("Erro hub:", e); }
+        }
+
+        const pagDiv = document.getElementById('maratona-pagination');
+        pagDiv.innerHTML = `
+            <button class="btn-page" onclick="loadMaratonaHub(${page - 1})" ${page === 1 ? 'disabled' : ''}><i class="fas fa-arrow-left"></i> Anterior</button>
+            <div id="page-info">Página ${page} de ${totalPages}</div>
+            <button class="btn-page" onclick="loadMaratonaHub(${page + 1})" ${page === totalPages ? 'disabled' : ''}>Próxima <i class="fas fa-arrow-right"></i></button>
+        `;
+    }
+
+    async function openMaratona(key) {
+        const c = COLLECTIONS[key];
+        document.body.style.overflow = 'hidden';
+        const carousel = document.getElementById('maratonar-carousel');
+        carousel.style.display = 'flex';
+        carousel.style.opacity = '1';
+        
+        document.getElementById('carouselTitle').innerText = 'Carregando Sequência...';
+        
+        maratonaItems = await Promise.all(c.ids.map(async id => {
+            const res = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR`);
+            return await res.json();
+        }));
+        
+        currentMaratonaIdx = 0;
+        renderMaratonaStep();
+    }
+
+    function renderMaratonaStep() {
+        const item = maratonaItems[currentMaratonaIdx];
+        if(!item) return;
+        document.getElementById('carouselBg').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${item.backdrop_path})`;
+        document.getElementById('carouselPoster').src = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+        document.getElementById('carouselTitle').innerText = item.title;
+        document.getElementById('carouselYear').innerText = item.release_date ? new Date(item.release_date).getFullYear() : 'N/A';
+        document.getElementById('carouselRating').innerText = `⭐ ${item.vote_average ? item.vote_average.toFixed(1) : 'N/A'}`;
+        document.getElementById('carouselOverview').innerText = item.overview || 'Sinopse não disponível.';
+        document.getElementById('carouselCounter').innerText = `Filme ${currentMaratonaIdx + 1} de ${maratonaItems.length}`;
+        
+        document.getElementById('watchBtn').onclick = () => {
+            document.getElementById('maratonar-carousel').style.display = 'none';
+            openPlayer(item.id, 'movie');
+        };
+    }
+
+    function navMaratona(dir) {
+        currentMaratonaIdx += dir;
+        if (currentMaratonaIdx < 0) currentMaratonaIdx = maratonaItems.length - 1;
+        if (currentMaratonaIdx >= maratonaItems.length) currentMaratonaIdx = 0;
+        renderMaratonaStep();
+    }
+
+    function closeMaratona() {
+        document.getElementById('maratonar-carousel').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
     async function loadFullCatalog(type, page) {
         const catalogContainer = document.getElementById('catalog-container');
         catalogContainer.innerHTML = '<p style="text-align:center; padding:50px;">Carregando conteúdo...</p>';
@@ -457,7 +748,7 @@
                 </div>
                 <div class="pagination">
                     <button class="btn-page" onclick="changePage(-1)" ${page === 1 ? 'disabled' : ''}><i class="fas fa-arrow-left"></i> Anterior</button>
-                    <div id="page-info">Página ${page}</div>
+                    <div id="page-info">Página ${page} de ${data.total_pages > 500 ? 500 : data.total_pages}</div>
                     <button class="btn-page" onclick="changePage(1)">Próxima <i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>`;
@@ -650,6 +941,95 @@
         document.getElementById('player-section').style.display = 'flex';
         document.body.style.overflow = 'hidden';
         document.getElementById('mainPlayer').src = url;
+    }
+
+    async function loadFootballData() {
+        const grid = document.getElementById('match-grid');
+        const sidebar = document.getElementById('futebol-sidebar');
+        
+        // Data formatada para a API (YYYYMMDD)
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const todayStr = `${year}${month}${day}`;
+
+        grid.innerHTML = '<p style="text-align: center; padding: 20px;">Buscando jogos de hoje na nova API...</p>';
+
+        const headers = {
+            'x-rapidapi-key': 'de67528b3dmsh6a00319ead7c857p1ac42cjsn83e8b49bc5e6',
+            'x-rapidapi-host': 'free-api-live-football-data.p.rapidapi.com'
+        };
+
+        try {
+            // 1. Buscar Jogos de Hoje
+            const resMatches = await fetch(`https://free-api-live-football-data.p.rapidapi.com/football-get-all-matches-by-date?date=${todayStr}`, { headers });
+            const resultMatches = await resMatches.json();
+            const matches = resultMatches.response ? resultMatches.response.matches : [];
+
+            if (matches.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; padding: 20px;">Nenhum jogo importante encontrado para hoje nesta API.</p>';
+            } else {
+                grid.innerHTML = matches.slice(0, 20).map(m => {
+                    const status = m.status.type === 'inprogress' ? `<span class="live-dot"></span>${m.status.displayCode}'` : m.status.type === 'finished' ? 'Encerrado' : m.status.displayCode || 'Hoje';
+                    const homeScore = m.homeScore.current ?? 0;
+                    const awayScore = m.awayScore.current ?? 0;
+                    
+                    return `
+                        <div class="match-card">
+                            <div class="league-tag">${m.tournament.name}</div>
+                            <div class="match-teams">
+                                <div class="match-team">
+                                    <img src="https://www.sofascore.com/api/v1/team/${m.homeTeam.id}/image" onerror="this.src='https://via.placeholder.com/50x50/222/fff?text=T1'">
+                                    <span>${m.homeTeam.shortName || m.homeTeam.name}</span>
+                                </div>
+                                <div class="match-score">
+                                    <div class="score-box" style="color: ${m.status.type === 'inprogress' ? '#00ff00' : '#fff'}">${homeScore} : ${awayScore}</div>
+                                    <div class="match-status">${status}</div>
+                                </div>
+                                <div class="match-team">
+                                    <img src="https://www.sofascore.com/api/v1/team/${m.awayTeam.id}/image" onerror="this.src='https://via.placeholder.com/50x50/222/fff?text=T2'">
+                                    <span>${m.awayTeam.shortName || m.awayTeam.name}</span>
+                                </div>
+                            </div>
+                            <button class="btn-watch-match" onclick="loadChannelsByCategory(1, this)">BUSCAR CANAL PARA ASSISTIR</button>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // 2. Buscar Notícias em Alta (Sidebar)
+            const resNews = await fetch('https://free-api-live-football-data.p.rapidapi.com/football-get-trendingnews', { headers });
+            const resultNews = await resNews.json();
+            const news = resultNews.response ? resultNews.response.news : [];
+
+            if (news.length > 0) {
+                let newsHtml = '<div class="section-header"><span>Notícias do Mundo</span></div>';
+                newsHtml += news.slice(0, 5).map(n => `
+                    <div style="background: #111; border: 1px solid #333; border-radius: 8px; padding: 10px; margin-bottom: 10px; cursor: pointer;" onclick="window.open('${n.url}', '_blank')">
+                        <p style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">${n.title}</p>
+                        <span style="font-size: 0.7rem; color: #666;">${n.source}</span>
+                    </div>
+                `).join('');
+                
+                // Limpa e injeta notícias na lateral
+                const sidebarContainer = document.getElementById('futebol-sidebar');
+                // Mantém os canais e adiciona as notícias
+                const channelsHtml = `
+                    <div class="section-header"><span>Canais de Esporte</span></div>
+                    <div id="quick-sports-channels" style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 30px;">
+                        <button class="btn-carousel" style="width:100%;" onclick="loadChannelsByCategory(1, this)">Assistir PREMIERE</button>
+                        <button class="btn-carousel" style="width:100%;" onclick="loadChannelsByCategory(1, this)">Assistir ESPN</button>
+                        <button class="btn-carousel" style="width:100%;" onclick="loadChannelsByCategory(1, this)">Assistir SPORTV</button>
+                    </div>
+                `;
+                sidebarContainer.innerHTML = channelsHtml + newsHtml;
+            }
+
+        } catch (e) {
+            console.error("Erro RapidAPI:", e);
+            grid.innerHTML = '<p style="text-align:center; color:red;">Houve um problema ao conectar com a API de Futebol. Verifique sua cota diária ou chave.</p>';
+        }
     }
 </script>
 </body>
