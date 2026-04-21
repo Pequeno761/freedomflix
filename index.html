@@ -75,11 +75,71 @@
             margin-top: 5px;
         }
         .logo-subtitle { font-size: 0.9rem; color: #eee; font-weight: 400; margin-top: 15px; letter-spacing: 1px; text-align: center; opacity: 0.8; }
-        .search-box { display: flex; gap: 0; flex-grow: 1; max-width: 600px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-        select { background: #111; color: #fff; border: 1px solid #333; padding: 12px; border-radius: 5px 0 0 5px; cursor: pointer; }
-        input[type="text"] { flex-grow: 1; padding: 12px 20px; border: 1px solid #333; border-left: none; background: #111; color: #fff; font-size: 1rem; outline: none; }
-        .btn-search { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 0 5px 5px 0; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-search:hover { background: var(--accent); }
+        
+        /* Barra de Pesquisa Elegante */
+        .search-box { 
+            display: flex; 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px; 
+            padding: 5px;
+            flex-grow: 1; 
+            max-width: 650px; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .search-box:focus-within { 
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .search-box select { 
+            background: transparent; 
+            color: #fff; 
+            border: none; 
+            padding: 0 20px; 
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer; 
+            outline: none;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        .search-box select option { background: #141414; }
+        
+        .search-box input[type="text"] { 
+            flex-grow: 1; 
+            padding: 12px 20px; 
+            border: none; 
+            background: transparent; 
+            color: #fff; 
+            font-size: 1rem; 
+            outline: none; 
+        }
+        .search-box input[type="text"]::placeholder { color: #888; }
+        
+        .btn-search { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            width: 45px;
+            height: 45px;
+            border-radius: 50%; 
+            cursor: pointer; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s; 
+        }
+        .btn-search:hover { 
+            background: #fff; 
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+        .btn-search i { font-size: 1.1rem; }
+
         .nav-pill-container { background: rgba(20, 20, 20, 0.8); border-radius: 50px; padding: 5px; display: flex; gap: 5px; border: 1px solid #333; backdrop-filter: blur(10px); }
         .nav-link { text-decoration: none; color: #ccc; display: flex; align-items: center; padding: 10px 15px; border-radius: 50px; font-weight: bold; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; overflow: hidden; white-space: nowrap; }
         .nav-link i { font-size: 1.2rem; }
@@ -390,6 +450,59 @@
             cursor: pointer; transition: 0.3s;
         }
         .close-synopsis:hover { background: var(--primary); transform: rotate(90deg); }
+
+        /* --- RESPONSIVIDADE PARA CELULAR --- */
+        @media (max-width: 768px) {
+            body { zoom: 1; } /* Remove o zoom do PC */
+            
+            .container { padding: 10px; }
+            
+            header { padding: 10px 0; gap: 15px; }
+            .header-top { flex-direction: column; gap: 15px; }
+            
+            .logo .freedom { font-size: 3.5rem; }
+            .logo .flix { font-size: 1.5rem; letter-spacing: 8px; }
+            
+            .search-box { width: 100%; max-width: 100%; }
+            .search-box input[type="text"] { font-size: 0.9rem; padding: 10px; }
+            
+            .nav-pill-container { 
+                width: 100%; 
+                overflow-x: auto; 
+                justify-content: flex-start; 
+                padding: 10px 5px;
+                scrollbar-width: none;
+            }
+            .nav-pill-container::-webkit-scrollbar { display: none; }
+            .nav-link { padding: 8px 12px; font-size: 0.8rem; }
+            .nav-link span { max-width: 100px; opacity: 1; margin-left: 5px; } /* Força o texto aparecer no celular */
+
+            .movie-card { flex: 0 0 140px; } /* Cards menores para caber mais na tela */
+            .card-title-external { font-size: 0.85rem; }
+            
+            .section-header { font-size: 1.2rem; }
+            
+            /* Modais (Maratonar/Descobrir) */
+            .carousel-container { flex-direction: column; gap: 20px; padding-top: 60px; height: 100vh; overflow-y: auto; }
+            .carousel-poster-area { flex: 0 0 auto; width: 150px; }
+            .carousel-info { text-align: center; width: 100%; }
+            .carousel-info h1 { font-size: 2rem; }
+            .carousel-info .meta { justify-content: center; font-size: 0.9rem; }
+            .carousel-info p { font-size: 0.9rem; line-height: 1.4; }
+            .carousel-controls { flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .btn-carousel { padding: 10px 20px; font-size: 0.9rem; width: 100%; }
+            
+            /* Player */
+            .modal-content { width: 98%; border-radius: 8px; }
+            .player-header { padding: 10px; flex-direction: column; gap: 10px; }
+            .server-selector { width: 100%; overflow-x: auto; padding-bottom: 5px; }
+
+            /* Grid de Maratonar */
+            .collection-hub { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
+            
+            /* Botão flutuante */
+            .btn-discover-floating { width: 60px; height: 60px; bottom: 20px; right: 20px; font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body>
@@ -637,7 +750,42 @@
         transformers: { title: "Transformers", ids: [1858, 21208, 38356, 185333, 91314, 335988, 667538], logo: "https://upload.wikimedia.org/wikipedia/commons/2/25/Transformers_logo.svg" },
         iceage: { title: "A Era do Gelo", ids: [425, 953, 5994, 57800, 277834], logo: "https://upload.wikimedia.org/wikipedia/commons/9/91/Ice_Age_Logo.svg" },
         indiana: { title: "Indiana Jones", ids: [85, 87, 89, 217, 335977], logo: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Indiana_Jones_logo.svg" },
-        madagascar: { title: "Madagascar", ids: [953, 10527, 80321], logo: "https://upload.wikimedia.org/wikipedia/en/3/36/Madagascar_Theatrical_Poster.jpg" }
+        madagascar: { title: "Madagascar", ids: [953, 10527, 80321], logo: "https://upload.wikimedia.org/wikipedia/en/3/36/Madagascar_Theatrical_Poster.jpg" },
+        dc_snyder: { title: "Universo DC (Snyder)", ids: [209112, 209112, 297762, 297761, 38700, 49521, 9738, 9739], logo: "https://upload.wikimedia.org/wikipedia/commons/3/3d/DC_Comics_logo.svg" },
+        jamesbond: { title: "James Bond 007", ids: [646, 657, 658, 660, 667, 668, 680, 298, 365222, 370172], logo: "https://upload.wikimedia.org/wikipedia/commons/c/c4/007_logo.svg" },
+        mcu_fase4: { title: "Marvel: Fase 4", ids: [497698, 524434, 497582, 616037, 532308, 505642, 438631], logo: "https://upload.wikimedia.org/wikipedia/commons/b/b9/Marvel_Logo.svg" },
+        residentevil: { title: "Resident Evil", ids: [157, 158, 159, 160, 161, 162], logo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Resident_Evil_Logo.png" },
+        alien: { title: "Alien Saga", ids: [103, 104, 105, 106, 8077, 126889, 447332], logo: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Alien_Logo.png" },
+        terminator: { title: "O Exterminador do Futuro", ids: [218, 280, 296, 10391, 87101, 290859], logo: "https://upload.wikimedia.org/wikipedia/commons/a/af/Terminator_logo.png" },
+        rocky: { title: "Rocky Balboa", ids: [1366, 1367, 1368, 1369, 1370, 1371, 302156, 384737, 480414], logo: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Rocky_Logo.png" },
+        planetoftheapes: { title: "Planeta dos Macacos", ids: [11224, 861, 119450, 281338, 653346], logo: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Planet_of_the_Apes_logo.png" },
+        meninblack: { title: "MIB: Homens de Preto", ids: [607, 608, 41154, 438650], logo: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Men_in_Black_logo.svg" },
+        despicableme: { title: "Meu Malvado Favorito", ids: [20352, 93456, 268896, 324857, 286217, 324857], logo: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Despicable_Me_logo.png" },
+        cars: { title: "Carros (Disney/Pixar)", ids: [920, 49013, 260514], logo: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Cars_logo.svg" },
+        monstersinc: { title: "Monstros S.A.", ids: [585, 62211], logo: "https://upload.wikimedia.org/wikipedia/commons/6/63/Monsters%2C_Inc._logo.svg" },
+        theincredibles: { title: "Os Incríveis", ids: [9806, 260513], logo: "https://upload.wikimedia.org/wikipedia/commons/2/27/The_Incredibles_logo.svg" },
+        findingnemo: { title: "Procurando Nemo", ids: [12, 127380], logo: "https://upload.wikimedia.org/wikipedia/commons/d/de/Finding_Nemo_logo.svg" },
+        howtotrainyourdragon: { title: "Como Treinar o Seu Dragão", ids: [10191, 49017, 166428], logo: "https://upload.wikimedia.org/wikipedia/commons/4/4b/How_to_Train_Your_Dragon_Logo.png" },
+        kungfupanda: { title: "Kung Fu Panda", ids: [9502, 49444, 140300, 1011985], logo: "https://upload.wikimedia.org/wikipedia/en/e/e4/Kung_Fu_Panda_logo.svg" },
+        piratesofthecaribbean: { title: "Piratas do Caribe", ids: [22, 58, 59, 1865, 166426], logo: "https://upload.wikimedia.org/wikipedia/commons/b/b3/Pirates_of_the_Caribbean_logo.svg" },
+        backtothefuture: { title: "De Volta para o Futuro", ids: [105, 165, 196], logo: "https://upload.wikimedia.org/wikipedia/commons/d/d6/Back_to_the_Future_logo.png" },
+        thelordoftherings: { title: "O Senhor dos Anéis", ids: [120, 121, 122], logo: "https://upload.wikimedia.org/wikipedia/commons/b/b3/Lord_of_the_Rings_logo.svg" },
+        thehobbit: { title: "O Hobbit", ids: [49051, 49047, 49040], logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/The_Hobbit_logo.png" },
+        johwick: { title: "John Wick", ids: [245891, 324552, 458156, 603692], logo: "https://upload.wikimedia.org/wikipedia/en/9/9f/John_Wick_Keanu_Reeves.png" },
+        diehard: { title: "Duro de Matar", ids: [562, 1573, 1572, 4705, 47964], logo: "https://upload.wikimedia.org/wikipedia/commons/3/3b/Die_Hard_logo.png" },
+        lethalweapon: { title: "Máquina Mortífera", ids: [941, 942, 943, 944], logo: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Lethal_Weapon_logo.png" },
+        oceanseleven: { title: "Onze Homens e um Segredo", ids: [161, 162, 163, 353081], logo: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Ocean%27s_Eleven_logo.png" },
+        thehangover: { title: "Se Beber, Não Case!", ids: [18785, 44833, 109439], logo: "https://upload.wikimedia.org/wikipedia/commons/b/b0/The_Hangover_logo.png" },
+        twilight: { title: "Crepúsculo", ids: [1735, 13223, 24021, 42434, 50620], logo: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Twilight_logo.svg" },
+        fifty_shades: { title: "Cinquenta Tons de Cinza", ids: [216015, 341174, 337167], logo: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Fifty_Shades_logo.png" },
+        divergent: { title: "Divergente", ids: [157336, 262500, 262504], logo: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Divergent_logo.png" },
+        mazerunner: { title: "Maze Runner", ids: [198663, 294254, 336843], logo: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Maze_Runner_logo.png" },
+        narnia: { title: "As Crônicas de Nárnia", ids: [411, 2454, 36557], logo: "https://upload.wikimedia.org/wikipedia/commons/5/52/Narnia_logo.png" },
+        percyjackson: { title: "Percy Jackson", ids: [32697, 76285], logo: "https://upload.wikimedia.org/wikipedia/commons/d/dc/Percy_Jackson_logo.png" },
+        dragonball_z: { title: "Dragon Ball Z (Filmes)", ids: [34433, 30588, 39107, 39100, 39106, 39101, 39105, 39104, 301328, 126963], logo: "https://upload.wikimedia.org/wikipedia/commons/2/22/Dragon_Ball_Z_logo.svg" },
+        naruto_shippuden: { title: "Naruto Shippuden (Filmes)", ids: [22212, 16859, 36802, 45314, 110416, 122210, 317442], logo: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Naruto_logo.svg" },
+        one_piece: { title: "One Piece (Filmes)", ids: [459488, 375315, 230266, 122362, 127533, 82690, 82436, 13723, 10428, 10323], logo: "https://upload.wikimedia.org/wikipedia/commons/b/b3/One_Piece_logo.svg" },
+        saint_seiya: { title: "Cavaleiros do Zodíaco (Filmes)", ids: [33355, 33356, 33357, 33358, 230267, 1021464], logo: "https://upload.wikimedia.org/wikipedia/commons/3/30/Saint_Seiya_logo.png" }
     };
 
     window.onload = () => loadContent('trending');
