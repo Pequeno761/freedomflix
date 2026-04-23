@@ -392,6 +392,26 @@
         .score-box { background: #222; padding: 5px 15px; border-radius: 5px; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: #00ff00; letter-spacing: 2px; }
         .match-status { font-size: 0.7rem; color: #888; text-transform: uppercase; margin-top: 5px; font-weight: bold; }
         .live-dot { width: 8px; height: 8px; background: #00ff00; border-radius: 50%; display: inline-block; margin-right: 5px; animation: pulse 1s infinite; }
+        
+        /* Estilo Canais de Transmissão */
+        .match-channels {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 5px;
+        }
+        .channel-tag {
+            background: rgba(255,255,255,0.1);
+            color: #ccc;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
         .btn-watch-match { 
             width: 100%; background: var(--primary); color: white; border: none; padding: 10px; 
             border-radius: 5px; font-family: 'Bebas Neue', sans-serif; cursor: pointer; transition: 0.3s;
@@ -1170,50 +1190,33 @@
     </div>
     <div id="sections-container"></div>
     <div id="futebol-container" class="hidden" style="margin-top: 20px;">
-        <h2 style="font-family:'Bebas Neue'; font-size:3rem; margin-bottom:10px; color:var(--primary); text-align:center;">Painel de Futebol (beta)</h2>
-        <p style="text-align: center; color: #888; margin-bottom: 30px;">Acompanhe os placares e assista ao vivo nos canais correspondentes.</p>
-        
+        <h2 style="font-family:'Bebas Neue'; font-size:3rem; margin-bottom:10px; color:var(--primary); text-align:center;">Freedom Esportes (Tempo Real)</h2>
+        <p style="text-align: center; color: #888; margin-bottom: 30px;">Dados extraídos em tempo real diretamente das fontes oficiais.</p>
+
         <div class="futebol-layout" style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
             <!-- Área de Jogos -->
             <div id="jogos-hoje">
-                <div class="section-header" style="border-left: 5px solid #00ff00;"><span>Partidas em Destaque</span></div>
+                <div class="section-header" style="border-left: 5px solid #00ff00;"><span id="league-title">Selecione um Campeonato</span></div>
                 <div id="match-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
-                    <!-- Cards de Jogos Injetados aqui -->
-                    <p style="text-align: center; padding: 20px;">Carregando partidas...</p>
+                    <p style="text-align: center; padding: 40px; color: #888;">Escolha uma liga no menu lateral para buscar os jogos em tempo real.</p>
                 </div>
             </div>
 
-            <!-- Lateral: Classificação ou Canais Rápidos -->
+            <!-- Lateral: Menu de Ligas e Tabelas -->
             <div id="futebol-sidebar">
-                <div class="section-header"><span>Canais de Esporte</span></div>
+                <div class="section-header"><span>Ligas Oficiais</span></div>
                 <div id="quick-sports-channels" style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 30px;">
-                    <!-- Botões de Canais -->
+                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/agenda/#/futebol', 'Agenda de Hoje')"><i class="fas fa-calendar-day"></i> Agenda de Hoje</button>
+                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/futebol/futebol-internacional/futebol-saudita/', 'Futebol Saudita')"><i class="fas fa-globe"></i> Futebol Saudita</button>
+                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/futebol/futebol-internacional/futebol-alemao/copa-da-alemanha/', 'Copa da Alemanha')"><i class="fas fa-trophy"></i> Copa da Alemanha</button>
+                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/futebol/copa-do-brasil/', 'Copa do Brasil')"><i class="fas fa-trophy"></i> Copa do Brasil</button>
+                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/futebol/futebol-feminino/copa-do-brasil-feminina/', 'Copa do Brasil - Feminino')"><i class="fas fa-female"></i> Copa do Brasil Feminina</button>
+                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/futebol/futebol-internacional/futebol-espanhol/', 'Futebol Espanhol')"><i class="fas fa-globe"></i> Futebol Espanhol</button>
                 </div>
                 
-                <div class="section-header"><span>Tabela (Exemplo)</span></div>
-                <div style="background: #111; border-radius: 10px; border: 1px solid #333; padding: 15px;">
-                    <table style="width: 100%; border-collapse: collapse; font-family: 'Arial', sans-serif; font-size: 0.9rem;">
-                        <tr style="border-bottom: 1px solid #333; color: #888;">
-                            <th style="text-align: left; padding: 10px;">#</th>
-                            <th style="text-align: left;">Clube</th>
-                            <th>P</th>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #222;">
-                            <td style="padding: 10px; color: var(--primary); font-weight: bold;">1</td>
-                            <td>Flamengo</td>
-                            <td style="text-align: center;">45</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #222;">
-                            <td style="padding: 10px; color: var(--primary); font-weight: bold;">2</td>
-                            <td>Palmeiras</td>
-                            <td style="text-align: center;">42</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #222;">
-                            <td style="padding: 10px; color: var(--primary); font-weight: bold;">3</td>
-                            <td>Botafogo</td>
-                            <td style="text-align: center;">40</td>
-                        </tr>
-                    </table>
+                <div class="section-header"><span>Classificação</span></div>
+                <div id="tables-container">
+                    <p style="text-align: center; padding: 20px; color: #666; font-size: 0.9rem;">A tabela será exibida aqui se estiver disponível na página da liga.</p>
                 </div>
             </div>
         </div>
@@ -1348,6 +1351,7 @@
         </div>
     </div>
 </div>
+<script src="futebol.js"></script>
 <script>
     const API_KEY = '832a40f6d7edf386b7ad6810de3570c9';
     let currentTmdbId, currentType, currentServer = 'vidsrc', s_val = 1, e_val = 1;
@@ -2080,93 +2084,156 @@
         document.body.style.overflow = 'auto';
     }
 
-    async function loadFootballData() {
+    /* --- LÓGICA DE FUTEBOL (SCRAPING TEMPO REAL) --- */
+    async function loadLeagueRealTime(url, title) {
         const grid = document.getElementById('match-grid');
-        const sidebar = document.getElementById('futebol-sidebar');
+        const tablesDiv = document.getElementById('tables-container');
+        document.getElementById('league-title').innerText = title;
         
-        // Data formatada para a API (YYYYMMDD)
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        const todayStr = `${year}${month}${day}`;
-
-        grid.innerHTML = '<p style="text-align: center; padding: 20px;">Buscando jogos de hoje na nova API...</p>';
-
-        const headers = {
-            'x-rapidapi-key': 'de67528b3dmsh6a00319ead7c857p1ac42cjsn83e8b49bc5e6',
-            'x-rapidapi-host': 'free-api-live-football-data.p.rapidapi.com'
-        };
-
+        grid.innerHTML = `<p style="text-align: center; padding: 40px; color: #888;">Buscando jogos ao vivo de ${title}...</p>`;
+        tablesDiv.innerHTML = `<p style="text-align: center; padding: 20px; color: #666; font-size: 0.9rem;">Buscando tabela...</p>`;
+        
         try {
-            // 1. Buscar Jogos de Hoje
-            const resMatches = await fetch(`https://free-api-live-football-data.p.rapidapi.com/football-get-all-matches-by-date?date=${todayStr}`, { headers });
-            const resultMatches = await resMatches.json();
-            const matches = resultMatches.response ? resultMatches.response.matches : [];
+            // Usando um Proxy CORS para contornar bloqueios de segurança do navegador
+            // Adicionado um parâmetro random para evitar cache do proxy
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}&_=${Date.now()}`;
+            const response = await fetch(proxyUrl);
+            const data = await response.json();
+            
+            if (!data.contents) throw new Error("Conteúdo vazio");
+            
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data.contents, 'text/html');
+            
+            let matches = [];
+            let tables = [];
 
-            if (matches.length === 0) {
-                grid.innerHTML = '<p style="text-align: center; padding: 20px;">Nenhum jogo importante encontrado para hoje nesta API.</p>';
-            } else {
-                grid.innerHTML = matches.slice(0, 20).map(m => {
-                    const status = m.status.type === 'inprogress' ? `<span class="live-dot"></span>${m.status.displayCode}'` : m.status.type === 'finished' ? 'Encerrado' : m.status.displayCode || 'Hoje';
-                    const homeScore = m.homeScore.current ?? 0;
-                    const awayScore = m.awayScore.current ?? 0;
+            // 1. Extração de Jogos (Tenta encontrar o padrão GE)
+            const gameCards = doc.querySelectorAll('a[data-card-mode="standard"], .lista-jogos__jogo');
+            
+            gameCards.forEach(card => {
+                try {
+                    // Novo padrão GE com data-card-mode ou antigo .lista-jogos
+                    const teamsDiv = card.querySelectorAll('div[data-card-mode="standard"], .placar__equipes .placar__equipe');
                     
-                    return `
-                        <div class="match-card">
-                            <div class="league-tag">${m.tournament.name}</div>
-                            <div class="match-teams">
-                                <div class="match-team">
-                                    <img src="https://www.sofascore.com/api/v1/team/${m.homeTeam.id}/image" onerror="this.src='https://via.placeholder.com/50x50/222/fff?text=T1'">
-                                    <span>${m.homeTeam.shortName || m.homeTeam.name}</span>
-                                </div>
-                                <div class="match-score">
-                                    <div class="score-box" style="color: ${m.status.type === 'inprogress' ? '#00ff00' : '#fff'}">${homeScore} : ${awayScore}</div>
-                                    <div class="match-status">${status}</div>
-                                </div>
-                                <div class="match-team">
-                                    <img src="https://www.sofascore.com/api/v1/team/${m.awayTeam.id}/image" onerror="this.src='https://via.placeholder.com/50x50/222/fff?text=T2'">
-                                    <span>${m.awayTeam.shortName || m.awayTeam.name}</span>
-                                </div>
-                            </div>
-                            <button class="btn-watch-match" onclick="loadChannelsByCategory(1, this)">BUSCAR CANAL PARA ASSISTIR</button>
-                        </div>
-                    `;
-                }).join('');
+                    if (teamsDiv.length >= 2) {
+                        const getTeamInfo = (div) => {
+                            const img = div.querySelector('img, .placar__equipe-escudo');
+                            const spans = div.querySelectorAll('span, .placar__equipe-sigla');
+                            const nameSpan = Array.from(spans).find(s => s.innerText && s.innerText.length > 2 && isNaN(parseInt(s.innerText.trim())));
+                            const scoreSpan = div.querySelector('.sc-jsJBEP span, .placar__equipe-placar');
+                            return {
+                                name: nameSpan ? nameSpan.innerText.trim() : 'Time',
+                                logo: img ? img.src : 'https://via.placeholder.com/50x50/222/fff?text=GE',
+                                score: scoreSpan ? scoreSpan.innerText.trim() : ''
+                            };
+                        };
+                        
+                        const home = getTeamInfo(teamsDiv[0]);
+                        const away = getTeamInfo(teamsDiv[1]);
+                        
+                        // Extrair tempo e status
+                        let league = title;
+                        let timeOrStatus = "A definir";
+                        let isLive = false;
+                        
+                        const allSpans = card.querySelectorAll('span');
+                        const liveBadge = card.querySelector('[data-status-id="LIVE"], [data-status-id="REAL_TIME"], .placar__status--ao-vivo');
+                        
+                        if (liveBadge) {
+                            isLive = true;
+                            timeOrStatus = liveBadge.innerText.trim();
+                        } else {
+                            // Tenta achar o horário XX:XX
+                            const timeSpan = Array.from(allSpans).find(s => s.innerText.match(/^\d{2}:\d{2}$/));
+                            if (timeSpan) timeOrStatus = timeSpan.innerText;
+                        }
+                        
+                        matches.push({ league, time: timeOrStatus, isLive, home, away });
+                    }
+                } catch (e) {}
+            });
+
+            // 2. Extração de Tabelas (Tentando 2 padrões de classe do GE)
+            const tableRows = doc.querySelectorAll('.classificacao__equipes .classificacao__equipes--linha, .tabela-equipes-linha');
+            if (tableRows.length > 0) {
+                const tableData = { name: "Classificação", rows: [] };
+                
+                tableRows.forEach((row, idx) => {
+                    const nameEl = row.querySelector('.classificacao__equipes--nome, .tabela-equipes-nome-completo, .classificacao__equipes--sigla');
+                    const posEl = row.querySelector('.classificacao__equipes--posicao, .tabela-equipes-posicao');
+                    // Tenta puxar a pontuação da tabela da direita (índice 0 é PTS)
+                    const pointsRow = doc.querySelectorAll('.classificacao__pontos--linha, .tabela-pontos-linha')[idx];
+                    const pointsEl = pointsRow ? pointsRow.querySelector('.classificacao__pontos--ponto, .tabela-pontos-ponto') : null;
+                    
+                    if (nameEl) {
+                        tableData.rows.push({
+                            pos: posEl ? posEl.innerText.trim() : idx + 1,
+                            name: nameEl.innerText.trim(),
+                            points: pointsEl ? pointsEl.innerText.trim() : '-'
+                        });
+                    }
+                });
+                
+                if (tableData.rows.length > 0) tables.push(tableData);
             }
 
-            // 2. Buscar Notícias em Alta (Sidebar)
-            const resNews = await fetch('https://free-api-live-football-data.p.rapidapi.com/football-get-trendingnews', { headers });
-            const resultNews = await resNews.json();
-            const news = resultNews.response ? resultNews.response.news : [];
-
-            if (news.length > 0) {
-                let newsHtml = '<div class="section-header"><span>Notícias do Mundo</span></div>';
-                newsHtml += news.slice(0, 5).map(n => `
-                    <div style="background: #111; border: 1px solid #333; border-radius: 8px; padding: 10px; margin-bottom: 10px; cursor: pointer;" onclick="window.open('${n.url}', '_blank')">
-                        <p style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">${n.title}</p>
-                        <span style="font-size: 0.7rem; color: #666;">${n.source}</span>
+            // Renderizar Jogos
+            if (matches.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; padding: 40px; color: #888;">Nenhum jogo encontrado ou a estrutura do site foi alterada.</p>';
+            } else {
+                grid.innerHTML = matches.map(m => `
+                    <div class="match-card">
+                        <div class="league-tag">${m.league}</div>
+                        <div class="match-teams">
+                            <div class="match-team">
+                                <img src="${m.home.logo}">
+                                <span>${m.home.name}</span>
+                            </div>
+                            <div class="match-score">
+                                <div class="score-box" style="color: ${m.isLive ? '#00ff00' : '#fff'}">${m.home.score} : ${m.away.score}</div>
+                                <div class="match-status">${m.isLive ? '<span class="live-dot"></span>' : ''}${m.time}</div>
+                            </div>
+                            <div class="match-team">
+                                <img src="${m.away.logo}">
+                                <span>${m.away.name}</span>
+                            </div>
+                        </div>
+                        <button class="btn-watch-match" onclick="loadContent('canais')">ASSISTIR NA TV ONLINE</button>
                     </div>
                 `).join('');
-                
-                // Limpa e injeta notícias na lateral
-                const sidebarContainer = document.getElementById('futebol-sidebar');
-                // Mantém os canais e adiciona as notícias
-                const channelsHtml = `
-                    <div class="section-header"><span>Canais de Esporte</span></div>
-                    <div id="quick-sports-channels" style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 30px;">
-                        <button class="btn-carousel" style="width:100%;" onclick="loadChannelsByCategory(1, this)">Assistir PREMIERE</button>
-                        <button class="btn-carousel" style="width:100%;" onclick="loadChannelsByCategory(1, this)">Assistir ESPN</button>
-                        <button class="btn-carousel" style="width:100%;" onclick="loadChannelsByCategory(1, this)">Assistir SPORTV</button>
+            }
+
+            // Renderizar Tabelas
+            if (tables.length === 0) {
+                tablesDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: #666; font-size: 0.9rem;">Nenhuma tabela de classificação encontrada nesta página.</p>';
+            } else {
+                tablesDiv.innerHTML = tables.map(t => `
+                    <div style="background: #111; border-radius: 10px; border: 1px solid #333; padding: 15px; margin-bottom: 20px;">
+                        <div style="font-weight: bold; color: var(--primary); margin-bottom: 10px; font-family: 'Bebas Neue'; letter-spacing: 1px;">${t.name}</div>
+                        <table style="width: 100%; border-collapse: collapse; font-family: 'Arial', sans-serif; font-size: 0.8rem;">
+                            ${t.rows.map(r => `
+                                <tr style="border-bottom: 1px solid #222;">
+                                    <td style="padding: 8px 5px; color: ${r.pos <= 4 ? '#00ff00' : '#888'}; font-weight: bold; width: 20px;">${r.pos}</td>
+                                    <td style="padding: 8px 0; color: #eee;">${r.name}</td>
+                                    <td style="padding: 8px 5px; text-align: right; font-weight: bold; color: #fff;">${r.points} PTs</td>
+                                </tr>
+                            `).join('')}
+                        </table>
                     </div>
-                `;
-                sidebarContainer.innerHTML = channelsHtml + newsHtml;
+                `).join('');
             }
 
         } catch (e) {
-            console.error("Erro RapidAPI:", e);
-            grid.innerHTML = '<p style="text-align:center; color:red;">Houve um problema ao conectar com a API de Futebol. Verifique sua cota diária ou chave.</p>';
+            console.error("Erro no Scraping:", e);
+            grid.innerHTML = '<p style="text-align:center; color:red; padding: 40px;">Falha ao conectar com o provedor de dados. Tente novamente mais tarde.</p>';
+            tablesDiv.innerHTML = '';
         }
+    }
+
+    function loadFootballData() {
+        // Ao clicar em futebol na nav, carrega a agenda por padrão
+        loadLeagueRealTime('https://ge.globo.com/agenda/#/futebol', 'Agenda de Hoje');
     }
 
     /* Lógica Descobrir (Estilo Maratonar) */
