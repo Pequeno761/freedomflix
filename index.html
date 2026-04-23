@@ -162,11 +162,20 @@
         .row-wrapper { position: relative; display: flex; align-items: center; }
         .row-container { display: flex; gap: 20px; overflow-x: auto; padding: 20px 10px; scrollbar-width: none; scroll-behavior: smooth; width: 100%; }
         .row-container::-webkit-scrollbar { display: none; }
-        .nav-arrow { position: absolute; top: 0; bottom: 0; width: 50px; background: rgba(0,0,0,0.5); color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; z-index: 5; opacity: 0; transition: 0.3s; border: none; backdrop-filter: blur(5px); }
+        .nav-arrow { 
+            position: absolute; top: 0; bottom: 0; width: 40px; 
+            background: linear-gradient(to right, rgba(0,0,0,0.8), transparent); 
+            color: white; display: flex; align-items: center; justify-content: center; 
+            font-size: 1.2rem; cursor: pointer; z-index: 100; opacity: 0; 
+            transition: 0.3s; border: none; backdrop-filter: blur(2px); 
+        }
         .nav-arrow.left { left: 0; border-radius: 0 8px 8px 0; }
-        .nav-arrow.right { right: 0; border-radius: 8px 0 0 8px; }
+        .nav-arrow.right { 
+            right: 0; border-radius: 8px 0 0 8px; 
+            background: linear-gradient(to left, rgba(0,0,0,0.8), transparent); 
+        }
         .content-section:hover .nav-arrow { opacity: 1; }
-        .nav-arrow:hover { background: rgba(229, 9, 20, 0.8); font-size: 2.5rem; }
+        .nav-arrow:hover { background: var(--primary); font-size: 1.5rem; opacity: 1 !important; }
         .movie-card { 
             flex: 0 0 200px; 
             background: var(--card-bg); 
@@ -943,10 +952,10 @@
         .related-item { flex: 0 0 180px; } 
 
         .related-nav-arrow {
-            position: absolute; top: 0; bottom: 0; width: 40px;
-            background: rgba(0,0,0,0.6); color: white; border: none;
+            position: absolute; top: 0; bottom: 0; width: 30px;
+            background: rgba(0,0,0,0.8); color: white; border: none;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; cursor: pointer; z-index: 5; transition: 0.3s;
+            font-size: 1rem; cursor: pointer; z-index: 100; transition: 0.3s;
             backdrop-filter: blur(5px); border-radius: 4px;
         }
         .related-nav-arrow.left { left: -10px; }
