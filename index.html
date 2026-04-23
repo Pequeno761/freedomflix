@@ -689,10 +689,11 @@
             pointer-events: auto;
         }
         .details-overlay-gradient {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.4) 100%);
+            position: absolute; top: 0; left: 0; width: 60%; height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
             z-index: 3;
             pointer-events: none;
+            transition: opacity 0.5s ease;
         }
         .details-body {
             position: relative; z-index: 4; width: 100%; max-width: 100%;
@@ -705,6 +706,29 @@
             animation: slideInLeft 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
             filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
             pointer-events: auto;
+            position: relative;
+        }
+
+        /* Botão de Recolher */
+        .btn-collapse-info {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .btn-collapse-info:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.1);
         }
         @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
         
@@ -764,7 +788,7 @@
         .details-body.minimized .details-main-info { opacity: 0; pointer-events: none; transform: translateX(-50px); }
         .details-body.minimized .details-btns { opacity: 0; pointer-events: none; }
         .details-body.minimized .related-container { opacity: 0; pointer-events: none; }
-        .details-body.minimized ~ .details-backdrop-container .details-overlay-gradient { opacity: 0.2; }
+        .details-body.minimized ~ .details-backdrop-container .details-overlay-gradient { opacity: 0; }
         .details-body.minimized ~ .details-backdrop-container .details-trailer-bg { opacity: 1; }
 
         .btn-restore-info {
@@ -906,9 +930,6 @@
                 <button id="details-seasons-btn" class="btn-details btn-details-trailer hidden" onclick="toggleDetailsEpisodes()">
                     <i class="fas fa-list"></i> <span>Temporadas</span>
                 </button>
-                <button class="btn-details btn-details-trailer" onclick="toggleDetailsInfo(true)">
-                    <i class="fas fa-video"></i> <span>Trailer</span>
-                </button>
             </div>
 
             <!-- Navegador de Episódios In-Page -->
@@ -919,6 +940,10 @@
                 </div>
                 <div id="details-ep-grid" class="details-ep-grid"></div>
             </div>
+
+            <button class="btn-collapse-info" onclick="toggleDetailsInfo(true)" title="Recolher Informações">
+                <i class="fas fa-chevron-left"></i>
+            </button>
             
             <div id="details-related-container" class="related-container">
                 <h3 class="related-title">Relacionados:</h3>
@@ -1144,9 +1169,6 @@
                     <button id="discoverWatchBtn" class="btn-details btn-details-watch">
                         <i class="fas fa-play"></i> <span>Assistir Agora</span>
                     </button>
-                    <button class="btn-details btn-details-trailer" onclick="toggleDetailsInfo(true, 'discover-body')">
-                        <i class="fas fa-video"></i> <span>Trailer</span>
-                    </button>
                     
                     <div style="display: flex; gap: 10px; margin-left: 20px;">
                         <button id="discoverPrevBtn" class="btn-details btn-details-trailer" onclick="navDiscover(-1)">
@@ -1160,6 +1182,10 @@
                         </button>
                     </div>
                 </div>
+
+                <button class="btn-collapse-info" onclick="toggleDetailsInfo(true, 'discover-body')" title="Recolher Informações">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
 
                 <div id="discover-related-container" class="related-container">
                     <h3 class="related-title">Relacionados:</h3>
