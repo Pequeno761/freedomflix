@@ -340,11 +340,11 @@
         #descobrir-carousel { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: #000; z-index: 25001; align-items: flex-start; justify-content: flex-start; 
-            overflow: hidden; animation: fadeIn 0.5s ease;
+            overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth; animation: fadeIn 0.5s ease;
         }
         
         #descobrir-carousel .details-backdrop-container { position: fixed; }
-        #descobrir-carousel .details-body { padding-top: 80px; pointer-events: none; }
+        #descobrir-carousel .details-body { padding: 80px 40px 100px 60px; pointer-events: none; }
         #descobrir-carousel .details-main-info { pointer-events: auto; }
         
         .discover-nav-btns { display: flex; gap: 15px; margin-top: 30px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
@@ -511,10 +511,39 @@
         }
 
         /* --- NOVOS ESTILOS: DETALHES ELEGANTES --- */
+        /* --- ESTILO DE SCROLLBAR CUSTOMIZADA --- */
+        #details-modal::-webkit-scrollbar, 
+        #tv-modal::-webkit-scrollbar, 
+        #descobrir-carousel::-webkit-scrollbar,
+        #tv-grid::-webkit-scrollbar,
+        .details-ep-grid::-webkit-scrollbar,
+        .synopsis-content p::-webkit-scrollbar {
+            width: 6px;
+        }
+        #details-modal::-webkit-scrollbar-track, 
+        #tv-modal::-webkit-scrollbar-track, 
+        #descobrir-carousel::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        #details-modal::-webkit-scrollbar-thumb, 
+        #tv-modal::-webkit-scrollbar-thumb, 
+        #descobrir-carousel::-webkit-scrollbar-thumb,
+        #tv-grid::-webkit-scrollbar-thumb,
+        .details-ep-grid::-webkit-scrollbar-thumb,
+        .synopsis-content p::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        #details-modal::-webkit-scrollbar-thumb:hover, 
+        #tv-modal::-webkit-scrollbar-thumb:hover, 
+        #descobrir-carousel::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
         #details-modal, #tv-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 25000; align-items: flex-start; justify-content: flex-start;
-            overflow-x: hidden; overflow-y: auto; animation: fadeIn 0.5s ease;
+            overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth; animation: fadeIn 0.5s ease;
         }
         #tv-modal { z-index: 26000; } /* Garante que fique acima se necessário */
         
@@ -695,11 +724,47 @@
             pointer-events: none;
             transition: opacity 0.5s ease;
         }
+        /* Sistema de Abas */
+        .details-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            letter-spacing: 1px;
+        }
+        .tab-btn:hover { color: #fff; }
+        .tab-btn.active { color: var(--primary); }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -11px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+        
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+
         .details-body {
             position: relative; z-index: 4; width: 100%; max-width: 100%;
             display: flex; flex-direction: column; min-height: 100vh; justify-content: flex-start;
             padding: 80px 40px 40px 60px; box-sizing: border-box;
             pointer-events: none;
+            overflow: hidden;
         }
         .details-main-info { 
             max-width: 650px; text-align: left; 
@@ -784,22 +849,48 @@
         .btn-details-trailer { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); }
         .btn-details-trailer:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
 
+        /* Botão de Controle Único e Animado */
+        .btn-control-info {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .btn-control-info:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-50%) scale(1.1);
+        }
+        .btn-control-info i {
+            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
         /* Estado Minimizado */
-        .details-body.minimized .details-main-info { opacity: 0; pointer-events: none; transform: translateX(-50px); }
-        .details-body.minimized .details-btns { opacity: 0; pointer-events: none; }
-        .details-body.minimized .related-container { opacity: 0; pointer-events: none; }
+        .details-body.minimized .details-main-info { transform: translateX(-100%); opacity: 1; }
+        .details-body.minimized .details-main-info > *:not(.btn-control-info) { opacity: 0; pointer-events: none; }
+        .details-body.minimized .btn-control-info {
+            margin-left: 15px;
+        }
+        .details-body.minimized .btn-control-info i {
+            transform: rotate(180deg);
+        }
         .details-body.minimized ~ .details-backdrop-container .details-overlay-gradient { opacity: 0; }
         .details-body.minimized ~ .details-backdrop-container .details-trailer-bg { opacity: 1; }
-
-        .btn-restore-info {
-            display: none; position: fixed; left: 30px; top: 50%; transform: translateY(-50%);
-            width: 50px; height: 50px; background: rgba(255,255,255,0.1); color: #fff;
-            border: 1px solid rgba(255,255,255,0.2); border-radius: 50%;
-            align-items: center; justify-content: center; font-size: 1.5rem;
-            cursor: pointer; z-index: 100; backdrop-filter: blur(5px); transition: 0.3s;
-        }
-        .btn-restore-info:hover { background: var(--primary); transform: translateY(-50%) scale(1.1); }
-        .details-body.minimized ~ .btn-restore-info { display: flex; animation: fadeIn 0.5s ease; }
 
         /* Navegador de Episódios nos Detalhes */
         .details-episodes-container {
@@ -920,45 +1011,52 @@
         <div class="details-main-info">
             <h1 id="details-title" class="details-title"></h1>
             <div id="details-meta" class="details-meta"></div>
-            <p id="details-synopsis" class="details-synopsis"></p>
-            <button id="details-read-more" class="btn-read-more" onclick="toggleSynopsis('details-synopsis', this)">Ler mais</button>
-            
-            <div class="details-btns">
-                <button id="details-watch-btn" class="btn-details btn-details-watch">
-                    <i class="fas fa-play"></i> <span>Assistir Agora</span>
-                </button>
-                <button id="details-seasons-btn" class="btn-details btn-details-trailer hidden" onclick="toggleDetailsEpisodes()">
-                    <i class="fas fa-list"></i> <span>Temporadas</span>
-                </button>
+
+            <div class="details-tabs">
+                <button class="tab-btn active" onclick="switchTab(this, 'details-synopsis-tab')">Sinopse</button>
+                <button class="tab-btn" onclick="switchTab(this, 'details-related-tab')">Relacionados</button>
             </div>
 
-            <!-- Navegador de Episódios In-Page -->
-            <div id="details-episodes-container" class="details-episodes-container">
-                <div class="ep-header">
-                    <span style="font-family:'Bebas Neue'; font-size:1.5rem; color: #fff;">Episódios</span>
-                    <select id="details-season-select" class="ep-season-select" onchange="loadDetailsEpisodes(this.value)"></select>
+            <div id="details-synopsis-tab" class="tab-content active">
+                <p id="details-synopsis" class="details-synopsis"></p>
+                <button id="details-read-more" class="btn-read-more" onclick="toggleSynopsis('details-synopsis', this)">Ler mais</button>
+                
+                <div class="details-btns">
+                    <button id="details-watch-btn" class="btn-details btn-details-watch">
+                        <i class="fas fa-play"></i> <span>Assistir Agora</span>
+                    </button>
+                    <button id="details-seasons-btn" class="btn-details btn-details-trailer hidden" onclick="toggleDetailsEpisodes()">
+                        <i class="fas fa-list"></i> <span>Temporadas</span>
+                    </button>
                 </div>
-                <div id="details-ep-grid" class="details-ep-grid"></div>
+
+                <!-- Navegador de Episódios In-Page -->
+                <div id="details-episodes-container" class="details-episodes-container">
+                    <div class="ep-header">
+                        <span style="font-family:'Bebas Neue'; font-size:1.5rem; color: #fff;">Episódios</span>
+                        <select id="details-season-select" class="ep-season-select" onchange="loadDetailsEpisodes(this.value)"></select>
+                    </div>
+                    <div id="details-ep-grid" class="details-ep-grid"></div>
+                </div>
+            </div>
+            
+            <div id="details-related-tab" class="tab-content">
+                <div id="details-related-container" class="related-container show" style="margin-top:0;">
+                    <div class="related-wrapper">
+                        <button class="related-nav-arrow left" onclick="scrollRelated(-1)"><i class="fas fa-chevron-left"></i></button>
+                        <div id="details-related-grid" class="related-grid" style="padding: 10px 0;"></div>
+                        <button class="related-nav-arrow right" onclick="scrollRelated(1)"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
             </div>
 
-            <button class="btn-collapse-info" onclick="toggleDetailsInfo(true)" title="Recolher Informações">
+            <button class="btn-control-info" onclick="toggleDetailsInfo(this.parentElement.parentElement.classList.contains('minimized') ? false : true)" title="Recolher/Mostrar Informações">
                 <i class="fas fa-chevron-left"></i>
             </button>
-            
-            <div id="details-related-container" class="related-container">
-                <h3 class="related-title">Relacionados:</h3>
-                <div class="related-wrapper">
-                    <button class="related-nav-arrow left" onclick="scrollRelated(-1)"><i class="fas fa-chevron-left"></i></button>
-                    <div id="details-related-grid" class="related-grid"></div>
-                    <button class="related-nav-arrow right" onclick="scrollRelated(1)"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
         </div>
     </div>
     
-    <button class="btn-restore-info" id="btn-restore-info" onclick="toggleDetailsInfo(false)" title="Mostrar Informações">
-        <i class="fas fa-chevron-right"></i>
-    </button>
+    <button class="btn-restore-info" id="btn-restore-info" style="display:none;"></button>
 </div>
 
 <!-- Modal TV Online Interativo -->
@@ -1003,17 +1101,11 @@
                 </div>
             </div>
             
-            <!-- Botão de Minimizar (Fica à direita do menu) -->
-            <button id="tv-minimize-btn" style="display: flex; position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: 10px; width: 50px; height: 50px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; color: #fff; cursor: pointer; align-items: center; justify-content: center; backdrop-filter: blur(5px); transition: 0.4s; z-index: 100;" onclick="toggleTVInfo(true)" title="Recolher Menu">
+            <button class="btn-control-info" onclick="toggleTVInfo(this.parentElement.parentElement.classList.contains('minimized') ? false : true)" title="Recolher/Mostrar Menu">
                 <i class="fas fa-chevron-left"></i>
             </button>
         </div>
     </div>
-    
-    <!-- Botão de Restaurar (Visível quando minimizado) -->
-    <button id="tv-restore-btn" style="display: none; position: fixed; left: 30px; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; color: #fff; cursor: pointer; align-items: center; justify-content: center; backdrop-filter: blur(5px); z-index: 27000; transition: 0.4s;" onclick="toggleTVInfo(false)" title="Mostrar Canais">
-        <i class="fas fa-list"></i>
-    </button>
 </div>
 
 <div class="container">
@@ -1162,45 +1254,52 @@
                     <span id="discoverGenre"></span>
                     <span id="discoverRating"></span>
                 </div>
-                <p id="discoverOverview" class="details-synopsis"></p>
-                <button id="discover-read-more" class="btn-read-more" onclick="toggleSynopsis('discoverOverview', this)">Ler mais</button>
 
-                <div class="details-btns">
-                    <button id="discoverWatchBtn" class="btn-details btn-details-watch">
-                        <i class="fas fa-play"></i> <span>Assistir Agora</span>
-                    </button>
-                    
-                    <div style="display: flex; gap: 10px; margin-left: 20px;">
-                        <button id="discoverPrevBtn" class="btn-details btn-details-trailer" onclick="navDiscover(-1)">
-                            <i class="fas fa-chevron-left"></i> <span>Anterior</span>
+                <div class="details-tabs">
+                    <button class="tab-btn active" onclick="switchTab(this, 'discover-synopsis-tab')">Sinopse</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'discover-related-tab')">Relacionados</button>
+                </div>
+
+                <div id="discover-synopsis-tab" class="tab-content active">
+                    <p id="discoverOverview" class="details-synopsis"></p>
+                    <button id="discover-read-more" class="btn-read-more" onclick="toggleSynopsis('discoverOverview', this)">Ler mais</button>
+
+                    <div class="details-btns">
+                        <button id="discoverWatchBtn" class="btn-details btn-details-watch">
+                            <i class="fas fa-play"></i> <span>Assistir Agora</span>
                         </button>
-                        <button class="btn-details btn-details-trailer" onclick="navDiscover(1)">
-                            <i class="fas fa-random"></i> <span>Aleatório</span>
-                        </button>
-                        <button class="btn-details btn-details-trailer" onclick="navDiscover(1)">
-                            <i class="fas fa-chevron-right"></i> <span>Próximo</span>
-                        </button>
+                        
+                        <div style="display: flex; gap: 10px; margin-left: 20px;">
+                            <button id="discoverPrevBtn" class="btn-details btn-details-trailer" onclick="navDiscover(-1)">
+                                <i class="fas fa-chevron-left"></i> <span>Anterior</span>
+                            </button>
+                            <button class="btn-details btn-details-trailer" onclick="navDiscover(1)">
+                                <i class="fas fa-random"></i> <span>Aleatório</span>
+                            </button>
+                            <button class="btn-details btn-details-trailer" onclick="navDiscover(1)">
+                                <i class="fas fa-chevron-right"></i> <span>Próximo</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="discover-related-tab" class="tab-content">
+                    <div id="discover-related-container" class="related-container show" style="margin-top:0;">
+                        <div class="related-wrapper">
+                            <button class="related-nav-arrow left" onclick="scrollRelated(-1, 'discover-related-grid')"><i class="fas fa-chevron-left"></i></button>
+                            <div id="discover-related-grid" class="related-grid" style="padding: 10px 0;"></div>
+                            <button class="related-nav-arrow right" onclick="scrollRelated(1, 'discover-related-grid')"><i class="fas fa-chevron-right"></i></button>
+                        </div>
                     </div>
                 </div>
 
-                <button class="btn-collapse-info" onclick="toggleDetailsInfo(true, 'discover-body')" title="Recolher Informações">
+                <button class="btn-control-info" onclick="toggleDetailsInfo(this.parentElement.parentElement.classList.contains('minimized') ? false : true, 'discover-body')" title="Recolher/Mostrar Informações">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-
-                <div id="discover-related-container" class="related-container">
-                    <h3 class="related-title">Relacionados:</h3>
-                    <div class="related-wrapper">
-                        <button class="related-nav-arrow left" onclick="scrollRelated(-1, 'discover-related-grid')"><i class="fas fa-chevron-left"></i></button>
-                        <div id="discover-related-grid" class="related-grid"></div>
-                        <button class="related-nav-arrow right" onclick="scrollRelated(1, 'discover-related-grid')"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <button class="btn-restore-info" id="discover-restore-info" onclick="toggleDetailsInfo(false, 'discover-body')" title="Mostrar Informações">
-            <i class="fas fa-chevron-right"></i>
-        </button>
+        <button class="btn-restore-info" id="discover-restore-info" style="display:none;"></button>
     </div>
 
     <button class="btn-discover-floating" onclick="openDiscover()" title="Descobrir novo conteúdo">
@@ -1374,6 +1473,10 @@
         document.body.style.overflow = 'hidden';
         const modal = document.getElementById('details-modal');
         modal.style.display = 'flex';
+        
+        // Reset Tabs to Synopsis
+        const synopsisTabBtn = document.querySelector('#details-modal .tab-btn:first-child');
+        if (synopsisTabBtn) switchTab(synopsisTabBtn, 'details-synopsis-tab');
         
         // Reset e loading
         document.getElementById('details-title').innerText = 'Carregando...';
@@ -1953,14 +2056,10 @@
 
     function toggleTVInfo(minimize) {
         const body = document.getElementById('tv-body');
-        const restoreBtn = document.getElementById('tv-restore-btn');
         if (minimize) {
             body.classList.add('minimized');
-            setTimeout(() => { restoreBtn.style.display = 'flex'; restoreBtn.style.opacity = '1'; }, 400);
         } else {
             body.classList.remove('minimized');
-            restoreBtn.style.opacity = '0';
-            setTimeout(() => { restoreBtn.style.display = 'none'; }, 400);
         }
     }
 
@@ -2069,6 +2168,10 @@
         const carousel = document.getElementById('descobrir-carousel');
         carousel.style.display = 'flex';
         carousel.style.opacity = '1';
+        
+        // Reset Tabs to Synopsis
+        const synopsisTabBtn = document.querySelector('#descobrir-carousel .tab-btn:first-child');
+        if (synopsisTabBtn) switchTab(synopsisTabBtn, 'discover-synopsis-tab');
         
         if (cachedGenresDiscover.movie.length === 0) {
             try {
@@ -2205,6 +2308,15 @@
         document.getElementById('synopsisTitle').innerText = title;
         document.getElementById('synopsisText').innerText = text || 'Sinopse não disponível.';
         document.getElementById('synopsis-modal').style.display = 'flex';
+    }
+
+    function switchTab(btn, tabId) {
+        const container = btn.parentElement.parentElement;
+        container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        btn.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
     }
 
     function closeSynopsis() {
