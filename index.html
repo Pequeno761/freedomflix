@@ -282,6 +282,9 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes modalShow { from { opacity: 0; transform: scale(0.7) translateY(50px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .hidden { display: none; }
+        
+        /* Ocultar Interface Reels por padrão (visível apenas no mobile via media query) */
+        .reels-info-container { display: none; }
 
         /* Estilos Maratonar */
         .collection-hub { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 40px 0; }
@@ -516,8 +519,117 @@
             /* Grid de Maratonar */
             .collection-hub { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
             
-            /* Botão flutuante */
-            .btn-discover-floating { width: 60px; height: 60px; bottom: 20px; right: 20px; font-size: 1.5rem; }
+            /* Botão flutuante centralizado no mobile */
+            .btn-discover-floating { 
+                width: 65px; height: 65px; 
+                bottom: 20px; right: 50%; 
+                transform: translateX(50%); 
+                font-size: 1.6rem; 
+                animation: pulse-ring 2s infinite;
+            }
+            .btn-discover-floating:hover { transform: translateX(50%) scale(1.1); }
+
+            /* Layout Reels para o Modal Descobrir */
+            #descobrir-carousel { height: 100dvh; overflow: hidden; }
+            #descobrir-carousel .details-body { 
+                padding: 0; 
+                height: 100%; 
+                justify-content: flex-end; 
+                background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, transparent 100%);
+            }
+            #descobrir-carousel .details-main-info { 
+                max-width: 100%; 
+                width: 100%; 
+                padding: 20px; 
+                margin-bottom: 20px;
+                transform: none !important;
+                opacity: 1 !important;
+            }
+
+            /* Info Estilo Reels (Minimizada por padrão) */
+            .reels-info-container {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                transition: all 0.4s ease;
+            }
+            .reels-header {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+            .reels-thumb {
+                width: 50px;
+                height: 75px;
+                border-radius: 6px;
+                border: 1px solid rgba(255,255,255,0.3);
+                object-fit: cover;
+            }
+            .reels-title-area { flex: 1; }
+            .reels-title-area h2 { 
+                font-family: 'Bebas Neue', sans-serif; 
+                font-size: 1.8rem; margin: 0; color: #fff;
+                white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            }
+            .reels-meta { font-size: 0.8rem; color: #ccc; display: flex; gap: 10px; opacity: 0.8; }
+            
+            .reels-actions {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .btn-reels-play {
+                background: var(--primary);
+                color: #fff;
+                width: 50px; height: 50px;
+                border-radius: 50%;
+                display: flex; align-items: center; justify-content: center;
+                font-size: 1.2rem; border: none;
+                box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+            }
+            .btn-reels-more {
+                background: rgba(255,255,255,0.1);
+                color: #fff;
+                width: 40px; height: 40px;
+                border-radius: 50%;
+                display: flex; align-items: center; justify-content: center;
+                border: 1px solid rgba(255,255,255,0.2);
+                backdrop-filter: blur(5px);
+            }
+
+            /* Ocultar elementos padrão do modal no modo Reels */
+            #descobrir-carousel .carousel-counter,
+            #descobrir-carousel .details-title,
+            #descobrir-carousel .modal-header-container,
+            #descobrir-carousel .details-meta,
+            #descobrir-carousel .details-tabs,
+            #descobrir-carousel .details-btns,
+            #descobrir-carousel .btn-control-info {
+                display: none !important;
+            }
+
+            /* Conteúdo Expansível (Legenda/Relacionados) */
+            .reels-expanded-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+                background: rgba(0,0,0,0.6);
+                border-radius: 12px;
+                backdrop-filter: blur(10px);
+            }
+            .reels-expanded-content.active {
+                max-height: 400px;
+                padding: 15px;
+                overflow-y: auto;
+                transition: max-height 0.5s ease-in-out;
+            }
+
+            /* Animação de Troca de Vídeo */
+            .swipe-up-anim { animation: swipeUp 0.6s ease-out; }
+            @keyframes swipeUp {
+                0% { transform: translateY(100%); opacity: 0; }
+                100% { transform: translateY(0); opacity: 1; }
+            }
         }
 
         /* --- NOVOS ESTILOS: DETALHES ELEGANTES --- */
@@ -1285,12 +1397,36 @@
         
         <div class="details-body" id="discover-body">
             <div class="details-main-info">
-            <div class="carousel-counter" style="margin-bottom: 20px; color: var(--primary); font-weight: bold; letter-spacing: 2px;">DESCUBRA ALGO NOVO</div>
-            <div class="modal-header-container">
-                <img id="discover-thumb" class="modal-title-thumb" src="" alt="">
-                <h1 id="discoverTitle" class="details-title">Buscando...</h1>
-            </div>
-            <div class="details-meta">
+                <!-- Interface Reels para Mobile -->
+                <div id="reels-interface" class="reels-info-container">
+                    <div class="reels-header">
+                        <img id="reels-thumb" class="reels-thumb" src="" alt="">
+                        <div class="reels-title-area">
+                            <h2 id="reels-title"></h2>
+                            <div class="reels-meta">
+                                <span id="reels-genre"></span>
+                                <span id="reels-rating"></span>
+                                <span id="reels-year"></span>
+                            </div>
+                        </div>
+                        <div class="reels-actions">
+                            <button id="reels-play-btn" class="btn-reels-play"><i class="fas fa-play"></i></button>
+                            <button class="btn-reels-more" onclick="toggleReelsInfo()"><i class="fas fa-ellipsis-h"></i></button>
+                        </div>
+                    </div>
+                    <div id="reels-expanded" class="reels-expanded-content">
+                        <p id="reels-synopsis" style="font-size: 0.9rem; line-height: 1.4; color: #eee; margin-bottom: 20px;"></p>
+                        <div style="font-family:'Bebas Neue'; color: var(--primary); font-size: 1.2rem; margin-bottom: 10px;">Relacionados</div>
+                        <div id="reels-related-grid" class="related-grid" style="padding: 10px 0;"></div>
+                    </div>
+                </div>
+
+                <div class="carousel-counter" style="margin-bottom: 20px; color: var(--primary); font-weight: bold; letter-spacing: 2px;">DESCUBRA ALGO NOVO</div>
+                <div class="modal-header-container">
+                    <img id="discover-thumb" class="modal-title-thumb" src="" alt="">
+                    <h1 id="discoverTitle" class="details-title">Buscando...</h1>
+                </div>
+                <div class="details-meta">
                     <span id="discoverGenre"></span>
                     <span id="discoverRating"></span>
                 </div>
@@ -2199,18 +2335,45 @@
             const g = genres.find(x => x.id === id);
             return g ? g.name : '';
         }).filter(n => n !== '').slice(0, 2).join(' • ') : (type === 'movie' ? 'Filme' : 'Série');
-
-        document.getElementById('discoverBg').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${item.backdrop_path})`;
         
-        // Carregar Miniatura
+        const year = (item.release_date || item.first_air_date || '').split('-')[0];
+        const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
         const poster = item.poster_path ? `https://image.tmdb.org/t/p/w200${item.poster_path}` : 'https://via.placeholder.com/200x300/111/fff?text=FF';
-        document.getElementById('discover-thumb').src = poster;
 
+        // Atualizar Interface PC
+        document.getElementById('discoverBg').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${item.backdrop_path})`;
+        document.getElementById('discover-thumb').src = poster;
         document.getElementById('discoverTitle').innerText = title;
         document.getElementById('discoverGenre').innerText = itemGenres;
-        document.getElementById('discoverRating').innerText = `⭐ ${item.vote_average ? item.vote_average.toFixed(1) : 'N/A'}`;
+        document.getElementById('discoverRating').innerText = `⭐ ${rating}`;
         document.getElementById('discoverOverview').innerText = item.overview || 'Sinopse não disponível.';
         
+        // Atualizar Interface Reels (Mobile)
+        if (window.innerWidth <= 768) {
+            document.getElementById('reels-title').innerText = title;
+            document.getElementById('reels-thumb').src = poster;
+            document.getElementById('reels-genre').innerText = itemGenres;
+            document.getElementById('reels-rating').innerText = `⭐ ${rating}`;
+            document.getElementById('reels-year').innerText = year;
+            document.getElementById('reels-synopsis').innerText = item.overview || 'Sinopse não disponível.';
+            
+            // Injetar relacionados no Reels
+            const reelsGrid = document.getElementById('reels-related-grid');
+            reelsGrid.innerHTML = recommendations.slice(0, 10).map(i => renderMovieCard(i, type)).join('');
+            reelsGrid.querySelectorAll('.movie-card').forEach(c => c.classList.add('related-item'));
+            
+            document.getElementById('reels-play-btn').onclick = () => { closeDiscover(); openPlayer(item.id, type); };
+            
+            // Animação de entrada
+            const trailerContainer = document.getElementById('discover-trailer-container');
+            trailerContainer.classList.remove('swipe-up-anim');
+            void trailerContainer.offsetWidth; // Trigger reflow
+            trailerContainer.classList.add('swipe-up-anim');
+            
+            // Fechar info expandida ao trocar
+            document.getElementById('reels-expanded').classList.remove('active');
+        }
+
         // Resetar estado de minimização
         document.getElementById('discover-body').classList.remove('minimized');
         
@@ -2221,7 +2384,7 @@
         const trailerContainer = document.getElementById('discover-trailer-container');
         if (trailerContainer) {
             trailerContainer.innerHTML = `
-                <iframe src="https://www.youtube.com/embed/${videoKey}?autoplay=1&modestbranding=1&rel=0&enablejsapi=1&origin=${origin}" allow="autoplay; encrypted-media"></iframe>`;
+                <iframe src="https://www.youtube.com/embed/${videoKey}?autoplay=1&modestbranding=1&rel=0&enablejsapi=1&origin=${origin}&controls=0&mute=1&loop=1&playlist=${videoKey}" allow="autoplay; encrypted-media"></iframe>`;
         }
         
         document.getElementById('discoverWatchBtn').onclick = () => {
@@ -2235,6 +2398,35 @@
         const prevBtn = document.getElementById('discoverPrevBtn');
         if (prevBtn) {
             prevBtn.style.display = (currentDiscoverIdx > 0) ? 'flex' : 'none';
+        }
+    }
+
+    function toggleReelsInfo() {
+        document.getElementById('reels-expanded').classList.toggle('active');
+    }
+
+    // Sistema de Gestos Swipe (TikTok/Reels)
+    let touchStartY = 0;
+    let touchEndY = 0;
+
+    document.getElementById('descobrir-carousel').addEventListener('touchstart', e => {
+        touchStartY = e.changedTouches[0].screenY;
+    }, false);
+
+    document.getElementById('descobrir-carousel').addEventListener('touchend', e => {
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+    }, false);
+
+    function handleSwipe() {
+        if (window.innerWidth > 768) return;
+        const threshold = 50;
+        if (touchStartY - touchEndY > threshold) {
+            // Swipe Up -> Próximo
+            navDiscover(1);
+        } else if (touchEndY - touchStartY > threshold) {
+            // Swipe Down -> Anterior
+            navDiscover(-1);
         }
     }
 
