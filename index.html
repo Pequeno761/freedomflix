@@ -1101,12 +1101,95 @@
         .close-details:hover { background: var(--primary); transform: rotate(90deg); }
 
         @media (max-width: 768px) {
-            .details-body { padding: 20px; height: auto; justify-content: flex-start; padding-top: 80px; }
-            .details-title { font-size: 2.5rem; }
-            .details-synopsis { font-size: 0.9rem; -webkit-line-clamp: 4; }
-            .btn-details { padding: 12px 25px; font-size: 1rem; flex: 1; justify-content: center; }
-            .details-btns { flex-direction: column; gap: 10px; }
-            .close-details { top: 20px; right: 20px; width: 40px; height: 40px; }
+            body { zoom: 1; -webkit-text-size-adjust: 100%; }
+            .container { padding: 10px; }
+            
+            /* Ajuste Modal Boas-Vindas */
+            .welcome-content {
+                width: 90%;
+                padding: 20px;
+                max-height: 85vh;
+                overflow-y: auto;
+                box-sizing: border-box;
+            }
+            .welcome-content h2 { font-size: 1.6rem; }
+            .welcome-content p { font-size: 0.8rem; line-height: 1.4; }
+            .btn-welcome-close { margin-top: 20px; padding: 10px 30px; }
+            
+            header { padding: 10px 0; gap: 10px; }
+            .header-top { flex-direction: column; gap: 10px; }
+            .logo .freedom { font-size: 3rem; }
+            .logo .flix { font-size: 1.2rem; letter-spacing: 6px; }
+            .search-box { width: 100%; }
+            .nav-link span { max-width: 100px; opacity: 1; margin-left: 5px; }
+
+            /* Botão flutuante centralizado no mobile */
+            .btn-discover-floating { 
+                width: 60px; height: 60px; 
+                bottom: 25px; left: 50%; 
+                transform: translateX(-50%); 
+                z-index: 1000;
+            }
+
+            /* Layout Reels para o Modal Descobrir */
+            #descobrir-carousel { height: 100dvh; overflow: hidden; position: fixed; }
+            
+            /* Camada Invisível de Swipe (Cobre o Player) */
+            .reels-swipe-overlay {
+                position: absolute;
+                top: 0; left: 0; width: 100%; height: 75%;
+                z-index: 100;
+                background: transparent;
+            }
+
+            #descobrir-carousel .details-body { 
+                padding: 0; 
+                height: 100%; 
+                justify-content: flex-end; 
+                background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 40%, transparent 100%);
+                pointer-events: none; /* Deixa passar clique para o overlay */
+            }
+            #descobrir-carousel .details-main-info { 
+                max-width: 100%; width: 100%; padding: 20px; 
+                transform: none !important; opacity: 1 !important;
+                pointer-events: auto; /* Reabilita para os botões */
+                z-index: 110;
+            }
+
+            /* Info Estilo Reels (TikTok) */
+            .reels-info-container { display: flex; flex-direction: column; gap: 12px; }
+            .reels-header { display: flex; align-items: center; gap: 12px; }
+            .reels-thumb { width: 45px; height: 65px; border-radius: 4px; border: 1px solid #fff; object-fit: cover; }
+            .reels-title-area { flex: 1; min-width: 0; }
+            .reels-title-area h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: #fff; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .reels-meta { font-size: 0.75rem; color: #ccc; display: flex; gap: 8px; margin-top: 2px; }
+            
+            .reels-actions { display: flex; align-items: center; gap: 8px; }
+            .btn-reels-play { background: var(--primary); color: #fff; width: 45px; height: 45px; border-radius: 50%; border: none; font-size: 1.1rem; box-shadow: 0 0 15px rgba(229,9,20,0.5); }
+            .btn-reels-tab { background: rgba(255,255,255,0.1); color: #fff; padding: 8px 15px; border-radius: 20px; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); font-weight: bold; }
+            .btn-reels-tab.active { background: var(--primary); border-color: var(--primary); }
+
+            .reels-expanded-content {
+                display: none;
+                max-height: 300px;
+                overflow-y: auto;
+                background: rgba(15,15,15,0.95);
+                border-radius: 12px;
+                padding: 15px;
+                margin-top: 10px;
+                border: 1px solid rgba(255,255,255,0.1);
+            }
+            .reels-expanded-content.active { display: block; animation: slideUpInfo 0.3s ease-out; }
+            
+            @keyframes slideUpInfo { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+            #descobrir-carousel .carousel-counter,
+            #descobrir-carousel .details-title,
+            #descobrir-carousel .modal-header-container,
+            #descobrir-carousel .details-meta,
+            #descobrir-carousel .details-tabs,
+            #descobrir-carousel .details-btns,
+            #descobrir-carousel .btn-control-info { display: none !important; }
         }
     </style>
 </head>
@@ -1396,6 +1479,9 @@
         <div class="close-carousel" onclick="closeDiscover()">×</div>
         
         <div class="details-body" id="discover-body">
+            <!-- Camada de Swipe (Apenas mobile) -->
+            <div class="reels-swipe-overlay" id="reels-swipe-overlay"></div>
+
             <div class="details-main-info">
                 <!-- Interface Reels para Mobile -->
                 <div id="reels-interface" class="reels-info-container">
@@ -1411,13 +1497,19 @@
                         </div>
                         <div class="reels-actions">
                             <button id="reels-play-btn" class="btn-reels-play"><i class="fas fa-play"></i></button>
-                            <button class="btn-reels-more" onclick="toggleReelsInfo()"><i class="fas fa-ellipsis-h"></i></button>
+                            <button id="btn-reels-synopsis" class="btn-reels-tab" onclick="switchReelsTab('synopsis')">Sinopse</button>
+                            <button id="btn-reels-related" class="btn-reels-tab" onclick="switchReelsTab('related')">Relacionados</button>
                         </div>
                     </div>
+                    
+                    <!-- Área de Conteúdo Expansível (Minimizada por padrão) -->
                     <div id="reels-expanded" class="reels-expanded-content">
-                        <p id="reels-synopsis" style="font-size: 0.9rem; line-height: 1.4; color: #eee; margin-bottom: 20px;"></p>
-                        <div style="font-family:'Bebas Neue'; color: var(--primary); font-size: 1.2rem; margin-bottom: 10px;">Relacionados</div>
-                        <div id="reels-related-grid" class="related-grid" style="padding: 10px 0;"></div>
+                        <div id="reels-synopsis-tab" class="reels-tab-content">
+                            <p id="reels-synopsis" style="font-size: 0.9rem; line-height: 1.5; color: #eee; margin: 0;"></p>
+                        </div>
+                        <div id="reels-related-tab" class="reels-tab-content" style="display:none;">
+                            <div id="reels-related-grid" class="related-grid" style="padding: 10px 0;"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -2370,8 +2462,9 @@
             void trailerContainer.offsetWidth; // Trigger reflow
             trailerContainer.classList.add('swipe-up-anim');
             
-            // Fechar info expandida ao trocar
+            // Resetar abas
             document.getElementById('reels-expanded').classList.remove('active');
+            document.querySelectorAll('.btn-reels-tab').forEach(b => b.classList.remove('active'));
         }
 
         // Resetar estado de minimização
@@ -2383,8 +2476,11 @@
         const origin = window.location.origin;
         const trailerContainer = document.getElementById('discover-trailer-container');
         if (trailerContainer) {
+            // Mobile: mudo, sem controles, loop infinito para parecer Reels
+            const isMobile = window.innerWidth <= 768;
+            const params = isMobile ? `autoplay=1&controls=0&mute=1&loop=1&playlist=${videoKey}&modestbranding=1` : `autoplay=1&modestbranding=1&rel=0&enablejsapi=1`;
             trailerContainer.innerHTML = `
-                <iframe src="https://www.youtube.com/embed/${videoKey}?autoplay=1&modestbranding=1&rel=0&enablejsapi=1&origin=${origin}&controls=0&mute=1&loop=1&playlist=${videoKey}" allow="autoplay; encrypted-media"></iframe>`;
+                <iframe src="https://www.youtube.com/embed/${videoKey}?${params}&origin=${origin}" allow="autoplay; encrypted-media"></iframe>`;
         }
         
         document.getElementById('discoverWatchBtn').onclick = () => {
@@ -2401,19 +2497,38 @@
         }
     }
 
-    function toggleReelsInfo() {
-        document.getElementById('reels-expanded').classList.toggle('active');
+    function switchReelsTab(tab) {
+        const container = document.getElementById('reels-expanded');
+        const isCurrentlyActive = container.classList.contains('active');
+        const activeTab = document.querySelector('.reels-tab-content:not([style*="display: none"])');
+        const targetId = tab === 'synopsis' ? 'reels-synopsis-tab' : 'reels-related-tab';
+        const targetBtn = tab === 'synopsis' ? 'btn-reels-synopsis' : 'btn-reels-related';
+
+        if (isCurrentlyActive && activeTab.id === targetId) {
+            // Se clicar no mesmo botão já ativo, minimiza
+            container.classList.remove('active');
+            document.querySelectorAll('.btn-reels-tab').forEach(b => b.classList.remove('active'));
+        } else {
+            // Troca de aba ou abre
+            container.classList.add('active');
+            document.querySelectorAll('.btn-reels-tab').forEach(b => b.classList.remove('active'));
+            document.getElementById(targetBtn).classList.add('active');
+            
+            document.getElementById('reels-synopsis-tab').style.display = tab === 'synopsis' ? 'block' : 'none';
+            document.getElementById('reels-related-tab').style.display = tab === 'related' ? 'block' : 'none';
+        }
     }
 
-    // Sistema de Gestos Swipe (TikTok/Reels)
+    // Sistema de Gestos Swipe (TikTok/Reels) - Agora no Overlay
     let touchStartY = 0;
     let touchEndY = 0;
 
-    document.getElementById('descobrir-carousel').addEventListener('touchstart', e => {
+    const swipeTarget = document.getElementById('reels-swipe-overlay');
+    swipeTarget.addEventListener('touchstart', e => {
         touchStartY = e.changedTouches[0].screenY;
     }, false);
 
-    document.getElementById('descobrir-carousel').addEventListener('touchend', e => {
+    swipeTarget.addEventListener('touchend', e => {
         touchEndY = e.changedTouches[0].screenY;
         handleSwipe();
     }, false);
@@ -2422,10 +2537,8 @@
         if (window.innerWidth > 768) return;
         const threshold = 50;
         if (touchStartY - touchEndY > threshold) {
-            // Swipe Up -> Próximo
             navDiscover(1);
         } else if (touchEndY - touchStartY > threshold) {
-            // Swipe Down -> Anterior
             navDiscover(-1);
         }
     }
