@@ -1853,7 +1853,10 @@
             if (trailer) {
                 const origin = window.location.origin;
                 document.getElementById('details-trailer-container').innerHTML = `
-                    <iframe src="https://www.youtube.com/embed/${trailer.key}?autoplay=1&controls=1&loop=1&playlist=${trailer.key}&modestbranding=1&rel=0&enablejsapi=1&origin=${origin}" allow="autoplay; encrypted-media"></iframe>`;
+                    <iframe src="https://www.youtube-nocookie.com/embed/${trailer.key}?autoplay=1&controls=1&loop=1&playlist=${trailer.key}&modestbranding=1&rel=0&iv_load_policy=3&enablejsapi=1&origin=${origin}" 
+                            allow="autoplay; encrypted-media" 
+                            sandbox="allow-forms allow-scripts allow-pointer-lock allow-same-origin allow-presentation"
+                            title="Trailer"></iframe>`;
             }
             
             // Configurar Botão Assistir
@@ -2498,9 +2501,12 @@
         if (trailerContainer) {
             // Mobile: mudo, sem controles, loop infinito para parecer Reels
             const isMobile = window.innerWidth <= 768;
-            const params = isMobile ? `autoplay=1&controls=0&mute=1&loop=1&playlist=${videoKey}&modestbranding=1` : `autoplay=1&modestbranding=1&rel=0&enablejsapi=1`;
+            const params = isMobile ? `autoplay=1&controls=0&mute=1&loop=1&playlist=${videoKey}&modestbranding=1&iv_load_policy=3` : `autoplay=1&modestbranding=1&rel=0&iv_load_policy=3&enablejsapi=1`;
             trailerContainer.innerHTML = `
-                <iframe src="https://www.youtube.com/embed/${videoKey}?${params}&origin=${origin}" allow="autoplay; encrypted-media"></iframe>`;
+                <iframe src="https://www.youtube-nocookie.com/embed/${videoKey}?${params}&origin=${origin}" 
+                        allow="autoplay; encrypted-media" 
+                        sandbox="allow-forms allow-scripts allow-pointer-lock allow-same-origin allow-presentation"
+                        title="Discover Player"></iframe>`;
         }
         
         document.getElementById('discoverWatchBtn').onclick = () => {
