@@ -1150,39 +1150,39 @@
                 pointer-events: none; /* Deixa passar clique para o overlay */
             }
             #descobrir-carousel .details-main-info { 
-                max-width: 100%; width: 100%; padding: 20px; 
+                max-width: 100%; width: 100%; padding: 15px; 
                 transform: none !important; opacity: 1 !important;
                 pointer-events: auto; /* Reabilita para os botões */
                 z-index: 110;
             }
 
             /* Info Estilo Reels (TikTok) */
-            .reels-info-container { display: flex; flex-direction: column; gap: 12px; width: 100%; }
-            .reels-header { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
-            .reels-thumb { width: 50px; height: 75px; border-radius: 4px; border: 1px solid #fff; object-fit: cover; flex-shrink: 0; }
-            .reels-title-area { flex: 1; min-width: 150px; }
+            .reels-info-container { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+            .reels-header { display: flex; align-items: flex-start; gap: 10px; flex-wrap: nowrap; }
+            .reels-thumb { width: 45px; height: 65px; border-radius: 4px; border: 1px solid #fff; object-fit: cover; flex-shrink: 0; }
+            .reels-title-area { flex: 1; min-width: 0; }
             .reels-title-area h2 { 
                 font-family: 'Bebas Neue', sans-serif; 
-                font-size: 1.6rem; color: #fff; margin: 0; 
-                white-space: normal; /* Permite que o nome quebre linha */
+                font-size: 1.4rem; color: #fff; margin: 0; 
+                white-space: normal; 
                 line-height: 1.1;
                 display: block;
             }
-            .reels-meta { font-size: 0.75rem; color: #ccc; display: flex; gap: 8px; margin-top: 5px; flex-wrap: wrap; }
+            .reels-meta { font-size: 0.7rem; color: #ccc; display: flex; gap: 6px; margin-top: 3px; }
             
-            .reels-actions { display: flex; align-items: center; gap: 8px; width: 100%; justify-content: flex-start; margin-top: 5px; }
-            .btn-reels-play { background: var(--primary); color: #fff; width: 45px; height: 45px; border-radius: 50%; border: none; font-size: 1.1rem; box-shadow: 0 0 15px rgba(229,9,20,0.5); flex-shrink: 0; }
-            .btn-reels-tab { background: rgba(255,255,255,0.1); color: #fff; padding: 8px 12px; border-radius: 20px; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); font-weight: bold; white-space: nowrap; flex: 1; text-align: center; }
+            .reels-actions { display: flex; align-items: center; gap: 6px; width: 100%; justify-content: flex-start; margin-top: 5px; }
+            .btn-reels-play { background: var(--primary); color: #fff; width: 40px; height: 40px; border-radius: 50%; border: none; font-size: 1rem; box-shadow: 0 0 15px rgba(229,9,20,0.5); flex-shrink: 0; }
+            .btn-reels-tab { background: rgba(255,255,255,0.1); color: #fff; padding: 6px 10px; border-radius: 20px; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); font-weight: bold; white-space: nowrap; flex: 1; text-align: center; }
             .btn-reels-tab.active { background: var(--primary); border-color: var(--primary); }
 
             .reels-expanded-content {
                 display: none;
-                max-height: 300px;
+                max-height: 250px;
                 overflow-y: auto;
                 background: rgba(15,15,15,0.95);
                 border-radius: 12px;
-                padding: 15px;
-                margin-top: 10px;
+                padding: 12px;
+                margin-top: 8px;
                 border: 1px solid rgba(255,255,255,0.1);
             }
             .reels-expanded-content.active { display: block; animation: slideUpInfo 0.3s ease-out; }
@@ -1199,30 +1199,21 @@
             #descobrir-carousel .btn-control-info { display: none !important; }
 
             /* Melhoria no Modal de Detalhes padrão para Mobile */
-            .details-title { font-size: 2.2rem !important; line-height: 1.1; margin-top: 10px; }
-            .modal-header-container { flex-direction: row; align-items: flex-start; gap: 15px; margin-bottom: 15px; }
-            .modal-title-thumb { width: 70px; height: 105px; flex-shrink: 0; }
-            .details-body { padding: 60px 20px 20px 20px; }
+            .details-title { font-size: 1.8rem !important; line-height: 1.1; margin-top: 5px; }
+            .modal-header-container { flex-direction: row; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+            .modal-title-thumb { width: 60px; height: 90px; flex-shrink: 0; }
+            .details-body { padding: 50px 15px 15px 15px; }
             .details-main-info { max-width: 100%; opacity: 1 !important; transform: none !important; }
-            .details-meta { font-size: 0.9rem; gap: 10px; margin-bottom: 15px; }
-            .details-synopsis { font-size: 0.95rem; -webkit-line-clamp: 4; }
-            .details-btns { flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
-            .btn-details { font-size: 1.1rem; padding: 10px 15px; flex: 1; min-width: 140px; }
-            .btn-details span { opacity: 1; max-width: 200px; margin-left: 8px; }
+            .details-meta { font-size: 0.8rem; gap: 8px; margin-bottom: 12px; }
+            .details-synopsis { font-size: 0.9rem; -webkit-line-clamp: 4; }
+            .details-btns { flex-wrap: wrap; gap: 8px; margin-bottom: 25px; }
+            .btn-details { font-size: 1rem; padding: 8px 12px; flex: 1; min-width: 130px; }
+            .btn-details span { opacity: 1; max-width: 180px; margin-left: 6px; }
 
-            /* Setas de Navegação Descobrir */
-            .nav-discover-btn {
-                position: absolute; top: 50%; transform: translateY(-50%);
-                width: 60px; height: 60px; background: rgba(0,0,0,0.3);
-                color: #fff; border: 1px solid rgba(255,255,255,0.2);
-                border-radius: 50%; display: flex; align-items: center; justify-content: center;
-                font-size: 1.5rem; cursor: pointer; z-index: 1000; transition: 0.3s;
-                backdrop-filter: blur(5px);
-            }
-            .nav-discover-btn:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-50%) scale(1.1); }
-            .nav-discover-btn.left { left: 20px; }
-            .nav-discover-btn.right { right: 20px; }
-        }
+            /* Setas de Navegação Descobrir Mobile */
+            .nav-discover-btn { width: 35px; height: 35px; font-size: 0.9rem; }
+            .nav-discover-btn.left { left: 8px; }
+            .nav-discover-btn.right { right: 8px; }        }
     </style>
 </head>
 <body>
