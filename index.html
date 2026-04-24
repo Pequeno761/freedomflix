@@ -1216,7 +1216,32 @@
             /* Setas de Navegação Descobrir Mobile */
             .nav-discover-btn { width: 35px; height: 35px; font-size: 0.9rem; position: absolute; top: 50%; transform: translateY(-50%); z-index: 200; background: rgba(0,0,0,0.4); border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); color: #fff; }
             .nav-discover-btn.left { left: 10px; }
-            .nav-discover-btn.right { right: 10px; }        }
+            .nav-discover-btn.right { right: 10px; }
+
+            /* Ajuste Geral de Outros Modais Mobile */
+            #details-modal, #tv-modal, #player-section { 
+                height: 100dvh; width: 100%; box-sizing: border-box;
+            }
+            #details-modal .details-body { padding: 40px 15px 20px 15px; }
+            #details-modal .modal-header-container { align-items: center; gap: 15px; margin-bottom: 20px; }
+            #details-modal .modal-title-thumb { width: 70px; height: 105px; flex-shrink: 0; }
+            #details-modal .details-title { font-size: 1.8rem !important; flex: 1; }
+            #details-modal .details-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+            #details-modal .btn-details { font-size: 1rem; padding: 10px 5px; width: 100%; justify-content: center; }
+
+            #tv-modal .details-body { padding: 20px 10px; justify-content: flex-start; }
+            #tv-modal .details-main-info { max-width: 100%; padding: 10px; height: auto; }
+            #tv-grid { height: 45vh !important; }
+            .tv-player-title-floating { font-size: 1.5rem !important; top: 15px; }
+            .tv-controls-floating { bottom: 15px; width: 90%; gap: 10px; }
+            .btn-tv-nav { padding: 8px 12px; font-size: 1rem; flex: 1; }
+
+            .player-header { padding: 10px; gap: 8px; flex-wrap: wrap; }
+            .server-selector { width: 100%; overflow-x: auto; padding-bottom: 10px; }
+            .server-selector .genre-pill { white-space: nowrap; font-size: 0.75rem; padding: 6px 12px; }
+            #episodes-browser { padding: 15px; top: 0; height: 100%; }
+            .ep-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+        }
     </style>
 </head>
 <body>
