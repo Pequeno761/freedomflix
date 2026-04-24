@@ -469,55 +469,97 @@
 
         /* --- RESPONSIVIDADE PARA CELULAR --- */
         @media (max-width: 768px) {
-            body { zoom: 1; } /* Remove o zoom do PC */
-            
+            body { zoom: 1; }
             .container { padding: 10px; }
-            
             header { padding: 10px 0; gap: 15px; }
             .header-top { flex-direction: column; gap: 15px; }
-            
             .logo .freedom { font-size: 3.5rem; }
             .logo .flix { font-size: 1.5rem; letter-spacing: 8px; }
-            
             .search-box { width: 100%; max-width: 100%; }
-            .search-box input[type="text"] { font-size: 0.9rem; padding: 10px; }
-            
-            .nav-pill-container { 
-                width: 100%; 
-                overflow-x: auto; 
-                justify-content: flex-start; 
-                padding: 10px 5px;
-                scrollbar-width: none;
-            }
+            .nav-pill-container { width: 100%; overflow-x: auto; justify-content: flex-start; padding: 10px 5px; scrollbar-width: none; }
             .nav-pill-container::-webkit-scrollbar { display: none; }
             .nav-link { padding: 8px 12px; font-size: 0.8rem; }
-            .nav-link span { max-width: 100px; opacity: 1; margin-left: 5px; } /* Força o texto aparecer no celular */
-
-            .movie-card { flex: 0 0 140px; } /* Cards menores para caber mais na tela */
+            .nav-link span { max-width: 100px; opacity: 1; margin-left: 5px; }
+            .movie-card { flex: 0 0 140px; }
             .card-title-external { font-size: 0.85rem; }
-            
             .section-header { font-size: 1.2rem; }
             
-            /* Modais (Maratonar/Descobrir) */
-            .carousel-container { flex-direction: column; gap: 20px; padding-top: 60px; height: 100vh; overflow-y: auto; }
-            .carousel-poster-area { flex: 0 0 auto; width: 150px; }
-            .carousel-info { text-align: center; width: 100%; }
-            .carousel-info h1 { font-size: 2rem; }
-            .carousel-info .meta { justify-content: center; font-size: 0.9rem; }
-            .carousel-info p { font-size: 0.9rem; line-height: 1.4; }
-            .carousel-controls { flex-wrap: wrap; justify-content: center; gap: 10px; }
-            .btn-carousel { padding: 10px 20px; font-size: 0.9rem; width: 100%; }
+            /* --- LAYOUT REELS MOBILE REFINADO --- */
+            #details-modal .details-body, #descobrir-carousel .details-body {
+                position: absolute; bottom: 0; left: 0; width: 100%; height: auto;
+                padding: 15px 20px 20px; background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.9) 80%, transparent 100%);
+                pointer-events: auto; z-index: 10;
+                transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+                display: flex; flex-direction: column;
+            }
             
-            /* Player */
-            .modal-content { width: 98%; border-radius: 8px; }
-            .player-header { padding: 10px; flex-direction: column; gap: 10px; }
-            .server-selector { width: 100%; overflow-x: auto; padding-bottom: 5px; }
+            .mobile-title-row {
+                display: flex; align-items: center; gap: 12px; width: 100%;
+            }
 
-            /* Grid de Maratonar */
-            .collection-hub { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
+            /* Mini Poster estilo Foto de Perfil */
+            .mini-poster-mobile {
+                width: 50px; height: 50px; border-radius: 50%; object-fit: cover;
+                border: 2px solid var(--primary); box-shadow: 0 0 10px rgba(229,9,20,0.5);
+                display: none; /* Ativado apenas no mobile pelo media query */
+            }
+            @media (max-width: 768px) { .mini-poster-mobile { display: block; } }
+
+            .title-meta-col { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+            #details-modal .details-title, #descobrir-carousel .details-title {
+                font-size: 1.3rem; margin: 0; line-height: 1.2;
+                white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            }
             
-            /* Botão flutuante */
-            .btn-discover-floating { width: 60px; height: 60px; bottom: 20px; right: 20px; font-size: 1.5rem; }
+            .details-meta {
+                display: flex !important; flex-direction: row !important;
+                gap: 10px; margin: 0 !important; font-size: 0.75rem !important; color: #bbb;
+            }
+
+            .mobile-actions { display: flex; align-items: center; gap: 10px; }
+
+            /* Botão Expandir (+) */
+            .btn-expand-mobile {
+                width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1);
+                border: 1px solid rgba(255,255,255,0.2); color: #fff;
+                display: flex; align-items: center; justify-content: center;
+                cursor: pointer; transition: 0.4s;
+            }
+            .btn-expand-mobile i { transition: 0.4s; }
+            .maximized-mobile .btn-expand-mobile { background: var(--primary); border-color: var(--primary); }
+            .maximized-mobile .btn-expand-mobile i { transform: rotate(45deg); }
+
+            .btn-details-watch-mobile {
+                width: 45px !important; height: 45px !important; min-width: 45px;
+                border-radius: 50% !important; background: var(--primary);
+                display: flex !important; align-items: center; justify-content: center;
+                box-shadow: 0 0 15px rgba(229, 9, 20, 0.4); border: none !important;
+            }
+            .btn-details-watch-mobile i { font-size: 1.3rem !important; color: #fff; }
+
+            /* Esconder elementos na visão minimizada */
+            #details-modal .details-tabs, #details-modal .tab-content, 
+            #descobrir-carousel .details-tabs, #descobrir-carousel .tab-content,
+            .reels-drag-handle {
+                display: none;
+            }
+
+            /* Estado Maximizado */
+            .details-body.maximized-mobile {
+                height: 75vh !important; background: rgba(0,0,0,0.98) !important;
+                overflow-y: auto !important; padding-top: 20px;
+            }
+            .details-body.maximized-mobile .details-tabs, 
+            .details-body.maximized-mobile .tab-content.active {
+                display: flex !important;
+            }
+            .details-body.maximized-mobile .mobile-title-row {
+                padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px;
+            }
+
+            .details-trailer-bg { height: 100% !important; }
+            .close-details { top: 15px; right: 15px; width: 35px; height: 35px; background: rgba(0,0,0,0.5); }
         }
 
         /* --- NOVOS ESTILOS: DETALHES ELEGANTES --- */
@@ -1019,10 +1061,23 @@
     <button class="close-details" onclick="closeDetails()">×</button>
     
     <div class="details-body" id="details-body">
-        <div class="details-main-info">
-            <h1 id="details-title" class="details-title"></h1>
-            <div id="details-meta" class="details-meta"></div>
+        <div class="mobile-title-row">
+            <img id="details-poster-mini" class="mini-poster-mobile" src="" alt="">
+            <div class="title-meta-col">
+                <h1 id="details-title" class="details-title"></h1>
+                <div id="details-meta" class="details-meta"></div>
+            </div>
+            <div class="mobile-actions">
+                <button id="details-watch-btn-mobile" class="btn-details-watch-mobile" onclick="document.getElementById('details-watch-btn').click()">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="btn-expand-mobile" onclick="toggleMobileMaximize(this.closest('.details-body'), event)">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
 
+        <div class="details-main-info">
             <div class="details-tabs">
                 <button class="tab-btn active" onclick="switchTab(this, 'details-synopsis-tab')">Sinopse</button>
                 <button class="tab-btn" onclick="switchTab(this, 'details-related-tab')">Relacionados</button>
@@ -1033,7 +1088,7 @@
                 <button id="details-read-more" class="btn-read-more" onclick="toggleSynopsis('details-synopsis', this)">Ler mais</button>
                 
                 <div class="details-btns">
-                    <button id="details-watch-btn" class="btn-details btn-details-watch">
+                    <button id="details-watch-btn" class="btn-details btn-details-watch btn-details-watch-mobile">
                         <i class="fas fa-play"></i> <span>Assistir Agora</span>
                     </button>
                     <button id="details-seasons-btn" class="btn-details btn-details-trailer hidden" onclick="toggleDetailsEpisodes()">
@@ -1263,14 +1318,28 @@
         <div class="close-carousel" onclick="closeDiscover()">×</div>
         
         <div class="details-body" id="discover-body">
-            <div class="details-main-info">
-                <div class="carousel-counter" style="margin-bottom: 20px; color: var(--primary); font-weight: bold; letter-spacing: 2px;">DESCUBRA ALGO NOVO</div>
-                <h1 id="discoverTitle" class="details-title">Buscando...</h1>
-                <div class="details-meta">
-                    <span id="discoverGenre"></span>
-                    <span id="discoverRating"></span>
+            <div class="mobile-title-row">
+                <img id="discover-poster-mini" class="mini-poster-mobile" src="" alt="">
+                <div class="title-meta-col">
+                    <h1 id="discoverTitle" class="details-title">Buscando...</h1>
+                    <div id="discover-meta-mobile" class="details-meta">
+                        <span id="discoverGenre"></span>
+                        <span id="discoverRating"></span>
+                    </div>
                 </div>
+                <div class="mobile-actions">
+                    <button id="discover-watch-btn-mobile" class="btn-details-watch-mobile" onclick="document.getElementById('discoverWatchBtn').click()">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="btn-expand-mobile" onclick="toggleMobileMaximize(this.closest('.details-body'), event)">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
 
+            <div class="details-main-info">
+                <div class="carousel-counter" style="margin-bottom: 20px; color: var(--primary); font-weight: bold; letter-spacing: 2px; display: none;">DESCUBRA ALGO NOVO</div>
+                
                 <div class="details-tabs">
                     <button class="tab-btn active" onclick="switchTab(this, 'discover-synopsis-tab')">Sinopse</button>
                     <button class="tab-btn" onclick="switchTab(this, 'discover-related-tab')">Relacionados</button>
@@ -1281,7 +1350,7 @@
                     <button id="discover-read-more" class="btn-read-more" onclick="toggleSynopsis('discoverOverview', this)">Ler mais</button>
 
                     <div class="details-btns">
-                        <button id="discoverWatchBtn" class="btn-details btn-details-watch">
+                        <button id="discoverWatchBtn" class="btn-details btn-details-watch btn-details-watch-mobile">
                             <i class="fas fa-play"></i> <span>Assistir Agora</span>
                         </button>
                         
@@ -1561,6 +1630,10 @@
             const displayTitle = isMaratona ? `[${currentCollectionIdx + 1}/${currentCollection.ids.length}] ${title}` : title;
             document.getElementById('details-title').innerText = displayTitle;
             
+            // Mini poster no mobile
+            const miniPoster = document.getElementById('details-poster-mini');
+            if (miniPoster) miniPoster.src = `https://image.tmdb.org/t/p/w200${data.poster_path}`;
+            
             document.getElementById('details-synopsis').innerText = data.overview || 'Sinopse não disponível.';
             document.getElementById('details-meta').innerHTML = `<span>${year}</span><span>⭐ ${rating}</span><span>${duration}</span>`;
             document.getElementById('details-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`;
@@ -1685,7 +1758,7 @@
     function closeDetails() {
         document.getElementById('details-modal').style.display = 'none';
         document.getElementById('details-trailer-container').innerHTML = '';
-        document.getElementById('details-body').classList.remove('minimized');
+        document.getElementById('details-body').classList.remove('minimized', 'maximized-mobile');
         document.body.style.overflow = 'auto';
     }
 
@@ -2111,6 +2184,7 @@
         document.getElementById('descobrir-carousel').style.display = 'none';
         const trailerContainer = document.getElementById('discover-trailer-container');
         if (trailerContainer) trailerContainer.innerHTML = '';
+        document.getElementById('discover-body').classList.remove('maximized-mobile');
         document.body.style.overflow = 'auto';
     }
 
@@ -2174,6 +2248,11 @@
 
         document.getElementById('discoverBg').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${item.backdrop_path})`;
         document.getElementById('discoverTitle').innerText = title;
+        
+        // Mini poster no mobile
+        const miniPoster = document.getElementById('discover-poster-mini');
+        if (miniPoster) miniPoster.src = `https://image.tmdb.org/t/p/w200${item.poster_path}`;
+
         document.getElementById('discoverGenre').innerText = itemGenres;
         document.getElementById('discoverRating').innerText = `⭐ ${item.vote_average ? item.vote_average.toFixed(1) : 'N/A'}`;
         document.getElementById('discoverOverview').innerText = item.overview || 'Sinopse não disponível.';
@@ -2232,6 +2311,59 @@
         btn.classList.add('active');
         document.getElementById(tabId).classList.add('active');
     }
+
+    function toggleMobileMaximize(el, event) {
+        if (window.innerWidth > 768) return;
+        
+        // Evita maximizar se clicar em botões específicos
+        if (event.target.closest('button') || event.target.closest('select')) return;
+        
+        el.classList.toggle('maximized-mobile');
+    }
+
+    // Sistema de Navegação por Gesto (Swipe) estilo Reels
+    let touchStartY = 0;
+    let touchEndY = 0;
+
+    function handleGesture() {
+        if (window.innerWidth > 768) return;
+        
+        const deltaY = touchStartY - touchEndY;
+        const threshold = 100; // Distância mínima para o swipe
+
+        if (Math.abs(deltaY) > threshold) {
+            if (deltaY > 0) {
+                // Swipe Up -> Próximo
+                const isDiscover = document.getElementById('descobrir-carousel').style.display === 'flex';
+                const isDetails = document.getElementById('details-modal').style.display === 'flex';
+                const isMaratona = !document.getElementById('maratona-nav-btns').classList.contains('hidden');
+
+                if (isDiscover) navDiscover(1);
+                else if (isDetails && isMaratona) navMaratona(1);
+            } else {
+                // Swipe Down -> Anterior
+                const isDiscover = document.getElementById('descobrir-carousel').style.display === 'flex';
+                const isDetails = document.getElementById('details-modal').style.display === 'flex';
+                const isMaratona = !document.getElementById('maratona-nav-btns').classList.contains('hidden');
+
+                if (isDiscover) navDiscover(-1);
+                else if (isDetails && isMaratona) navMaratona(-1);
+            }
+        }
+    }
+
+    // Adiciona os ouvintes de toque nos modais
+    ['details-modal', 'descobrir-carousel'].forEach(id => {
+        const modal = document.getElementById(id);
+        modal.addEventListener('touchstart', e => {
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        modal.addEventListener('touchend', e => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleGesture();
+        }, { passive: true });
+    });
 
     function closeSynopsis() {
         document.getElementById('synopsis-modal').style.display = 'none';
