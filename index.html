@@ -1209,6 +1209,17 @@
             .details-btns { flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
             .btn-details { font-size: 1.1rem; padding: 10px 15px; flex: 1; min-width: 140px; }
             .btn-details span { opacity: 1; max-width: 200px; margin-left: 8px; }
+
+            /* Animações de Transição Reels */
+            .reels-anim-out-up { animation: reelsOutUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+            .reels-anim-in-up { animation: reelsInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+            .reels-anim-out-down { animation: reelsOutDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+            .reels-anim-in-down { animation: reelsInDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+            @keyframes reelsOutUp { to { transform: translateY(-100%); opacity: 0; } }
+            @keyframes reelsInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+            @keyframes reelsOutDown { to { transform: translateY(100%); opacity: 0; } }
+            @keyframes reelsInDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         }
     </style>
 </head>
@@ -1489,103 +1500,105 @@
 
     <!-- Modal Descobrir Elegante -->
     <div id="descobrir-carousel">
-        <div class="details-backdrop-container">
-            <div id="discoverBg" class="details-backdrop-image"></div>
-            <div id="discover-trailer-container" class="details-trailer-bg"></div>
-            <div class="details-overlay-gradient"></div>
-        </div>
-        
-        <div class="close-carousel" onclick="closeDiscover()">×</div>
-        
-        <div class="details-body" id="discover-body">
-            <!-- Camada de Swipe (Apenas mobile) -->
-            <div class="reels-swipe-overlay" id="reels-swipe-overlay"></div>
+        <!-- Wrapper para animação de transição -->
+        <div id="discover-wrapper" style="width: 100%; height: 100%; transition: 0.5s;">
+            <div class="details-backdrop-container">
+                <div id="discoverBg" class="details-backdrop-image"></div>
+                <div id="discover-trailer-container" class="details-trailer-bg"></div>
+                <div class="details-overlay-gradient"></div>
+            </div>
+            
+            <div class="details-body" id="discover-body">
+                <!-- Camada de Swipe (Apenas mobile) -->
+                <div class="reels-swipe-overlay" id="reels-swipe-overlay"></div>
 
-            <div class="details-main-info">
-                <!-- Interface Reels para Mobile -->
-                <div id="reels-interface" class="reels-info-container">
-                    <div class="reels-header">
-                        <img id="reels-thumb" class="reels-thumb" src="" alt="">
-                        <div class="reels-title-area">
-                            <h2 id="reels-title"></h2>
-                            <div class="reels-meta">
-                                <span id="reels-genre"></span>
-                                <span id="reels-rating"></span>
-                                <span id="reels-year"></span>
+                <div class="details-main-info">
+                    <!-- Interface Reels para Mobile -->
+                    <div id="reels-interface" class="reels-info-container">
+                        <div class="reels-header">
+                            <img id="reels-thumb" class="reels-thumb" src="" alt="">
+                            <div class="reels-title-area">
+                                <h2 id="reels-title"></h2>
+                                <div class="reels-meta">
+                                    <span id="reels-genre"></span>
+                                    <span id="reels-rating"></span>
+                                    <span id="reels-year"></span>
+                                </div>
+                            </div>
+                            <div class="reels-actions">
+                                <button id="reels-play-btn" class="btn-reels-play"><i class="fas fa-play"></i></button>
+                                <button id="btn-reels-synopsis" class="btn-reels-tab" onclick="switchReelsTab('synopsis')">Sinopse</button>
+                                <button id="btn-reels-related" class="btn-reels-tab" onclick="switchReelsTab('related')">Relacionados</button>
                             </div>
                         </div>
-                        <div class="reels-actions">
-                            <button id="reels-play-btn" class="btn-reels-play"><i class="fas fa-play"></i></button>
-                            <button id="btn-reels-synopsis" class="btn-reels-tab" onclick="switchReelsTab('synopsis')">Sinopse</button>
-                            <button id="btn-reels-related" class="btn-reels-tab" onclick="switchReelsTab('related')">Relacionados</button>
+                        
+                        <!-- Área de Conteúdo Expansível (Minimizada por padrão) -->
+                        <div id="reels-expanded" class="reels-expanded-content">
+                            <div id="reels-synopsis-tab" class="reels-tab-content">
+                                <p id="reels-synopsis" style="font-size: 0.9rem; line-height: 1.5; color: #eee; margin: 0;"></p>
+                            </div>
+                            <div id="reels-related-tab" class="reels-tab-content" style="display:none;">
+                                <div id="reels-related-grid" class="related-grid" style="padding: 10px 0;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-counter" style="margin-bottom: 20px; color: var(--primary); font-weight: bold; letter-spacing: 2px;">DESCUBRA ALGO NOVO</div>
+                    <div class="modal-header-container">
+                        <img id="discover-thumb" class="modal-title-thumb" src="" alt="">
+                        <h1 id="discoverTitle" class="details-title">Buscando...</h1>
+                    </div>
+                    <div class="details-meta">
+                        <span id="discoverGenre"></span>
+                        <span id="discoverRating"></span>
+                    </div>
+
+                    <div class="details-tabs">
+                        <button class="tab-btn active" onclick="switchTab(this, 'discover-synopsis-tab')">Sinopse</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'discover-related-tab')">Relacionados</button>
+                    </div>
+
+                    <div id="discover-synopsis-tab" class="tab-content active">
+                        <p id="discoverOverview" class="details-synopsis"></p>
+                        <button id="discover-read-more" class="btn-read-more" onclick="toggleSynopsis('discoverOverview', this)">Ler mais</button>
+
+                        <div class="details-btns">
+                            <button id="discoverWatchBtn" class="btn-details btn-details-watch">
+                                <i class="fas fa-play"></i> <span>Assistir Agora</span>
+                            </button>
+                            
+                            <div style="display: flex; gap: 10px; margin-left: 20px;">
+                                <button id="discoverPrevBtn" class="btn-details btn-details-trailer" onclick="navDiscover(-1)">
+                                    <i class="fas fa-chevron-left"></i> <span>Anterior</span>
+                                </button>
+                                <button class="btn-details btn-details-trailer" onclick="navDiscover(1)">
+                                    <i class="fas fa-random"></i> <span>Aleatório</span>
+                                </button>
+                                <button class="btn-details btn-details-trailer" onclick="navDiscover(1)">
+                                    <i class="fas fa-chevron-right"></i> <span>Próximo</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Área de Conteúdo Expansível (Minimizada por padrão) -->
-                    <div id="reels-expanded" class="reels-expanded-content">
-                        <div id="reels-synopsis-tab" class="reels-tab-content">
-                            <p id="reels-synopsis" style="font-size: 0.9rem; line-height: 1.5; color: #eee; margin: 0;"></p>
-                        </div>
-                        <div id="reels-related-tab" class="reels-tab-content" style="display:none;">
-                            <div id="reels-related-grid" class="related-grid" style="padding: 10px 0;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="carousel-counter" style="margin-bottom: 20px; color: var(--primary); font-weight: bold; letter-spacing: 2px;">DESCUBRA ALGO NOVO</div>
-                <div class="modal-header-container">
-                    <img id="discover-thumb" class="modal-title-thumb" src="" alt="">
-                    <h1 id="discoverTitle" class="details-title">Buscando...</h1>
-                </div>
-                <div class="details-meta">
-                    <span id="discoverGenre"></span>
-                    <span id="discoverRating"></span>
-                </div>
-
-                <div class="details-tabs">
-                    <button class="tab-btn active" onclick="switchTab(this, 'discover-synopsis-tab')">Sinopse</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'discover-related-tab')">Relacionados</button>
-                </div>
-
-                <div id="discover-synopsis-tab" class="tab-content active">
-                    <p id="discoverOverview" class="details-synopsis"></p>
-                    <button id="discover-read-more" class="btn-read-more" onclick="toggleSynopsis('discoverOverview', this)">Ler mais</button>
-
-                    <div class="details-btns">
-                        <button id="discoverWatchBtn" class="btn-details btn-details-watch">
-                            <i class="fas fa-play"></i> <span>Assistir Agora</span>
-                        </button>
-                        
-                        <div style="display: flex; gap: 10px; margin-left: 20px;">
-                            <button id="discoverPrevBtn" class="btn-details btn-details-trailer" onclick="navDiscover(-1)">
-                                <i class="fas fa-chevron-left"></i> <span>Anterior</span>
-                            </button>
-                            <button class="btn-details btn-details-trailer" onclick="navDiscover(1)">
-                                <i class="fas fa-random"></i> <span>Aleatório</span>
-                            </button>
-                            <button class="btn-details btn-details-trailer" onclick="navDiscover(1)">
-                                <i class="fas fa-chevron-right"></i> <span>Próximo</span>
-                            </button>
+                    <div id="discover-related-tab" class="tab-content">
+                        <div id="discover-related-container" class="related-container show" style="margin-top:0;">
+                            <div class="related-wrapper">
+                                <button class="related-nav-arrow left" onclick="scrollRelated(-1, 'discover-related-grid')"><i class="fas fa-chevron-left"></i></button>
+                                <div id="discover-related-grid" class="related-grid" style="padding: 10px 0;"></div>
+                                <button class="related-nav-arrow right" onclick="scrollRelated(1, 'discover-related-grid')"><i class="fas fa-chevron-right"></i></button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div id="discover-related-tab" class="tab-content">
-                    <div id="discover-related-container" class="related-container show" style="margin-top:0;">
-                        <div class="related-wrapper">
-                            <button class="related-nav-arrow left" onclick="scrollRelated(-1, 'discover-related-grid')"><i class="fas fa-chevron-left"></i></button>
-                            <div id="discover-related-grid" class="related-grid" style="padding: 10px 0;"></div>
-                            <button class="related-nav-arrow right" onclick="scrollRelated(1, 'discover-related-grid')"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
 
-                <button class="btn-control-info" onclick="toggleDetailsInfo(this.parentElement.parentElement.classList.contains('minimized') ? false : true, 'discover-body')" title="Recolher/Mostrar Informações">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
+                    <button class="btn-control-info" onclick="toggleDetailsInfo(this.parentElement.parentElement.classList.contains('minimized') ? false : true, 'discover-body')" title="Recolher/Mostrar Informações">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
+        <div class="close-carousel" onclick="closeDiscover()">×</div>
         <button class="btn-restore-info" id="discover-restore-info" style="display:none;"></button>
     </div>
 
@@ -2351,6 +2364,7 @@
     let cachedGenresDiscover = { movie: [], tv: [] };
     let discoverHistory = [];
     let currentDiscoverIdx = -1;
+    let isNavigatingDiscover = false;
 
     async function openDiscover() {
         document.body.style.overflow = 'hidden';
@@ -2378,7 +2392,7 @@
             navDiscover(1);
         } else {
             const data = discoverHistory[currentDiscoverIdx];
-            renderDiscoverItem(data.item, data.type, data.videoKey);
+            renderDiscoverItem(data.item, data.type, data.videoKey, data.recommendations);
         }
     }
 
@@ -2390,11 +2404,28 @@
     }
 
     async function navDiscover(dir = 1) {
+        if (isNavigatingDiscover) return;
+        isNavigatingDiscover = true;
+
+        const wrapper = document.getElementById('discover-wrapper');
+        
+        // 1. Iniciar Animação de Saída
+        wrapper.classList.remove('reels-anim-in-up', 'reels-anim-in-down', 'reels-anim-out-up', 'reels-anim-out-down');
+        wrapper.classList.add(dir === 1 ? 'reels-anim-out-up' : 'reels-anim-out-down');
+
+        // Esperar a animação de saída (400ms)
+        await new Promise(r => setTimeout(r, 400));
+
         if (dir === -1) {
             if (currentDiscoverIdx > 0) {
                 currentDiscoverIdx--;
                 const data = discoverHistory[currentDiscoverIdx];
-                renderDiscoverItem(data.item, data.type, data.videoKey);
+                renderDiscoverItem(data.item, data.type, data.videoKey, data.recommendations);
+                finishNav(dir);
+            } else {
+                isNavigatingDiscover = false;
+                wrapper.classList.remove('reels-anim-out-down');
+                wrapper.classList.add('reels-anim-in-down');
             }
             return;
         }
@@ -2402,7 +2433,8 @@
         if (currentDiscoverIdx < discoverHistory.length - 1) {
             currentDiscoverIdx++;
             const data = discoverHistory[currentDiscoverIdx];
-            renderDiscoverItem(data.item, data.type, data.videoKey);
+            renderDiscoverItem(data.item, data.type, data.videoKey, data.recommendations);
+            finishNav(dir);
             return;
         }
 
@@ -2410,33 +2442,39 @@
         const type = types[Math.floor(Math.random() * types.length)];
         const page = Math.floor(Math.random() * 50) + 1;
         
-        document.getElementById('discoverTitle').innerText = 'Buscando algo incrível...';
-        const trailerContainer = document.getElementById('discover-trailer-container');
-        if (trailerContainer) trailerContainer.innerHTML = '';
-
         try {
             const res = await fetch(`https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&language=pt-BR&sort_by=popularity.desc&page=${page}`);
             const data = await res.json();
             const items = data.results.filter(i => i.overview && i.overview.length > 10 && i.backdrop_path);
             const item = items[Math.floor(Math.random() * items.length)];
             
-            if (!item) return navDiscover(1);
+            if (!item) { isNavigatingDiscover = false; return navDiscover(1); }
 
-            // Buscar vídeos E recomendações para o descobrir
             const extraRes = await fetch(`https://api.themoviedb.org/3/${type}/${item.id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,recommendations`);
             let extraData = await extraRes.json();
             
             const trailer = extraData.videos.results.find(v => (v.type === 'Trailer' || v.type === 'Teaser') && v.site === 'YouTube');
-            if (!trailer) return navDiscover(1);
+            if (!trailer) { isNavigatingDiscover = false; return navDiscover(1); }
 
-            discoverHistory.push({ item, type, videoKey: trailer.key, recommendations: extraData.recommendations.results });
+            const recs = extraData.recommendations ? extraData.recommendations.results : [];
+            discoverHistory.push({ item, type, videoKey: trailer.key, recommendations: recs });
             currentDiscoverIdx++;
             
-            renderDiscoverItem(item, type, trailer.key, extraData.recommendations.results);
+            renderDiscoverItem(item, type, trailer.key, recs);
+            finishNav(dir);
         } catch (e) { 
             console.error("Erro Descobrir:", e);
-            document.getElementById('discoverTitle').innerText = 'Erro ao carregar. Tente novamente.';
+            isNavigatingDiscover = false;
         }
+    }
+
+    function finishNav(dir) {
+        const wrapper = document.getElementById('discover-wrapper');
+        wrapper.classList.remove('reels-anim-out-up', 'reels-anim-out-down');
+        wrapper.classList.add(dir === 1 ? 'reels-anim-in-up' : 'reels-anim-in-down');
+        setTimeout(() => {
+            isNavigatingDiscover = false;
+        }, 400);
     }
 
     function renderDiscoverItem(item, type, videoKey, recommendations = []) {
