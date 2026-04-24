@@ -392,26 +392,6 @@
         .score-box { background: #222; padding: 5px 15px; border-radius: 5px; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: #00ff00; letter-spacing: 2px; }
         .match-status { font-size: 0.7rem; color: #888; text-transform: uppercase; margin-top: 5px; font-weight: bold; }
         .live-dot { width: 8px; height: 8px; background: #00ff00; border-radius: 50%; display: inline-block; margin-right: 5px; animation: pulse 1s infinite; }
-        
-        /* Estilo Canais de Transmissão */
-        .match-channels {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 5px;
-        }
-        .channel-tag {
-            background: rgba(255,255,255,0.1);
-            color: #ccc;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.6rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
         .btn-watch-match { 
             width: 100%; background: var(--primary); color: white; border: none; padding: 10px; 
             border-radius: 5px; font-family: 'Bebas Neue', sans-serif; cursor: pointer; transition: 0.3s;
@@ -1170,7 +1150,6 @@
                 <a href="#" class="nav-link" onclick="loadContent('movie', this)"><i class="fas fa-film"></i><span>Filmes</span></a>
                 <a href="#" class="nav-link" onclick="loadContent('tv', this)"><i class="fas fa-tv"></i><span>Séries</span></a>
                 <a href="#" class="nav-link" onclick="loadContent('maratonar', this)"><i class="fas fa-layer-group"></i><span>Maratonar</span></a>
-                <a href="#" class="nav-link" onclick="loadContent('futebol', this)"><i class="fas fa-soccer-ball"></i><span>Futebol</span></a>
             </nav>
             <a href="#" class="nav-link" onclick="loadContent('canais', this)" style="background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid #333; backdrop-filter: blur(10px);">
                 <i class="fas fa-tower-broadcast"></i>
@@ -1189,38 +1168,6 @@
         <button class="nav-genre right" onclick="scrollGenres(1)"><i class="fas fa-chevron-right"></i></button>
     </div>
     <div id="sections-container"></div>
-    <div id="futebol-container" class="hidden" style="margin-top: 20px;">
-        <h2 style="font-family:'Bebas Neue'; font-size:3rem; margin-bottom:10px; color:var(--primary); text-align:center;">Freedom Esportes (Tempo Real)</h2>
-        <p style="text-align: center; color: #888; margin-bottom: 30px;">Dados extraídos em tempo real diretamente das fontes oficiais.</p>
-
-        <div class="futebol-layout" style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
-            <!-- Área de Jogos -->
-            <div id="jogos-hoje">
-                <div class="section-header" style="border-left: 5px solid #00ff00;"><span id="league-title">Selecione um Campeonato</span></div>
-                <div id="match-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
-                    <p style="text-align: center; padding: 40px; color: #888;">Escolha uma liga no menu lateral para buscar os jogos em tempo real.</p>
-                </div>
-            </div>
-
-            <!-- Lateral: Menu de Ligas e Tabelas -->
-            <div id="futebol-sidebar">
-                <div class="section-header"><span>Ligas Oficiais</span></div>
-                <div id="quick-sports-channels" style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 30px;">
-                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/agenda/#/futebol', 'Agenda de Hoje')"><i class="fas fa-calendar-day"></i> Agenda de Hoje</button>
-                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/futebol/futebol-internacional/futebol-saudita/', 'Futebol Saudita')"><i class="fas fa-globe"></i> Futebol Saudita</button>
-                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/futebol/futebol-internacional/futebol-alemao/copa-da-alemanha/', 'Copa da Alemanha')"><i class="fas fa-trophy"></i> Copa da Alemanha</button>
-                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/futebol/copa-do-brasil/', 'Copa do Brasil')"><i class="fas fa-trophy"></i> Copa do Brasil</button>
-                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/futebol/futebol-feminino/copa-do-brasil-feminina/', 'Copa do Brasil - Feminino')"><i class="fas fa-female"></i> Copa do Brasil Feminina</button>
-                    <button class="btn-carousel secondary" style="width:100%; text-align:left; font-size: 0.9rem;" onclick="loadLeagueRealTime('https://ge.globo.com/futebol/futebol-internacional/futebol-espanhol/', 'Futebol Espanhol')"><i class="fas fa-globe"></i> Futebol Espanhol</button>
-                </div>
-                
-                <div class="section-header"><span>Classificação</span></div>
-                <div id="tables-container">
-                    <p style="text-align: center; padding: 20px; color: #666; font-size: 0.9rem;">A tabela será exibida aqui se estiver disponível na página da liga.</p>
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="catalog-container"></div>
     
     <!-- Carrossel Maratonar -->
@@ -1351,7 +1298,6 @@
         </div>
     </div>
 </div>
-<script src="futebol.js"></script>
 <script>
     const API_KEY = '832a40f6d7edf386b7ad6810de3570c9';
     let currentTmdbId, currentType, currentServer = 'vidsrc', s_val = 1, e_val = 1;
@@ -1664,29 +1610,16 @@
             document.getElementById('yearSelect').parentElement.style.display = 'none';
             document.getElementById('genresWrapper').style.display = 'none';
             document.getElementById('catalog-container').innerHTML = '';
-            document.getElementById('futebol-container').classList.add('hidden');
             return;
         }
 
-        if (mode === 'futebol') {
-            document.getElementById('yearSelect').parentElement.style.display = 'none';
-            document.getElementById('genresWrapper').style.display = 'none';
-            document.getElementById('catalog-container').innerHTML = '';
-            document.getElementById('sections-container').innerHTML = '';
-            document.getElementById('futebol-container').classList.remove('hidden');
-            loadFootballData();
-            return;
-        }
-        
-        document.getElementById('futebol-container').classList.add('hidden');
         document.getElementById('yearSelect').parentElement.style.display = 'block';
         document.getElementById('genresWrapper').style.display = 'flex';
         currentMode = mode;
         currentPage = 1;
         currentGenreId = null;
         currentYear = null;
-        document.getElementById('yearSelect').value = "";
-        
+        document.getElementById('yearSelect').value = "";        
         loadGenres(mode === 'movie' || mode === 'trending' ? 'movie' : 'tv');
         loadYears();
         const container = document.getElementById('sections-container');
@@ -2082,158 +2015,6 @@
         document.getElementById('tv-modal').style.display = 'none';
         document.getElementById('tvPlayer').src = '';
         document.body.style.overflow = 'auto';
-    }
-
-    /* --- LÓGICA DE FUTEBOL (SCRAPING TEMPO REAL) --- */
-    async function loadLeagueRealTime(url, title) {
-        const grid = document.getElementById('match-grid');
-        const tablesDiv = document.getElementById('tables-container');
-        document.getElementById('league-title').innerText = title;
-        
-        grid.innerHTML = `<p style="text-align: center; padding: 40px; color: #888;">Buscando jogos ao vivo de ${title}...</p>`;
-        tablesDiv.innerHTML = `<p style="text-align: center; padding: 20px; color: #666; font-size: 0.9rem;">Buscando tabela...</p>`;
-        
-        try {
-            // Usando um Proxy CORS para contornar bloqueios de segurança do navegador
-            // Adicionado um parâmetro random para evitar cache do proxy
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}&_=${Date.now()}`;
-            const response = await fetch(proxyUrl);
-            const data = await response.json();
-            
-            if (!data.contents) throw new Error("Conteúdo vazio");
-            
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(data.contents, 'text/html');
-            
-            let matches = [];
-            let tables = [];
-
-            // 1. Extração de Jogos (Tenta encontrar o padrão GE)
-            const gameCards = doc.querySelectorAll('a[data-card-mode="standard"], .lista-jogos__jogo');
-            
-            gameCards.forEach(card => {
-                try {
-                    // Novo padrão GE com data-card-mode ou antigo .lista-jogos
-                    const teamsDiv = card.querySelectorAll('div[data-card-mode="standard"], .placar__equipes .placar__equipe');
-                    
-                    if (teamsDiv.length >= 2) {
-                        const getTeamInfo = (div) => {
-                            const img = div.querySelector('img, .placar__equipe-escudo');
-                            const spans = div.querySelectorAll('span, .placar__equipe-sigla');
-                            const nameSpan = Array.from(spans).find(s => s.innerText && s.innerText.length > 2 && isNaN(parseInt(s.innerText.trim())));
-                            const scoreSpan = div.querySelector('.sc-jsJBEP span, .placar__equipe-placar');
-                            return {
-                                name: nameSpan ? nameSpan.innerText.trim() : 'Time',
-                                logo: img ? img.src : 'https://via.placeholder.com/50x50/222/fff?text=GE',
-                                score: scoreSpan ? scoreSpan.innerText.trim() : ''
-                            };
-                        };
-                        
-                        const home = getTeamInfo(teamsDiv[0]);
-                        const away = getTeamInfo(teamsDiv[1]);
-                        
-                        // Extrair tempo e status
-                        let league = title;
-                        let timeOrStatus = "A definir";
-                        let isLive = false;
-                        
-                        const allSpans = card.querySelectorAll('span');
-                        const liveBadge = card.querySelector('[data-status-id="LIVE"], [data-status-id="REAL_TIME"], .placar__status--ao-vivo');
-                        
-                        if (liveBadge) {
-                            isLive = true;
-                            timeOrStatus = liveBadge.innerText.trim();
-                        } else {
-                            // Tenta achar o horário XX:XX
-                            const timeSpan = Array.from(allSpans).find(s => s.innerText.match(/^\d{2}:\d{2}$/));
-                            if (timeSpan) timeOrStatus = timeSpan.innerText;
-                        }
-                        
-                        matches.push({ league, time: timeOrStatus, isLive, home, away });
-                    }
-                } catch (e) {}
-            });
-
-            // 2. Extração de Tabelas (Tentando 2 padrões de classe do GE)
-            const tableRows = doc.querySelectorAll('.classificacao__equipes .classificacao__equipes--linha, .tabela-equipes-linha');
-            if (tableRows.length > 0) {
-                const tableData = { name: "Classificação", rows: [] };
-                
-                tableRows.forEach((row, idx) => {
-                    const nameEl = row.querySelector('.classificacao__equipes--nome, .tabela-equipes-nome-completo, .classificacao__equipes--sigla');
-                    const posEl = row.querySelector('.classificacao__equipes--posicao, .tabela-equipes-posicao');
-                    // Tenta puxar a pontuação da tabela da direita (índice 0 é PTS)
-                    const pointsRow = doc.querySelectorAll('.classificacao__pontos--linha, .tabela-pontos-linha')[idx];
-                    const pointsEl = pointsRow ? pointsRow.querySelector('.classificacao__pontos--ponto, .tabela-pontos-ponto') : null;
-                    
-                    if (nameEl) {
-                        tableData.rows.push({
-                            pos: posEl ? posEl.innerText.trim() : idx + 1,
-                            name: nameEl.innerText.trim(),
-                            points: pointsEl ? pointsEl.innerText.trim() : '-'
-                        });
-                    }
-                });
-                
-                if (tableData.rows.length > 0) tables.push(tableData);
-            }
-
-            // Renderizar Jogos
-            if (matches.length === 0) {
-                grid.innerHTML = '<p style="text-align: center; padding: 40px; color: #888;">Nenhum jogo encontrado ou a estrutura do site foi alterada.</p>';
-            } else {
-                grid.innerHTML = matches.map(m => `
-                    <div class="match-card">
-                        <div class="league-tag">${m.league}</div>
-                        <div class="match-teams">
-                            <div class="match-team">
-                                <img src="${m.home.logo}">
-                                <span>${m.home.name}</span>
-                            </div>
-                            <div class="match-score">
-                                <div class="score-box" style="color: ${m.isLive ? '#00ff00' : '#fff'}">${m.home.score} : ${m.away.score}</div>
-                                <div class="match-status">${m.isLive ? '<span class="live-dot"></span>' : ''}${m.time}</div>
-                            </div>
-                            <div class="match-team">
-                                <img src="${m.away.logo}">
-                                <span>${m.away.name}</span>
-                            </div>
-                        </div>
-                        <button class="btn-watch-match" onclick="loadContent('canais')">ASSISTIR NA TV ONLINE</button>
-                    </div>
-                `).join('');
-            }
-
-            // Renderizar Tabelas
-            if (tables.length === 0) {
-                tablesDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: #666; font-size: 0.9rem;">Nenhuma tabela de classificação encontrada nesta página.</p>';
-            } else {
-                tablesDiv.innerHTML = tables.map(t => `
-                    <div style="background: #111; border-radius: 10px; border: 1px solid #333; padding: 15px; margin-bottom: 20px;">
-                        <div style="font-weight: bold; color: var(--primary); margin-bottom: 10px; font-family: 'Bebas Neue'; letter-spacing: 1px;">${t.name}</div>
-                        <table style="width: 100%; border-collapse: collapse; font-family: 'Arial', sans-serif; font-size: 0.8rem;">
-                            ${t.rows.map(r => `
-                                <tr style="border-bottom: 1px solid #222;">
-                                    <td style="padding: 8px 5px; color: ${r.pos <= 4 ? '#00ff00' : '#888'}; font-weight: bold; width: 20px;">${r.pos}</td>
-                                    <td style="padding: 8px 0; color: #eee;">${r.name}</td>
-                                    <td style="padding: 8px 5px; text-align: right; font-weight: bold; color: #fff;">${r.points} PTs</td>
-                                </tr>
-                            `).join('')}
-                        </table>
-                    </div>
-                `).join('');
-            }
-
-        } catch (e) {
-            console.error("Erro no Scraping:", e);
-            grid.innerHTML = '<p style="text-align:center; color:red; padding: 40px;">Falha ao conectar com o provedor de dados. Tente novamente mais tarde.</p>';
-            tablesDiv.innerHTML = '';
-        }
-    }
-
-    function loadFootballData() {
-        // Ao clicar em futebol na nav, carrega a agenda por padrão
-        loadLeagueRealTime('https://ge.globo.com/agenda/#/futebol', 'Agenda de Hoje');
     }
 
     /* Lógica Descobrir (Estilo Maratonar) */
