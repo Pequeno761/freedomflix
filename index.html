@@ -841,8 +841,8 @@
             border: none;
         }
         .details-overlay-gradient {
-            position: absolute; top: 0; left: 0; width: 60%; height: 100%;
-            background: linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0.3) 70%, transparent 100%);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: none;
             z-index: 3;
             pointer-events: none;
             transition: opacity 0.5s ease;
@@ -1146,7 +1146,7 @@
                 padding: 0; 
                 height: 100%; 
                 justify-content: flex-end; 
-                background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 40%, transparent 100%);
+                background: none;
                 pointer-events: none; /* Deixa passar clique para o overlay */
             }
             #descobrir-carousel .details-main-info { 
@@ -1210,16 +1210,18 @@
             .btn-details { font-size: 1.1rem; padding: 10px 15px; flex: 1; min-width: 140px; }
             .btn-details span { opacity: 1; max-width: 200px; margin-left: 8px; }
 
-            /* Animações de Transição Reels */
-            .reels-anim-out-up { animation: reelsOutUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-            .reels-anim-in-up { animation: reelsInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-            .reels-anim-out-down { animation: reelsOutDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-            .reels-anim-in-down { animation: reelsInDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-
-            @keyframes reelsOutUp { to { transform: translateY(-100%); opacity: 0; } }
-            @keyframes reelsInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-            @keyframes reelsOutDown { to { transform: translateY(100%); opacity: 0; } }
-            @keyframes reelsInDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+            /* Setas de Navegação Descobrir */
+            .nav-discover-btn {
+                position: absolute; top: 50%; transform: translateY(-50%);
+                width: 60px; height: 60px; background: rgba(0,0,0,0.3);
+                color: #fff; border: 1px solid rgba(255,255,255,0.2);
+                border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                font-size: 1.5rem; cursor: pointer; z-index: 1000; transition: 0.3s;
+                backdrop-filter: blur(5px);
+            }
+            .nav-discover-btn:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-50%) scale(1.1); }
+            .nav-discover-btn.left { left: 20px; }
+            .nav-discover-btn.right { right: 20px; }
         }
     </style>
 </head>
@@ -1500,15 +1502,16 @@
 
     <!-- Modal Descobrir Elegante -->
     <div id="descobrir-carousel">
-        <!-- Wrapper para animação de transição -->
-        <div id="discover-wrapper" style="width: 100%; height: 100%; transition: 0.5s;">
-            <div class="details-backdrop-container">
-                <div id="discoverBg" class="details-backdrop-image"></div>
-                <div id="discover-trailer-container" class="details-trailer-bg"></div>
-                <div class="details-overlay-gradient"></div>
-            </div>
-            
-            <div class="details-body" id="discover-body">
+        <button class="nav-discover-btn left" onclick="navDiscover(-1)"><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-discover-btn right" onclick="navDiscover(1)"><i class="fas fa-chevron-right"></i></button>
+
+        <div class="details-backdrop-container">
+            <div id="discoverBg" class="details-backdrop-image"></div>
+            <div id="discover-trailer-container" class="details-trailer-bg"></div>
+            <div class="details-overlay-gradient"></div>
+        </div>
+        
+        <div class="details-body" id="discover-body">
                 <!-- Camada de Swipe (Apenas mobile) -->
                 <div class="reels-swipe-overlay" id="reels-swipe-overlay"></div>
 
@@ -1594,12 +1597,10 @@
                     <button class="btn-control-info" onclick="toggleDetailsInfo(this.parentElement.parentElement.classList.contains('minimized') ? false : true, 'discover-body')" title="Recolher/Mostrar Informações">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                </div>
-            </div>
-        </div>
+                    </div>
+                    </div>
 
-        <div class="close-carousel" onclick="closeDiscover()">×</div>
-        <button class="btn-restore-info" id="discover-restore-info" style="display:none;"></button>
+                    <div class="close-carousel" onclick="closeDiscover()">×</div>        <button class="btn-restore-info" id="discover-restore-info" style="display:none;"></button>
     </div>
 
     <button class="btn-discover-floating" onclick="openDiscover()" title="Descobrir novo conteúdo">
@@ -2404,28 +2405,11 @@
     }
 
     async function navDiscover(dir = 1) {
-        if (isNavigatingDiscover) return;
-        isNavigatingDiscover = true;
-
-        const wrapper = document.getElementById('discover-wrapper');
-        
-        // 1. Iniciar Animação de Saída
-        wrapper.classList.remove('reels-anim-in-up', 'reels-anim-in-down', 'reels-anim-out-up', 'reels-anim-out-down');
-        wrapper.classList.add(dir === 1 ? 'reels-anim-out-up' : 'reels-anim-out-down');
-
-        // Esperar a animação de saída (400ms)
-        await new Promise(r => setTimeout(r, 400));
-
         if (dir === -1) {
             if (currentDiscoverIdx > 0) {
                 currentDiscoverIdx--;
                 const data = discoverHistory[currentDiscoverIdx];
                 renderDiscoverItem(data.item, data.type, data.videoKey, data.recommendations);
-                finishNav(dir);
-            } else {
-                isNavigatingDiscover = false;
-                wrapper.classList.remove('reels-anim-out-down');
-                wrapper.classList.add('reels-anim-in-down');
             }
             return;
         }
@@ -2434,7 +2418,6 @@
             currentDiscoverIdx++;
             const data = discoverHistory[currentDiscoverIdx];
             renderDiscoverItem(data.item, data.type, data.videoKey, data.recommendations);
-            finishNav(dir);
             return;
         }
 
@@ -2448,33 +2431,22 @@
             const items = data.results.filter(i => i.overview && i.overview.length > 10 && i.backdrop_path);
             const item = items[Math.floor(Math.random() * items.length)];
             
-            if (!item) { isNavigatingDiscover = false; return navDiscover(1); }
+            if (!item) return navDiscover(1);
 
             const extraRes = await fetch(`https://api.themoviedb.org/3/${type}/${item.id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,recommendations`);
             let extraData = await extraRes.json();
             
             const trailer = extraData.videos.results.find(v => (v.type === 'Trailer' || v.type === 'Teaser') && v.site === 'YouTube');
-            if (!trailer) { isNavigatingDiscover = false; return navDiscover(1); }
+            if (!trailer) return navDiscover(1);
 
             const recs = extraData.recommendations ? extraData.recommendations.results : [];
             discoverHistory.push({ item, type, videoKey: trailer.key, recommendations: recs });
             currentDiscoverIdx++;
             
             renderDiscoverItem(item, type, trailer.key, recs);
-            finishNav(dir);
         } catch (e) { 
             console.error("Erro Descobrir:", e);
-            isNavigatingDiscover = false;
         }
-    }
-
-    function finishNav(dir) {
-        const wrapper = document.getElementById('discover-wrapper');
-        wrapper.classList.remove('reels-anim-out-up', 'reels-anim-out-down');
-        wrapper.classList.add(dir === 1 ? 'reels-anim-in-up' : 'reels-anim-in-down');
-        setTimeout(() => {
-            isNavigatingDiscover = false;
-        }, 400);
     }
 
     function renderDiscoverItem(item, type, videoKey, recommendations = []) {
