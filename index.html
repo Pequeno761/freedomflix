@@ -1157,28 +1157,54 @@
             }
 
             /* Info Estilo Reels (TikTok) */
-            .reels-info-container { display: flex; flex-direction: column; gap: 8px; width: 100%; }
-            .reels-header { display: flex; align-items: flex-start; gap: 10px; flex-wrap: nowrap; }
-            .reels-thumb { width: 45px; height: 65px; border-radius: 4px; border: 1px solid #fff; object-fit: cover; flex-shrink: 0; }
-            .reels-title-area { flex: 1; min-width: 0; }
+            .reels-info-container { display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; text-align: center; }
+            .reels-header { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+            .reels-thumb { width: 50px; height: 75px; border-radius: 4px; border: 1px solid #fff; object-fit: cover; }
+            .reels-title-area { width: 100%; }
             .reels-title-area h2 { 
                 font-family: 'Bebas Neue', sans-serif; 
-                font-size: 1.4rem; color: #fff; margin: 0; 
-                white-space: normal; /* Nome completo sem cortes */
+                font-size: 1.6rem; color: #fff; margin: 0; 
+                white-space: normal; 
                 line-height: 1.1;
                 display: block;
             }
-            .reels-meta { font-size: 0.7rem; color: #ccc; display: flex; gap: 6px; margin-top: 3px; }
+            .reels-meta { font-size: 0.75rem; color: #ccc; display: flex; gap: 8px; margin-top: 5px; justify-content: center; }
             
-            .reels-actions { display: flex; align-items: center; gap: 6px; width: 100%; justify-content: flex-start; margin-top: 5px; }
-            .btn-reels-play { background: var(--primary); color: #fff; width: 40px; height: 40px; border-radius: 50%; border: none; font-size: 1rem; box-shadow: 0 0 15px rgba(229,9,20,0.5); flex-shrink: 0; }
-            .btn-reels-tab { background: rgba(255,255,255,0.1); color: #fff; padding: 6px 10px; border-radius: 20px; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); font-weight: bold; white-space: nowrap; flex: 1; text-align: center; }
+            .reels-actions { display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center; margin-top: 5px; }
+            .btn-reels-play { background: var(--primary); color: #fff; width: 45px; height: 45px; border-radius: 50%; border: none; font-size: 1.1rem; box-shadow: 0 0 15px rgba(229,9,20,0.5); }
+            .btn-reels-tab { background: rgba(255,255,255,0.1); color: #fff; padding: 8px 15px; border-radius: 20px; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); font-weight: bold; white-space: nowrap; flex: 0 1 auto; min-width: 100px; }
             .btn-reels-tab.active { background: var(--primary); border-color: var(--primary); }
 
+            /* Ocultar elementos desktop para evitar duplicatas */
+            #descobrir-carousel .carousel-counter,
+            #descobrir-carousel .details-title,
+            #descobrir-carousel .modal-header-container,
+            #descobrir-carousel .details-meta,
+            #descobrir-carousel .details-tabs,
+            #descobrir-carousel .details-btns,
+            #descobrir-carousel .tab-content,
+            #descobrir-carousel .btn-control-info { display: none !important; }
+
+            /* Área Expansível Mobile */
+            .reels-expanded-content {
+                display: none;
+                max-height: 250px;
+                overflow-y: auto;
+                background: rgba(15,15,15,0.95);
+                border-radius: 12px;
+                padding: 15px;
+                margin-top: 10px;
+                border: 1px solid rgba(255,255,255,0.1);
+                width: 90%;
+            }
+            .reels-expanded-content.active { display: block; animation: slideUpInfo 0.3s ease-out; }
+            
+            @keyframes slideUpInfo { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
             /* Setas de Navegação Descobrir Mobile */
-            .nav-discover-btn { width: 35px; height: 35px; font-size: 0.9rem; }
-            .nav-discover-btn.left { left: 8px; }
-            .nav-discover-btn.right { right: 8px; }        }
+            .nav-discover-btn { width: 35px; height: 35px; font-size: 0.9rem; position: absolute; top: 50%; transform: translateY(-50%); z-index: 200; background: rgba(0,0,0,0.4); border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); color: #fff; }
+            .nav-discover-btn.left { left: 10px; }
+            .nav-discover-btn.right { right: 10px; }        }
     </style>
 </head>
 <body>
