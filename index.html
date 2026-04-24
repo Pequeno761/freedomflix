@@ -1039,6 +1039,16 @@
                     <button id="details-seasons-btn" class="btn-details btn-details-trailer hidden" onclick="toggleDetailsEpisodes()">
                         <i class="fas fa-list"></i> <span>Temporadas</span>
                     </button>
+                    
+                    <!-- Navegação de Maratonar (Estilo Descobrir) -->
+                    <div id="maratona-nav-btns" class="hidden" style="display: none; gap: 10px; margin-left: 20px;">
+                        <button class="btn-details btn-details-trailer" onclick="navMaratona(-1)">
+                            <i class="fas fa-chevron-left"></i> <span>Anterior</span>
+                        </button>
+                        <button class="btn-details btn-details-trailer" onclick="navMaratona(1)">
+                            <i class="fas fa-chevron-right"></i> <span>Próximo</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Navegador de Episódios In-Page -->
@@ -1170,31 +1180,76 @@
     <div id="sections-container"></div>
     <div id="catalog-container"></div>
     
-    <!-- Carrossel Maratonar -->
-    <div id="maratonar-carousel">
-        <div class="carousel-bg" id="carouselBg"></div>
-        <div class="close-carousel" onclick="closeMaratona()">×</div>
-        <div class="carousel-container">
-            <div class="carousel-poster-area">
-                <img src="" class="carousel-poster" id="carouselPoster">
-            </div>
-            <div class="carousel-info">
-                <div class="carousel-counter" id="carouselCounter"></div>
-                <h1 id="carouselTitle"></h1>
-                <div class="meta">
-                    <span id="carouselYear"></span>
-                    <span id="carouselRating"></span>
+    <!-- Modal Detalhes Elegantes (Unificado) -->
+    <div id="details-modal">
+        <div class="details-backdrop-container">
+            <div id="details-backdrop" class="details-backdrop-image"></div>
+            <div id="details-trailer-container" class="details-trailer-bg"></div>
+            <div class="details-overlay-gradient"></div>
+        </div>
+        
+        <div class="close-carousel" onclick="closeDetails()">×</div>
+        
+        <div class="details-body" id="details-body">
+            <div class="details-main-info">
+                <h1 id="details-title" class="details-title"></h1>
+                <div id="details-meta" class="details-meta"></div>
+
+                <div class="details-tabs">
+                    <button class="tab-btn active" onclick="switchTab(this, 'details-synopsis-tab')">Sinopse</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'details-related-tab')">Relacionados</button>
                 </div>
-                <p id="carouselOverview"></p>
-                <div class="carousel-controls">
-                    <button class="btn-carousel" id="watchBtn">Assistir Agora</button>
-                    <div style="display: flex; gap: 10px; margin-left: auto;">
-                        <button class="carousel-nav-btn" onclick="navMaratona(-1)"><i class="fas fa-arrow-left"></i></button>
-                        <button class="carousel-nav-btn" onclick="navMaratona(1)"><i class="fas fa-arrow-right"></i></button>
+
+                <div id="details-synopsis-tab" class="tab-content active">
+                    <p id="details-synopsis" class="details-synopsis"></p>
+                    <button id="details-read-more" class="btn-read-more" onclick="toggleSynopsis('details-synopsis', this)">Ler mais</button>
+                    
+                    <div class="details-btns">
+                        <button id="details-watch-btn" class="btn-details btn-details-watch">
+                            <i class="fas fa-play"></i> <span>Assistir Agora</span>
+                        </button>
+                        <button id="details-seasons-btn" class="btn-details btn-details-trailer hidden" onclick="toggleDetailsEpisodes()">
+                            <i class="fas fa-list"></i> <span>Temporadas</span>
+                        </button>
+                    </div>
+
+                    <!-- Navegação de Maratonar (Centralizada e Elegante) -->
+                    <div id="maratona-nav-btns" class="hidden" style="display: flex; gap: 15px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <button class="btn-details btn-details-trailer" style="flex: 1;" onclick="navMaratona(-1)">
+                            <i class="fas fa-chevron-left"></i> <span>Anterior</span>
+                        </button>
+                        <button class="btn-details btn-details-trailer" style="flex: 1;" onclick="navMaratona(1)">
+                            <span>Próximo</span> <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Navegador de Episódios In-Page -->
+                    <div id="details-episodes-container" class="details-episodes-container">
+                        <div class="ep-header">
+                            <span style="font-family:'Bebas Neue'; font-size:1.5rem; color: #fff;">Episódios</span>
+                            <select id="details-season-select" class="ep-season-select" onchange="loadDetailsEpisodes(this.value)"></select>
+                        </div>
+                        <div id="details-ep-grid" class="details-ep-grid"></div>
                     </div>
                 </div>
+                
+                <div id="details-related-tab" class="tab-content">
+                    <div id="details-related-container" class="related-container show" style="margin-top:0;">
+                        <div class="related-wrapper">
+                            <button class="related-nav-arrow left" onclick="scrollRelated(-1)"><i class="fas fa-chevron-left"></i></button>
+                            <div id="details-related-grid" class="related-grid" style="padding: 10px 0;"></div>
+                            <button class="related-nav-arrow right" onclick="scrollRelated(1)"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-control-info" onclick="toggleDetailsInfo(this.parentElement.parentElement.classList.contains('minimized') ? false : true)" title="Recolher/Mostrar Informações">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
             </div>
         </div>
+        
+        <button class="btn-restore-info" id="btn-restore-info" style="display:none;"></button>
     </div>
 
     <!-- Modal Descobrir Elegante -->
@@ -1429,12 +1484,55 @@
         }, 100);
     }
 
+    let currentCollection = null;
+    let currentCollectionIdx = 0;
+
+    async function openMaratona(collectionKey) {
+        currentCollection = COLLECTIONS[collectionKey];
+        currentCollectionIdx = 0;
+        loadMaratonaItem();
+    }
+
+    async function navMaratona(dir) {
+        if (!currentCollection) return;
+        currentCollectionIdx += dir;
+        
+        if (currentCollectionIdx < 0) currentCollectionIdx = currentCollection.ids.length - 1;
+        if (currentCollectionIdx >= currentCollection.ids.length) currentCollectionIdx = 0;
+        
+        loadMaratonaItem();
+    }
+
+    function loadMaratonaItem() {
+        const id = currentCollection.ids[currentCollectionIdx];
+        const navContainer = document.getElementById('maratona-nav-btns');
+        if (navContainer) {
+            navContainer.classList.remove('hidden');
+            navContainer.style.display = 'flex';
+        }
+        
+        // Abrir o modal padrão de detalhes com o ID do filme da coleção
+        showDetails(id, 'movie', true);
+    }
+
     /* --- LÓGICA DETALHES ELEGANTES --- */
-    async function showDetails(id, type) {
+    async function showDetails(id, type, isMaratona = false) {
         document.body.style.overflow = 'hidden';
         const modal = document.getElementById('details-modal');
         modal.style.display = 'flex';
         
+        // Controlar visibilidade dos botões de navegação de maratona
+        const navContainer = document.getElementById('maratona-nav-btns');
+        if (navContainer) {
+            if (isMaratona) {
+                navContainer.classList.remove('hidden');
+                navContainer.style.display = 'flex';
+            } else {
+                navContainer.classList.add('hidden');
+                navContainer.style.display = 'none';
+            }
+        }
+
         // Reset Tabs to Synopsis
         const synopsisTabBtn = document.querySelector('#details-modal .tab-btn:first-child');
         if (synopsisTabBtn) switchTab(synopsisTabBtn, 'details-synopsis-tab');
@@ -1459,7 +1557,10 @@
             const rating = data.vote_average ? data.vote_average.toFixed(1) : 'N/A';
             const duration = data.runtime ? `${data.runtime} min` : data.number_of_seasons ? `${data.number_of_seasons} Temporadas` : '';
             
-            document.getElementById('details-title').innerText = title;
+            // Se estiver em modo maratona, podemos prefixar o título com o contador
+            const displayTitle = isMaratona ? `[${currentCollectionIdx + 1}/${currentCollection.ids.length}] ${title}` : title;
+            document.getElementById('details-title').innerText = displayTitle;
+            
             document.getElementById('details-synopsis').innerText = data.overview || 'Sinopse não disponível.';
             document.getElementById('details-meta').innerHTML = `<span>${year}</span><span>⭐ ${rating}</span><span>${duration}</span>`;
             document.getElementById('details-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`;
@@ -1481,8 +1582,7 @@
                 openPlayer(id, type);
             };
 
-            // Se for série, preparar temporadas (Rigorosamente apenas se for TV e tiver temporadas)
-            // Se for série, preparar temporadas (Rigorosamente apenas se tiver o campo number_of_seasons da API de TV)
+            // Se for série, preparar temporadas
             if (data.number_of_seasons && data.seasons && data.seasons.length > 0) {
                 currentTmdbId = id; 
                 const select = document.getElementById('details-season-select');
@@ -1490,7 +1590,6 @@
                 let hasValidSeasons = false;
                 
                 data.seasons.forEach(s => {
-                    // Ignorar temporada 0 (especiais) e garantir que a temporada tenha data ou episódios
                     if (s.season_number === 0 || (!s.air_date && s.episode_count === 0)) return; 
                     const opt = document.createElement('option');
                     opt.value = s.season_number;
@@ -1506,7 +1605,6 @@
                     document.getElementById('details-seasons-btn').classList.add('hidden');
                 }
             } else {
-                // Força ocultar se não for TV ou não tiver temporadas
                 document.getElementById('details-seasons-btn').classList.add('hidden');
                 document.getElementById('details-episodes-container').classList.remove('show');
             }
@@ -1658,12 +1756,11 @@
     async function loadMaratonaHub(page = 1) {
         currentMaratonaPage = page;
         const container = document.getElementById('sections-container');
-        container.innerHTML = `<h2 style="font-family:'Bebas Neue'; font-size:3rem; margin-top:20px; color:var(--primary); text-align:center;">Escolha uma Franquia para Maratonar (beta)</h2><div class="collection-hub"></div><div id="maratona-pagination" class="pagination"></div>`;
+        container.innerHTML = `<h2 style="font-family:'Bebas Neue'; font-size:3rem; margin-top:20px; color:var(--primary); text-align:center;">Escolha uma Franquia para Maratonar</h2><div class="collection-hub"></div><div id="maratona-pagination" class="pagination"></div>`;
         const hub = container.querySelector('.collection-hub');
         
         const keys = Object.keys(COLLECTIONS);
         const perPage = 8;
-        const totalPages = Math.ceil(keys.length / perPage);
         const start = (page - 1) * perPage;
         const paginatedKeys = keys.slice(start, start + perPage);
 
@@ -1684,62 +1781,20 @@
                 hub.appendChild(card);
             } catch(e) { console.error("Erro hub:", e); }
         }
-
-        const pagDiv = document.getElementById('maratona-pagination');
-        pagDiv.innerHTML = `
-            <button class="btn-page" onclick="loadMaratonaHub(${page - 1})" ${page === 1 ? 'disabled' : ''}><i class="fas fa-arrow-left"></i> Anterior</button>
-            <div id="page-info">Página ${page} de ${totalPages}</div>
-            <button class="btn-page" onclick="loadMaratonaHub(${page + 1})" ${page === totalPages ? 'disabled' : ''}>Próxima <i class="fas fa-arrow-right"></i></button>
+        renderPagination('maratona-pagination', keys.length, perPage, page, loadMaratonaHub);
+    }
+    function renderPagination(id, totalItems, perPage, currentPage, callback) {
+        const totalPages = Math.ceil(totalItems / perPage);
+        const div = document.getElementById(id);
+        if (!div) return;
+        div.innerHTML = `
+            <button class="btn-page" onclick="${callback.name}(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-arrow-left"></i> Anterior</button>
+            <div id="page-info">Página ${currentPage} de ${totalPages}</div>
+            <button class="btn-page" onclick="${callback.name}(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Próxima <i class="fas fa-arrow-right"></i></button>
         `;
     }
 
-    async function openMaratona(key) {
-        const c = COLLECTIONS[key];
-        document.body.style.overflow = 'hidden';
-        const carousel = document.getElementById('maratonar-carousel');
-        carousel.style.display = 'flex';
-        carousel.style.opacity = '1';
-        
-        document.getElementById('carouselTitle').innerText = 'Carregando Sequência...';
-        
-        maratonaItems = await Promise.all(c.ids.map(async id => {
-            const res = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR`);
-            return await res.json();
-        }));
-        
-        currentMaratonaIdx = 0;
-        renderMaratonaStep();
-    }
-
-    function renderMaratonaStep() {
-        const item = maratonaItems[currentMaratonaIdx];
-        if(!item) return;
-        document.getElementById('carouselBg').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${item.backdrop_path})`;
-        document.getElementById('carouselPoster').src = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
-        document.getElementById('carouselTitle').innerText = item.title;
-        document.getElementById('carouselYear').innerText = item.release_date ? new Date(item.release_date).getFullYear() : 'N/A';
-        document.getElementById('carouselRating').innerText = `⭐ ${item.vote_average ? item.vote_average.toFixed(1) : 'N/A'}`;
-        document.getElementById('carouselOverview').innerText = item.overview || 'Sinopse não disponível.';
-        document.getElementById('carouselCounter').innerText = `Filme ${currentMaratonaIdx + 1} de ${maratonaItems.length}`;
-        
-        document.getElementById('watchBtn').onclick = () => {
-            document.getElementById('maratonar-carousel').style.display = 'none';
-            openPlayer(item.id, 'movie');
-        };
-    }
-
-    function navMaratona(dir) {
-        currentMaratonaIdx += dir;
-        if (currentMaratonaIdx < 0) currentMaratonaIdx = maratonaItems.length - 1;
-        if (currentMaratonaIdx >= maratonaItems.length) currentMaratonaIdx = 0;
-        renderMaratonaStep();
-    }
-
-    function closeMaratona() {
-        document.getElementById('maratonar-carousel').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
+    /* Lógica Descobrir (Estilo Maratonar) */
     async function loadFullCatalog(type, page) {
         const catalogContainer = document.getElementById('catalog-container');
         catalogContainer.innerHTML = '<p style="text-align:center; padding:50px;">Carregando conteúdo...</p>';
