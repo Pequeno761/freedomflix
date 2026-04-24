@@ -1157,16 +1157,22 @@
             }
 
             /* Info Estilo Reels (TikTok) */
-            .reels-info-container { display: flex; flex-direction: column; gap: 12px; }
-            .reels-header { display: flex; align-items: center; gap: 12px; }
-            .reels-thumb { width: 45px; height: 65px; border-radius: 4px; border: 1px solid #fff; object-fit: cover; }
-            .reels-title-area { flex: 1; min-width: 0; }
-            .reels-title-area h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: #fff; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-            .reels-meta { font-size: 0.75rem; color: #ccc; display: flex; gap: 8px; margin-top: 2px; }
+            .reels-info-container { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+            .reels-header { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+            .reels-thumb { width: 50px; height: 75px; border-radius: 4px; border: 1px solid #fff; object-fit: cover; flex-shrink: 0; }
+            .reels-title-area { flex: 1; min-width: 150px; }
+            .reels-title-area h2 { 
+                font-family: 'Bebas Neue', sans-serif; 
+                font-size: 1.6rem; color: #fff; margin: 0; 
+                white-space: normal; /* Permite que o nome quebre linha */
+                line-height: 1.1;
+                display: block;
+            }
+            .reels-meta { font-size: 0.75rem; color: #ccc; display: flex; gap: 8px; margin-top: 5px; flex-wrap: wrap; }
             
-            .reels-actions { display: flex; align-items: center; gap: 8px; }
-            .btn-reels-play { background: var(--primary); color: #fff; width: 45px; height: 45px; border-radius: 50%; border: none; font-size: 1.1rem; box-shadow: 0 0 15px rgba(229,9,20,0.5); }
-            .btn-reels-tab { background: rgba(255,255,255,0.1); color: #fff; padding: 8px 15px; border-radius: 20px; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); font-weight: bold; }
+            .reels-actions { display: flex; align-items: center; gap: 8px; width: 100%; justify-content: flex-start; margin-top: 5px; }
+            .btn-reels-play { background: var(--primary); color: #fff; width: 45px; height: 45px; border-radius: 50%; border: none; font-size: 1.1rem; box-shadow: 0 0 15px rgba(229,9,20,0.5); flex-shrink: 0; }
+            .btn-reels-tab { background: rgba(255,255,255,0.1); color: #fff; padding: 8px 12px; border-radius: 20px; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); font-weight: bold; white-space: nowrap; flex: 1; text-align: center; }
             .btn-reels-tab.active { background: var(--primary); border-color: var(--primary); }
 
             .reels-expanded-content {
