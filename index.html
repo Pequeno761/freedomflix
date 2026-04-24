@@ -1144,16 +1144,21 @@
 
             #descobrir-carousel .details-body { 
                 padding: 0; 
-                height: 100%; 
+                height: 100dvh; /* Altura dinâmica para evitar bugs de barra de endereço */
+                display: flex;
+                flex-direction: column;
                 justify-content: flex-end; 
+                padding-bottom: 100px; /* Eleva o conteúdo para uma zona segura e visível */
                 background: none;
-                pointer-events: none; /* Deixa passar clique para o overlay */
+                pointer-events: none;
+                box-sizing: border-box;
             }
             #descobrir-carousel .details-main-info { 
-                max-width: 100%; width: 100%; padding: 15px; 
+                max-width: 100%; width: 100%; padding: 0 20px; 
                 transform: none !important; opacity: 1 !important;
-                pointer-events: auto; /* Reabilita para os botões */
+                pointer-events: auto;
                 z-index: 110;
+                margin-bottom: 0;
             }
 
             /* Info Estilo Reels (TikTok) */
