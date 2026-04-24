@@ -1164,7 +1164,7 @@
             .reels-title-area h2 { 
                 font-family: 'Bebas Neue', sans-serif; 
                 font-size: 1.4rem; color: #fff; margin: 0; 
-                white-space: normal; 
+                white-space: normal; /* Nome completo sem cortes */
                 line-height: 1.1;
                 display: block;
             }
@@ -1174,41 +1174,6 @@
             .btn-reels-play { background: var(--primary); color: #fff; width: 40px; height: 40px; border-radius: 50%; border: none; font-size: 1rem; box-shadow: 0 0 15px rgba(229,9,20,0.5); flex-shrink: 0; }
             .btn-reels-tab { background: rgba(255,255,255,0.1); color: #fff; padding: 6px 10px; border-radius: 20px; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); font-weight: bold; white-space: nowrap; flex: 1; text-align: center; }
             .btn-reels-tab.active { background: var(--primary); border-color: var(--primary); }
-
-            .reels-expanded-content {
-                display: none;
-                max-height: 250px;
-                overflow-y: auto;
-                background: rgba(15,15,15,0.95);
-                border-radius: 12px;
-                padding: 12px;
-                margin-top: 8px;
-                border: 1px solid rgba(255,255,255,0.1);
-            }
-            .reels-expanded-content.active { display: block; animation: slideUpInfo 0.3s ease-out; }
-            
-            @keyframes slideUpInfo { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-            #descobrir-carousel .carousel-counter,
-            #descobrir-carousel .details-title,
-            #descobrir-carousel .modal-header-container,
-            #descobrir-carousel .details-meta,
-            #descobrir-carousel .details-tabs,
-            #descobrir-carousel .details-btns,
-            #descobrir-carousel .tab-content,
-            #descobrir-carousel .btn-control-info { display: none !important; }
-
-            /* Melhoria no Modal de Detalhes padrão para Mobile */
-            .details-title { font-size: 1.8rem !important; line-height: 1.1; margin-top: 5px; }
-            .modal-header-container { flex-direction: row; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
-            .modal-title-thumb { width: 60px; height: 90px; flex-shrink: 0; }
-            .details-body { padding: 50px 15px 15px 15px; }
-            .details-main-info { max-width: 100%; opacity: 1 !important; transform: none !important; }
-            .details-meta { font-size: 0.8rem; gap: 8px; margin-bottom: 12px; }
-            .details-synopsis { font-size: 0.9rem; -webkit-line-clamp: 4; }
-            .details-btns { flex-wrap: wrap; gap: 8px; margin-bottom: 25px; }
-            .btn-details { font-size: 1rem; padding: 8px 12px; flex: 1; min-width: 130px; }
-            .btn-details span { opacity: 1; max-width: 180px; margin-left: 6px; }
 
             /* Setas de Navegação Descobrir Mobile */
             .nav-discover-btn { width: 35px; height: 35px; font-size: 0.9rem; }
