@@ -2,22 +2,15 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FF - Entreterimento Livre</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='85' font-family='Arial, sans-serif' font-weight='900'><tspan fill='%23e50914'>F</tspan><tspan fill='white'>F</tspan></text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #e50914; --bg: #0a0a0a; --card-bg: #141414; --text: #ffffff; --accent: #b20710; }
-        html, body { width: 100%; height: 100%; margin: 0; padding: 0; overflow-x: hidden; -webkit-text-size-adjust: 100%; }
-        body { background: var(--bg); color: var(--text); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
-        
-        /* Ajuste de escala apenas para telas grandes (PC) */
-        @media (min-width: 1024px) {
-            body { zoom: 0.8; }
-        }
-
-        .container { max-width: 1400px; margin: auto; padding: 20px; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; overflow-x: hidden; zoom: 0.75; }
+        .container { max-width: 1400px; margin: auto; padding: 20px; }
         header { display: flex; flex-direction: column; align-items: center; padding: 20px 0; margin-bottom: 30px; border-bottom: 1px solid #222; gap: 20px; }
         .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .logo-container { display: flex; flex-direction: column; align-items: center; position: relative; }
@@ -1151,21 +1144,16 @@
 
             #descobrir-carousel .details-body { 
                 padding: 0; 
-                height: 100dvh; /* Altura dinâmica para evitar bugs de barra de endereço */
-                display: flex;
-                flex-direction: column;
+                height: 100%; 
                 justify-content: flex-end; 
-                padding-bottom: 100px; /* Eleva o conteúdo para uma zona segura e visível */
                 background: none;
-                pointer-events: none;
-                box-sizing: border-box;
+                pointer-events: none; /* Deixa passar clique para o overlay */
             }
             #descobrir-carousel .details-main-info { 
-                max-width: 100%; width: 100%; padding: 0 20px; 
+                max-width: 100%; width: 100%; padding: 15px; 
                 transform: none !important; opacity: 1 !important;
-                pointer-events: auto;
+                pointer-events: auto; /* Reabilita para os botões */
                 z-index: 110;
-                margin-bottom: 0;
             }
 
             /* Info Estilo Reels (TikTok) */
@@ -1216,47 +1204,7 @@
             /* Setas de Navegação Descobrir Mobile */
             .nav-discover-btn { width: 35px; height: 35px; font-size: 0.9rem; position: absolute; top: 50%; transform: translateY(-50%); z-index: 200; background: rgba(0,0,0,0.4); border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); color: #fff; }
             .nav-discover-btn.left { left: 10px; }
-            .nav-discover-btn.right { right: 10px; }
-
-            /* Ajuste Geral de Outros Modais Mobile */
-            #details-modal, #tv-modal, #player-section { 
-                height: 100dvh; width: 100%; box-sizing: border-box;
-                display: flex; flex-direction: column; justify-content: flex-end;
-            }
-            #details-modal .details-body { 
-                padding: 0 15px 60px 15px; 
-                height: 100%; display: flex; flex-direction: column; justify-content: flex-end;
-            }
-            #details-modal .details-main-info { 
-                max-width: 100%; width: 100%; 
-                background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
-                padding: 20px 10px; border-radius: 15px;
-            }
-            #details-modal .modal-header-container { align-items: center; gap: 15px; margin-bottom: 15px; }
-            #details-modal .modal-title-thumb { width: 60px; height: 90px; flex-shrink: 0; }
-            #details-modal .details-title { font-size: 1.6rem !important; flex: 1; }
-            #details-modal .details-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
-            #details-modal .btn-details { font-size: 0.9rem; padding: 10px 5px; width: 100%; justify-content: center; }
-
-            #tv-modal .details-body { 
-                padding: 0 10px 80px 10px; 
-                height: 100%; display: flex; flex-direction: column; justify-content: flex-end;
-            }
-            #tv-modal .details-main-info { 
-                max-width: 100%; padding: 15px; height: auto; 
-                background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); border-radius: 15px;
-            }
-            #tv-grid { height: 40vh !important; }
-            .tv-player-title-floating { font-size: 1.3rem !important; top: 20px; }
-            .tv-controls-floating { bottom: 20px; width: 90%; gap: 10px; }
-            .btn-tv-nav { padding: 8px 12px; font-size: 0.9rem; flex: 1; }
-
-            .player-header { position: absolute; bottom: 20px; left: 0; width: 100%; padding: 10px; gap: 8px; flex-wrap: wrap; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
-            .server-selector { width: 100%; overflow-x: auto; padding-bottom: 10px; }
-            .server-selector .genre-pill { white-space: nowrap; font-size: 0.75rem; padding: 6px 12px; }
-            #episodes-browser { padding: 15px; top: 0; height: 100%; background: #000; }
-            .ep-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
-        }
+            .nav-discover-btn.right { right: 10px; }        }
     </style>
 </head>
 <body>
