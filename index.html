@@ -1189,7 +1189,20 @@
             #descobrir-carousel .details-meta,
             #descobrir-carousel .details-tabs,
             #descobrir-carousel .details-btns,
+            #descobrir-carousel .tab-content,
             #descobrir-carousel .btn-control-info { display: none !important; }
+
+            /* Melhoria no Modal de Detalhes padrão para Mobile */
+            .details-title { font-size: 2.2rem !important; line-height: 1.1; margin-top: 10px; }
+            .modal-header-container { flex-direction: row; align-items: flex-start; gap: 15px; margin-bottom: 15px; }
+            .modal-title-thumb { width: 70px; height: 105px; flex-shrink: 0; }
+            .details-body { padding: 60px 20px 20px 20px; }
+            .details-main-info { max-width: 100%; opacity: 1 !important; transform: none !important; }
+            .details-meta { font-size: 0.9rem; gap: 10px; margin-bottom: 15px; }
+            .details-synopsis { font-size: 0.95rem; -webkit-line-clamp: 4; }
+            .details-btns { flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
+            .btn-details { font-size: 1.1rem; padding: 10px 15px; flex: 1; min-width: 140px; }
+            .btn-details span { opacity: 1; max-width: 200px; margin-left: 8px; }
         }
     </style>
 </head>
