@@ -2183,6 +2183,12 @@
         else if (currentServer === 'superembed') url = currentType === 'movie' ? `https://multiembed.mov/directstream.php?video_id=${currentTmdbId}&tmdb=1` : `https://multiembed.mov/directstream.php?video_id=${currentTmdbId}&tmdb=1&s=${s_val}&e=${e_val}`;
         else url = currentType === 'movie' ? `https://myembed.biz/filme/${currentTmdbId}` : `https://myembed.biz/serie/${currentTmdbId}/${s_val}/${e_val}`;
         player.src = url;
+
+        // COMUNICAÇÃO COM A EXTENSÃO
+        const event = new CustomEvent('FF_PlayerLoaded', { 
+            detail: { url: url, server: currentServer, id: currentTmdbId } 
+        });
+        window.dispatchEvent(event);
     }
 
     function changeServer(server, btn) {
