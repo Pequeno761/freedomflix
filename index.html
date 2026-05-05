@@ -1380,7 +1380,7 @@
                     <option value="movie">Filmes</option>
                     <option value="tv">Séries</option>
                 </select>
-                <input type="text" id="searchInput" placeholder="O que você quer assistir hoje?">
+                <input type="text" id="searchInput" placeholder="O que você quer assistir hoje?" onkeydown="if(event.key === 'Enter') searchContent()">
                 <button class="btn-search" onclick="searchContent()"><i class="fas fa-search"></i></button>
             </div>
         </div>
