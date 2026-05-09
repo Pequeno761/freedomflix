@@ -976,3 +976,164 @@ function switchTab(btn, tabId) {
 function closeSynopsis() {
     document.getElementById('synopsis-modal').style.display = 'none';
 }
+
+/* --- LÓGICA FUTEBOL AO VIVO (ESPN API) --- */
+let currentLeague = 'bra.1'; 
+let currentDateOffset = 0;
+
+const LEAGUES = [
+    { id: 'bra.1', name: 'Brasileirão Série A' },
+    { id: 'bra.2', name: 'Série B' },
+    { id: 'eng.1', name: 'Premier League' },
+    { id: 'esp.1', name: 'LaLiga' },
+    { id: 'uefa.champions', name: 'Champions League' },
+    { id: 'uefa.europa', name: 'Europa League' },
+    { id: 'ita.1', name: 'Serie A (ITA)' },
+    { id: 'ger.1', name: 'Bundesliga' },
+    { id: 'fra.1', name: 'Ligue 1' },
+    { id: 'arg.1', name: 'Argentino' },
+    { id: 'libertadores', name: 'Libertadores' }
+];
+
+async function loadFootballSection() {
+    const container = document.getElementById('sections-container');
+    container.innerHTML = `
+        <h2 style="font-family:'Bebas Neue'; font-size:3rem; margin-top:20px; color:var(--primary); text-align:center;">Futebol ao Vivo e Placares</h2>
+        
+        <div class="sports-filters" id="league-filters"></div>
+        <div class="sports-filters" style="justify-content: center;" id="date-filters">
+            <button class="genre-pill" onclick="changeDate(-1)">Ontem</button>
+            <button class="genre-pill active" onclick="changeDate(0)">Hoje</button>
+            <button class="genre-pill" onclick="changeDate(1)">Amanhã</button>
+        </div>
+
+        <div id="sports-loader" style="text-align:center; padding:50px; font-size:1.2rem;">Carregando jogos...</div>
+        <div class="sports-grid" id="sports-grid"></div>
+    `;
+
+    renderLeagueFilters();
+    fetchScores();
+}
+
+function renderLeagueFilters() {
+    const container = document.getElementById('league-filters');
+    container.innerHTML = LEAGUES.map(league => `
+        <div class="genre-pill ${league.id === currentLeague ? 'active' : ''}" onclick="changeLeague('${league.id}', this)">
+            ${league.name}
+        </div>
+    `).join('');
+}
+
+function changeLeague(leagueId, pill) {
+    document.querySelectorAll('#league-filters .genre-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    currentLeague = leagueId;
+    fetchScores();
+}
+
+function changeDate(offset) {
+    document.querySelectorAll('#date-filters .genre-pill').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    currentDateOffset = offset;
+    fetchScores();
+}
+
+async function fetchScores() {
+    const grid = document.getElementById('sports-grid');
+    const loader = document.getElementById('sports-loader');
+    grid.innerHTML = '';
+    loader.style.display = 'block';
+
+    try {
+        // Calcular data formatada YYYYMMDD
+        const date = new Date();
+        date.setDate(date.getDate() + currentDateOffset);
+        const dateStr = date.toISOString().split('T')[0].replace(/-/g, '');
+
+        const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${currentLeague}/scoreboard?dates=${dateStr}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        loader.style.display = 'none';
+
+        if (!data.events || data.events.length === 0) {
+            grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding:50px; opacity:0.5;">Nenhum jogo encontrado para esta data ou liga.</p>';
+            return;
+        }
+
+        grid.innerHTML = data.events.map(event => renderMatchCard(event)).join('');
+    } catch (e) {
+        console.error("Erro ESPN API:", e);
+        loader.innerText = 'Erro ao carregar dados da ESPN.';
+    }
+}
+
+function renderMatchCard(event) {
+    const competition = event.competitions[0];
+    const status = event.status.type.state; // 'pre', 'in', 'post'
+    const statusText = event.status.type.detail;
+    const isLive = status === 'in';
+    
+    const homeTeam = competition.competitors.find(c => c.homeAway === 'home');
+    const awayTeam = competition.competitors.find(c => c.homeAway === 'away');
+
+    // Tentar encontrar canal de transmissão
+    const broadcast = competition.broadcasts && competition.broadcasts.length > 0 
+                      ? competition.broadcasts[0].names.join(', ') 
+                      : 'Não informada';
+
+    // Lógica para o botão "Assistir"
+    // Se o jogo estiver ao vivo, tentamos levar ao player
+    const canWatch = isLive;
+    const watchAction = canWatch ? `onclick="watchMatch('${broadcast}')"` : '';
+    
+    return `
+        <div class="match-card ${isLive ? 'live' : ''}">
+            <div class="match-header">
+                <span>${event.season.slug.toUpperCase()}</span>
+                <span>${isLive ? '<span class="live-dot"></span>AO VIVO' : status === 'post' ? 'FINALIZADO' : 'AGUARDANDO'}</span>
+            </div>
+            <div class="match-teams">
+                <div class="match-team">
+                    <img src="${homeTeam.team.logo || 'https://via.placeholder.com/50'}" alt="">
+                    <span>${homeTeam.team.displayName}</span>
+                </div>
+                <div class="match-score">
+                    <div class="score-box">${homeTeam.score} - ${awayTeam.score}</div>
+                    <div class="match-status">${statusText}</div>
+                </div>
+                <div class="match-team">
+                    <img src="${awayTeam.team.logo || 'https://via.placeholder.com/50'}" alt="">
+                    <span>${awayTeam.team.displayName}</span>
+                </div>
+            </div>
+            <div style="font-size: 0.7rem; color: #888; text-align:center;">Transmissão: ${broadcast}</div>
+            <button class="btn-watch-match ${!canWatch ? 'disabled' : ''}" ${watchAction}>
+                <i class="fas fa-play"></i> ${canWatch ? 'ASSISTIR AGORA' : 'DISPONÍVEL AO VIVO'}
+            </button>
+        </div>
+    `;
+}
+
+function watchMatch(broadcast) {
+    // Abre o modal de TV
+    openTVModal();
+    
+    // Pequeno delay para garantir que os canais carregaram
+    setTimeout(() => {
+        const query = broadcast.toLowerCase();
+        // Tentar achar o melhor canal correspondente
+        const found = allChannels.find(c => {
+            const name = c.name.toLowerCase();
+            return name.includes(query) || query.includes(name);
+        });
+        
+        if (found) {
+            playChannel(found.embed_url, found.name, found.logo_url);
+        } else {
+            // Se não achar exato, avisa o usuário ou deixa na lista geral
+            console.log("Canal não encontrado automaticamente:", broadcast);
+        }
+    }, 1500);
+}
+
