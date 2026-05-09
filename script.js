@@ -354,11 +354,12 @@ async function loadContent(mode, btn = null) {
         return; 
     }
 
-    if (mode === 'maratonar') {
-        loadMaratonaHub(1);
+    if (mode === 'futebol') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         document.getElementById('yearSelect').parentElement.style.display = 'none';
         document.getElementById('genresWrapper').style.display = 'none';
         document.getElementById('catalog-container').innerHTML = '';
+        loadFootballSection();
         return;
     }
 
